@@ -13,14 +13,18 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
-            overflow: hidden;
+            padding: 20px 16px 28px;
+            overflow-y: auto;
+            box-sizing: border-box;
         }
         .container {
             text-align: center;
-            width: 90%;
+            width: min(92vw, 500px);
             max-width: 500px;
+            padding: 12px 0 0;
+            box-sizing: border-box;
         }
         .header-status {
             display: flex;
@@ -102,10 +106,35 @@
             margin-bottom: 10px;
         }
         .word-box {
-            font-size: 36px;
+            font-size: clamp(28px, 5vw, 36px);
             font-weight: bold;
-            margin-bottom: 40px;
+            margin-bottom: 24px;
             color: #ffffff;
+        }
+        .hard-badge {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255, 200, 0, 0.12);
+            border: 1px solid rgba(255, 200, 0, 0.45);
+            color: #ffd54a;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            max-width: 90%;
+        }
+        .heart-progress {
+            display: inline-block;
+            margin: 0 auto 20px;
+            border-radius: 999px;
+            padding: 6px 12px;
+            font-size: 13px;
+            color: #f4d77a;
+            font-weight: 700;
+            letter-spacing: 0.04em;
         }
         .options-container {
             display: flex;
@@ -118,8 +147,8 @@
             border: 2px solid #3b4c56;
             border-radius: 12px;
             color: white;
-            padding: 16px;
-            font-size: 18px;
+            padding: clamp(12px, 2vw, 16px);
+            font-size: clamp(15px, 2.6vw, 18px);
             cursor: pointer;
             text-align: left;
             transition: all 0.2s;
@@ -136,10 +165,16 @@
             display: flex;
             justify-content: space-between;
         }
+        .footer-status {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin: 6px 0 14px;
+        }
         .btn {
-            padding: 14px 28px;
+            padding: clamp(12px, 2vw, 14px) clamp(16px, 4vw, 28px);
             border-radius: 12px;
-            font-size: 16px;
+            font-size: clamp(14px, 2.6vw, 16px);
             font-weight: bold;
             cursor: pointer;
             border: none;
@@ -227,10 +262,15 @@
 
     <div class="prompt" id="game-prompt">Select the correct Latvian spelling:</div>
     <div class="word-box" id="target-word">Hello</div>
+    <div class="hard-badge" id="hard-badge">✨ Answering this question correctly awards 💛</div>
 
     <div class="options-container" id="options"></div>
 
     <div class="feedback" id="feedback"></div>
+
+    <div class="footer-status">
+        <div class="heart-progress" id="heart-progress">0/10 ❤️</div>
+    </div>
 
     <div class="footer">
         <button class="btn hint-btn" id="hint-action" onclick="useHint()">HINT</button>
@@ -300,6 +340,7 @@
     let goldHearts = 0;
     let currentStreak = 0;
     let totalCorrectAnswers = 0;
+    let heartProgressCount = 0;
     let hasUsedHintForCurrentQuestion = false;
     let hintMessageTimeout = null;
 
@@ -310,10 +351,12 @@
         goldHearts = 0;
         currentStreak = 0;
         totalCorrectAnswers = 0;
+        heartProgressCount = 0;
         isAnswerChecked = false;
         selectedAnswer = null;
         hasUsedHintForCurrentQuestion = false;
 
+        updateHeartProgressDisplay();
         updateStatusDisplay();
         showScreen('game-screen');
         loadQuestion();
@@ -360,6 +403,7 @@
         document.getElementById('feedback').className = 'feedback';
         document.getElementById('feedback').textContent = '';
         document.getElementById('check-action').textContent = 'CHECK';
+        document.getElementById('check-action').disabled = false;
         document.getElementById('skip-action').style.visibility = 'visible';
         document.getElementById('hint-action').disabled = !canUseHint();
         document.getElementById('skip-action').disabled = getTotalHearts() <= 1;
@@ -367,6 +411,9 @@
         const q = questions[currentQuestionIndex];
         document.getElementById('game-prompt').textContent = q.prompt;
         document.getElementById('target-word').textContent = q.target;
+
+        const hardBadge = document.getElementById('hard-badge');
+        hardBadge.style.display = q.isHard ? 'inline-flex' : 'none';
 
         const optionsDiv = document.getElementById('options');
         optionsDiv.innerHTML = '';
@@ -399,10 +446,16 @@
     function handleButtonClick() {
         if (!isAnswerChecked) {
             checkAnswer();
-        } else {
-            currentQuestionIndex++;
-            loadQuestion();
+            return;
         }
+
+        if (getTotalHearts() <= 0) {
+            showScreen('game-over-screen');
+            return;
+        }
+
+        currentQuestionIndex++;
+        loadQuestion();
     }
 
     function useHint() {
@@ -448,6 +501,7 @@
         isAnswerChecked = true;
         document.getElementById('skip-action').style.visibility = 'hidden';
         document.getElementById('check-action').textContent = 'CONTINUE';
+        document.getElementById('check-action').disabled = false;
         document.getElementById('hint-action').disabled = true;
 
         const q = questions[currentQuestionIndex];
@@ -462,6 +516,14 @@
 
         if (selectedAnswer === q.correct) {
             feedbackDiv.className = 'feedback correct';
+            heartProgressCount++;
+
+            if (heartProgressCount >= 10) {
+                heartProgressCount = 0;
+                if (redHearts < 5) {
+                    redHearts++;
+                }
+            }
 
             if (q.isHard) {
                 if (goldHearts < 3) {
@@ -472,11 +534,6 @@
                 currentStreak++;
                 totalCorrectAnswers++;
                 feedbackDiv.textContent = '✓ Correct solution!';
-
-                if (totalCorrectAnswers % 10 === 0 && redHearts < 5) {
-                    redHearts++;
-                    feedbackDiv.textContent += ' ❤️ Bonus heart earned!';
-                }
             }
         } else {
             feedbackDiv.className = 'feedback wrong';
@@ -488,13 +545,18 @@
             } else if (goldHearts > 0) {
                 goldHearts--;
             }
+
+            document.querySelectorAll('.option-btn').forEach((button) => {
+                button.disabled = true;
+            });
+
+            document.getElementById('skip-action').disabled = true;
+            document.getElementById('hint-action').disabled = true;
+            document.getElementById('check-action').disabled = false;
         }
 
+        updateHeartProgressDisplay();
         updateStatusDisplay();
-
-        if (redHearts + goldHearts <= 0) {
-            setTimeout(() => showScreen('game-over-screen'), 700);
-        }
     }
 
     function skipQuestion() {
@@ -549,6 +611,10 @@
         document.getElementById('hint-action').disabled = !canUseHint();
         document.getElementById('shop-btn').disabled = currentStreak < 3 || goldHearts >= 3;
         document.getElementById('streak-display').textContent = `🔥 Streak: ${currentStreak}`;
+    }
+
+    function updateHeartProgressDisplay() {
+        document.getElementById('heart-progress').textContent = `${heartProgressCount}/10 ❤️`;
     }
 
     function showScreen(screenId) {
