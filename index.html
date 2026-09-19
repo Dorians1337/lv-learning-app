@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latvian Roguelite Learning</title>
+    <style>
+        body {
+            background-color: #131f24;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+            width: 90%;
+            max-width: 500px;
+        }
+        .header-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .hearts {
+            color: #ff4b4b;
+            font-size: 24px;
+            letter-spacing: 2px;
+        }
+        .streak-counter {
+            color: #ffc800;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .progress-bar {
+            width: 100%;
+            background-color: #3b4c56;
+            height: 16px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            overflow: hidden;
+        }
+        .progress {
+            width: 0%;
+            background-color: #58cc02;
+            height: 100%;
+            transition: width 0.3s;
+        }
+        .prompt {
+            font-size: 20px;
+            color: #afafaf;
+            margin-bottom: 10px;
+        }
+        .word-box {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 40px;
+            color: #ffffff;
+        }
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+        .option-btn {
+            background-color: #1f3540;
+            border: 2px solid #3b4c56;
+            border-radius: 12px;
+            color: white;
+            padding: 16px;
+            font-size: 18px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+        }
+        .option-btn:hover:not(:disabled) {
+            background-color: #284250;
+        }
+        .option-btn.selected {
+            background-color: #284250;
+            border-color: #84d8ff;
+        }
+        .footer {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        .btn {
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+        .skip-btn {
+            background-color: transparent;
+            color: #afafaf;
+        }
+        .check-btn {
+            background-color: #58cc02;
+            color: white;
+            box-shadow: 0 4px 0 #46a302;
+        }
+        .check-btn:disabled {
+            background-color: #3b4c56;
+            box-shadow: none;
+            color: #7f8c8d;
+            cursor: not-allowed;
+        }
+        .feedback {
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            min-height: 24px;
+        }
+        .correct { color: #58cc02; }
+        .wrong { color: #ff4b4b; }
+        .screen {
+            display: none;
+        }
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .restart-btn {
+            background-color: #58cc02;
+            color: white;
+            padding: 16px 32px;
+            font-size: 18px;
+            border-radius: 16px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #46a302;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- GAME SCREEN -->
+<div id="game-screen" class="container screen active">
+    <div class="header-status">
+        <div class="hearts" id="hearts-display">❤️❤️❤️</div>
+        <div class="streak-counter" id="streak-display">🔥 Streak: 0</div>
+    </div>
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+    </div>
+
+    <div class="prompt" id="game-prompt">Select the correct Latvian spelling:</div>
+    <div class="word-box" id="target-word">Hello</div>
+
+    <div class="options-container" id="options"></div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <div class="footer">
+        <button class="btn skip-btn" id="skip-action" onclick="skipQuestion()">SKIP</button>
+        <button class="btn check-btn" id="check-action" onclick="handleButtonClick()">CHECK</button>
+    </div>
+</div>
+
+<!-- GAME OVER SCREEN -->
+<div id="game-over-screen" class="container screen">
+    <h1 style="font-size: 48px; color: #ff4b4b;">Game Over</h1>
+    <p style="font-size: 20px; color: #afafaf; margin-bottom: 30px;">Better luck next time &lt;3!</p>
+    <button class="restart-btn" onclick="resetGame()">Try Again</button>
+</div>
+
+<!-- VICTORY SCREEN -->
+<div id="victory-screen" class="container screen">
+    <h1 style="font-size: 48px; color: #58cc02;">Lieliski!</h1>
+    <p style="font-size: 20px; color: #afafaf; margin-bottom: 30px;">You completed the run successfully!</p>
+    <button class="restart-btn" onclick="resetGame()">Play Again</button>
+</div>
+
+<script>
+    // Jautājumu bāze ar taviem gramatikas āķiem
+    const allQuestions = [
+        { prompt: "Select the correct spelling for 'Hello':", target: "Hello", correct: "Sveiki", options: ["Sveķi", "Sveiki", "Sveikī"] },
+        { prompt: "Select the correct spelling for 'Thank you':", target: "Thank you", correct: "Paldies", options: ["Paldis", "Paldies", "Paldīs"] },
+        { prompt: "Select the correct spelling for 'Please':", target: "Please", correct: "Lūdzu", options: ["Lūdzu", "Ludzu", "Lūdzo"] },
+        { prompt: "Select the correct spelling for 'I love you':", target: "I love you", correct: "Es tevi mīlu", options: ["Es tevi milu", "Es tavi mīlu", "Es tevi mīlu"] },
+        { prompt: "Select the correct spelling for 'How are you?':", target: "How are you?", correct: "Kā tev iet?", options: ["Ka tev iet?", "Kā tev iet?", "Kā tēv iet?"] },
+        { prompt: "Select the correct spelling for 'Apple':", target: "Apple", correct: "Ābols", options: ["Abols", "Ābols", "Ābuls"] },
+        { prompt: "Select the correct spelling for 'Bread':", target: "Bread", correct: "Maize", options: ["Maize", "Maīze", "Meize"] },
+        { prompt: "Select the correct spelling for 'Water':", target: "Water", correct: "Ūdens", options: ["Udens", "Ūdens", "Ūdins"] }
+    ];
+
+    let questions = [];
+    let currentQuestionIndex = 0;
+    let selectedAnswer = null;
+    let isAnswerChecked = false;
+    let hearts = 3;
+    let currentStreak = 0;
+    let totalCorrectAnswers = 0;
+
+    function initGame() {
+        // Nejauši sakārtojam jautājumus (Roguelite elements)
+        questions = [...allQuestions].sort(() => Math.random() - 0.5);
+        currentQuestionIndex = 0;
+        hearts = 3;
+        currentStreak = 0;
+        totalCorrectAnswers = 0;
+        isAnswerChecked = false;
+        selectedAnswer = null;
+        
+        updateStatusDisplay();
+        showScreen('game-screen');
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        if (currentQuestionIndex >= questions.length) {
+            showScreen('victory-screen');
+            return;
+        }
+
+        isAnswerChecked = false;
+        selectedAnswer = null;
+        document.getElementById('feedback').innerText = '';
+        document.getElementById('check-action').innerText = 'CHECK';
+        document.getElementById('skip-action').style.visibility = 'visible';
+
+        const q = questions[currentQuestionIndex];
+        document.getElementById('game-prompt').innerText = q.prompt;
+        document.getElementById('target-word').innerText = q.target;
+
+        const optionsDiv = document.getElementById('options');
+        optionsDiv.innerHTML = '';
+
+        q.options.forEach((option, index) => {
+            const button = document.createElement('button');
+            button.className = 'option-btn';
+            button.innerText = `${index + 1}.   ${option}`;
+            button.onclick = () => {
+                if (!isAnswerChecked) {
+                    selectOption(button, option);
+                }
+            };
+            optionsDiv.appendChild(button);
+        });
+
+        // Progresa josla balstīta uz atbildētajiem jautājumiem
+        const progressPercent = (currentQuestionIndex / questions.length) * 100;
+        document.getElementById('progress').style.width = `${progressPercent}%`;
+    }
+
+    function selectOption(button, option) {
+        document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
+        button.classList.add('selected');
+        selectedAnswer = option;
+    }
+
+    function handleButtonClick() {
+        if (!isAnswerChecked) {
+            checkAnswer();
+        } else {
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+    }
+
+    function checkAnswer() {
+        const feedbackDiv = document.getElementById('feedback');
+        if (!selectedAnswer) {
+            feedbackDiv.className = 'feedback wrong';
+            feedbackDiv.textContent = 'Please select an option first!';
+            return;
+        }
+
+        isAnswerChecked = true;
+        document.getElementById('skip-action').style.visibility = 'hidden';
+        document.getElementById('check-action').textContent = 'CONTINUE';
+
+        const q = questions[currentQuestionIndex];
+        const answerButtons = document.querySelectorAll('.option-btn');
+
+        answerButtons.forEach((button) => {
+            button.disabled = true;
+            if (button.textContent === q.correct) {
+                button.classList.add('selected');
+            }
+        });
+
+        if (selectedAnswer === q.correct) {
+            feedbackDiv.className = 'feedback correct';
+            feedbackDiv.textContent = '✓ Correct solution!';
+            currentStreak++;
+            totalCorrectAnswers++;
+
+            if (totalCorrectAnswers % 10 === 0 && hearts < 5) {
+                hearts++;
+                feedbackDiv.textContent += ' ❤️ Bonus heart earned!';
+            }
+        } else {
+            feedbackDiv.className = 'feedback wrong';
+            feedbackDiv.textContent = `✕ Wrong. Correct answer was: ${q.correct}`;
+            currentStreak = 0;
+            hearts--;
+        }
+
+        updateStatusDisplay();
+
+        if (hearts <= 0) {
+            setTimeout(() => showScreen('game-over-screen'), 700);
+        }
+    }
+
+    function skipQuestion() {
+        if (isAnswerChecked) {
+            return;
+        }
+
+        currentStreak = 0;
+        hearts--;
+        updateStatusDisplay();
+
+        if (hearts <= 0) {
+            showScreen('game-over-screen');
+            return;
+        }
+
+        currentQuestionIndex++;
+        loadQuestion();
+    }
+
+    function updateStatusDisplay() {
+        const heartsText = '❤️'.repeat(Math.max(hearts, 0));
+        document.getElementById('hearts-display').textContent = heartsText;
+        document.getElementById('streak-display').textContent = `🔥 Streak: ${currentStreak}`;
+    }
+
+    function showScreen(screenId) {
+        document.querySelectorAll('.screen').forEach((screen) => screen.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
+    }
+
+    function resetGame() {
+        initGame();
+    }
+
+    initGame();
+</script>
+</body>
+</html>
+
