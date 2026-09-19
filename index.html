@@ -228,6 +228,50 @@
             align-items: center;
             justify-content: center;
         }
+        .level-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(8, 15, 18, 0.78);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 20px;
+        }
+        .level-modal.visible {
+            display: flex;
+        }
+        .level-modal-card {
+            width: min(92vw, 420px);
+            background: #1d2f38;
+            border: 1px solid rgba(132, 216, 255, 0.25);
+            border-radius: 18px;
+            padding: 28px 22px 20px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+            text-align: center;
+        }
+        .level-modal-card h2 {
+            margin: 0 0 12px;
+            color: #ffc800;
+            font-size: clamp(28px, 4vw, 36px);
+        }
+        .level-modal-card p {
+            margin: 0 0 18px;
+            color: #dfeaf1;
+            font-size: 18px;
+            line-height: 1.5;
+        }
+        .level-modal-card button {
+            background: linear-gradient(180deg, #58cc02, #48a900);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 22px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #2d7f00;
+        }
         .restart-btn {
             background-color: #58cc02;
             color: white;
@@ -279,6 +323,14 @@
     </div>
 </div>
 
+<div id="level-modal" class="level-modal" aria-live="polite">
+    <div class="level-modal-card">
+        <h2 id="level-modal-title">Difficulty level 2 achieved</h2>
+        <p id="level-modal-text">You unlocked a tougher set of Latvian challenges.</p>
+        <button id="level-modal-ok" onclick="continueAfterLevelUp()">OK</button>
+    </div>
+</div>
+
 <!-- GAME OVER SCREEN -->
 <div id="game-over-screen" class="container screen">
     <h1 style="font-size: 48px; color: #ff4b4b;">Game Over</h1>
@@ -294,45 +346,60 @@
 </div>
 
 <script>
-    // Jautājumu bāze ar taviem gramatikas āķiem
-    const allQuestions = [
-        { prompt: "Select the correct spelling for 'Hello':", target: "Hello", correct: "Sveiki", options: ["Sveķi", "Sveiki", "Sveikī"] },
-        { prompt: "Select the correct spelling for 'Thank you':", target: "Thank you", correct: "Paldies", options: ["Paldis", "Paldies", "Paldīs"] },
-        { prompt: "Select the correct spelling for 'Please':", target: "Please", correct: "Lūdzu", options: ["Lūdzu", "Ludzu", "Lūdzo"] },
-        { prompt: "Select the correct spelling for 'I love you':", target: "I love you", correct: "Es tevi mīlu", options: ["Es tevi milu", "Es tavi mīlu", "Es tevi mīlu"] },
-        { prompt: "Select the correct spelling for 'How are you?':", target: "How are you?", correct: "Kā tev iet?", options: ["Ka tev iet?", "Kā tev iet?", "Kā tēv iet?"] },
-        { prompt: "Select the correct spelling for 'Apple':", target: "Apple", correct: "Ābols", options: ["Abols", "Ābols", "Ābuls"] },
-        { prompt: "Select the correct spelling for 'Bread':", target: "Bread", correct: "Maize", options: ["Maize", "Maīze", "Meize"] },
-        { prompt: "Select the correct spelling for 'Water':", target: "Water", correct: "Ūdens", options: ["Udens", "Ūdens", "Ūdins"] },
-        { prompt: "Select the correct spelling for 'Good morning':", target: "Good morning", correct: "Labrīt", options: ["Labvakar", "Labdien", "Labrīt"] },
-        { prompt: "Select the correct spelling for 'Goodbye':", target: "Goodbye", correct: "Uz redzēšanos", options: ["Uz neredzēšanos", "Uz redzēšanos", "Uz tikšanos"] },
-        { prompt: "Select the correct spelling for 'How much does it cost?':", target: "How much does it cost?", correct: "Cik tas maksā?", options: ["Cik tas maksa?", "Cik tas maksā?", "Tikai man maksā?"] },
-        { prompt: "Select the correct spelling for 'Excuse me / Sorry':", target: "Excuse me / Sorry", correct: "Atvainojiet", options: ["Atsūtiet", "Atvairiet", "Atvainojiet"] },
-        { prompt: "Select the correct spelling for 'Where is the bathroom?':", target: "Where is the bathroom?", correct: "Kur ir tualete?", options: ["Kur ir tualete?", "Kur ir tualēte?", "Kūr īr tualete?"] },
-        { prompt: "Select the correct spelling for 'Yes, please':", target: "Yes, please", correct: "Jā, lūdzu", options: ["Ja, ludzu", "Jā, lūdzu", "Jā, lūdzo"] },
-        { prompt: "Select the correct spelling for 'I don't understand':", target: "I don't understand", correct: "Es nesaprotu", options: ["Es saprotu", "Es zināju", "Es nesaprotu"] },
-        { prompt: "Select the correct spelling for 'Delicious!':", target: "Delicious!", correct: "Garšīgi!", options: ["Garšīgi!", "Negaršīgi!", "Kas var būt labāks par šo!", "Drausmīgi!"] },
-        { prompt: "Select the correct spelling for 'Night':", target: "Night", correct: "Nakts", options: ["Rīts", "Nakts", "Diena"] },
-        { prompt: "Select the correct spelling for 'Milk':", target: "Milk", correct: "Piens", options: ["Piens", "Ūdens", "Krējums"] },
-        { prompt: "Select the correct spelling for 'School':", target: "School", correct: "Skola", options: ["Skola", "Skōla", "Skolaa"] },
-        { prompt: "Select the correct spelling for 'I am tired':", target: "I am tired", correct: "Es esmu noguris", options: ["Es būšu noguris", "Es esmu noguris", "Es biju noguris"] },
-        { prompt: "Select the correct spelling for 'We are friends':", target: "We are friends", correct: "Mēs esam draugi", options: ["Mēs esam draugi", "Mēs bijām draugi", "Mēs būsim draugi"] },
-        { prompt: "Select the correct spelling for 'Family':", target: "Family", correct: "Ģimene", options: ["Gimene", "Ģimene", "Ģimenē"] },
-        { prompt: "Select the correct spelling for 'Book':", target: "Book", correct: "Grāmata", options: ["Gramata", "Grāmata", "Gramāta"] },
-        { prompt: "Fill in the blank with the correct word for 'I drink water':", target: "Es ___ ūdeni.", correct: "dzeru", options: ["dzeru", "dzer", "dzeram"] },
-        { prompt: "Fill in the blank with the correct word for 'My name is...':", target: "Mans ___ ir...", correct: "vārds", options: ["vārds", "vārdi", "vardu"] },
-        { prompt: "Fill in the blank with the correct word for 'I live in Latvia':", target: "Es dzīvoju ___.", correct: "Latvijā", options: ["Latvija", "Latvijā", "Latviju"] },
-        { prompt: "Fill in the blank with the correct word for 'Today is warm':", target: "Šodien ir ___ laiks.", correct: "silts", options: ["silts", "silta", "silti"] },
-        { prompt: "Fill in the blank with the correct word for 'I want coffee':", target: "Es gribu ___.", correct: "kafiju", options: ["kafija", "kafiju", "kafijas"] },
-        { prompt: "Fill in the blank with the correct word for 'Where are you going?':", target: "Uz kurieni tu ___?", correct: "ej", options: ["ej", "eju", "iet"] },
-        { prompt: "Fill in the blank with the correct word for 'This is my wife':", target: "Šī ir mana ___.", correct: "sieva", options: ["sieva", "sievu", "sievas"] },
-        { prompt: "Choose the correct past tense form: 'Yesterday I went to the shop'", target: "Vakar es ___ uz veikalu.", correct: "gāju", options: ["gāju", "gāji", "iesu"], isHard: true },
-        { prompt: "Choose the correct future tense form: 'Tomorrow we will celebrate'", target: "Rīt mēs ___ svētkus.", correct: "svinēsim", options: ["svinējām", "svinam", "svinēsim"], isHard: true },
-        { prompt: "Select the correct locative form for 'in the kitchen':", target: "Mamma gatavo pusdienas ___.", correct: "virtuvē", options: ["virtuve", "virtuvē", "virtuvi"], isHard: true },
-        { prompt: "Select the correct plural form for 'beautiful flowers':", target: "Dārzā zied ___ puķes.", correct: "skaistas", options: ["skaisti", "skaistas", "skaistus"], isHard: true }
-    ];
+    // Tiered question pools: early easy, then medium, then hard
+    const tieredQuestions = {
+        1: [
+            { prompt: "Select the correct spelling for 'Hello':", target: "Hello", correct: "Sveiki", options: ["Sveķi", "Sveiki", "Sveikī"] },
+            { prompt: "Select the correct spelling for 'Thank you':", target: "Thank you", correct: "Paldies", options: ["Paldis", "Paldies", "Paldīs"] },
+            { prompt: "Select the correct spelling for 'Please':", target: "Please", correct: "Lūdzu", options: ["Lūdzu", "Ludzu", "Lūdzo"] },
+            { prompt: "Select the correct spelling for 'I love you':", target: "I love you", correct: "Es tevi mīlu", options: ["Es tevi milu", "Es tavi mīlu", "Es tevi mīlu"] },
+            { prompt: "Select the correct spelling for 'How are you?':", target: "How are you?", correct: "Kā tev iet?", options: ["Ka tev iet?", "Kā tev iet?", "Kā tēv iet?"] },
+            { prompt: "Select the correct spelling for 'Apple':", target: "Apple", correct: "Ābols", options: ["Abols", "Ābols", "Ābuls"] },
+            { prompt: "Select the correct spelling for 'Bread':", target: "Bread", correct: "Maize", options: ["Maize", "Maīze", "Meize"] },
+            { prompt: "Select the correct spelling for 'Water':", target: "Water", correct: "Ūdens", options: ["Udens", "Ūdens", "Ūdins"] },
+            { prompt: "Select the correct spelling for 'Good morning':", target: "Good morning", correct: "Labrīt", options: ["Labvakar", "Labdien", "Labrīt"] },
+            { prompt: "Select the correct spelling for 'Goodbye':", target: "Goodbye", correct: "Uz redzēšanos", options: ["Uz neredzēšanos", "Uz redzēšanos", "Uz tikšanos"] },
+            { prompt: "Select the correct spelling for 'Night':", target: "Night", correct: "Nakts", options: ["Rīts", "Nakts", "Diena"] },
+            { prompt: "Select the correct spelling for 'Milk':", target: "Milk", correct: "Piens", options: ["Piens", "Ūdens", "Krējums"] },
+            { prompt: "Select the correct spelling for 'School':", target: "School", correct: "Skola", options: ["Skola", "Skōla", "Skolaa"] },
+            { prompt: "Select the correct spelling for 'Book':", target: "Book", correct: "Grāmata", options: ["Gramata", "Grāmata", "Gramāta"] },
+            { prompt: "Fill in the blank with the correct word for 'My name is...':", target: "Mans ___ ir...", correct: "vārds", options: ["vārds", "vārdi", "vardu"] }
+        ],
+        2: [
+            { prompt: "Select the correct spelling for 'How much does it cost?':", target: "How much does it cost?", correct: "Cik tas maksā?", options: ["Cik tas maksa?", "Cik tas maksā?", "Tikai man maksā?"], isHard: true },
+            { prompt: "Select the correct spelling for 'Excuse me / Sorry':", target: "Excuse me / Sorry", correct: "Atvainojiet", options: ["Atsūtiet", "Atvairiet", "Atvainojiet"], isHard: true },
+            { prompt: "Select the correct spelling for 'Where is the bathroom?':", target: "Where is the bathroom?", correct: "Kur ir tualete?", options: ["Kur ir tualete?", "Kur ir tualēte?", "Kūr īr tualete?"], isHard: true },
+            { prompt: "Select the correct spelling for 'Yes, please':", target: "Yes, please", correct: "Jā, lūdzu", options: ["Ja, ludzu", "Jā, lūdzu", "Jā, lūdzo"], isHard: true },
+            { prompt: "Select the correct spelling for 'I don't understand':", target: "I don't understand", correct: "Es nesaprotu", options: ["Es saprotu", "Es zināju", "Es nesaprotu"], isHard: true },
+            { prompt: "Select the correct spelling for 'Delicious!':", target: "Delicious!", correct: "Garšīgi!", options: ["Garšīgi!", "Negaršīgi!", "Kas var būt labāks par šo!", "Drausmīgi!"], isHard: true },
+            { prompt: "Fill in the blank with the correct word for 'I drink water':", target: "Es ___ ūdeni.", correct: "dzeru", options: ["dzeru", "dzer", "dzeram"], isHard: true },
+            { prompt: "Fill in the blank with the correct word for 'I live in Latvia':", target: "Es dzīvoju ___.", correct: "Latvijā", options: ["Latvija", "Latvijā", "Latviju"], isHard: true },
+            { prompt: "Fill in the blank with the correct word for 'Today is warm':", target: "Šodien ir ___ laiks.", correct: "silts", options: ["silts", "silta", "silti"], isHard: true },
+            { prompt: "Fill in the blank with the correct word for 'I want coffee':", target: "Es gribu ___.", correct: "kafiju", options: ["kafija", "kafiju", "kafijas"], isHard: true },
+            { prompt: "Fill in the blank with the correct word for 'Where are you going?':", target: "Uz kurieni tu ___?", correct: "ej", options: ["ej", "eju", "iet"], isHard: true },
+            { prompt: "Fill in the blank with the correct word for 'This is my wife':", target: "Šī ir mana ___.", correct: "sieva", options: ["sieva", "sievu", "sievas"], isHard: true },
+            { prompt: "Select the correct spelling for 'I am tired':", target: "I am tired", correct: "Es esmu noguris", options: ["Es būšu noguris", "Es esmu noguris", "Es biju noguris"], isHard: true },
+            { prompt: "Select the correct spelling for 'We are friends':", target: "We are friends", correct: "Mēs esam draugi", options: ["Mēs esam draugi", "Mēs bijām draugi", "Mēs būsim draugi"], isHard: true },
+            { prompt: "Select the correct spelling for 'Family':", target: "Family", correct: "Ģimene", options: ["Gimene", "Ģimene", "Ģimenē"], isHard: true }
+        ],
+        3: [
+            { prompt: "Choose the correct past tense form: 'Yesterday I went to the shop'", target: "Vakar es ___ uz veikalu.", correct: "gāju", options: ["gāju", "gāji", "iesu"], isHard: true },
+            { prompt: "Choose the correct future tense form: 'Tomorrow we will celebrate'", target: "Rīt mēs ___ svētkus.", correct: "svinēsim", options: ["svinējām", "svinam", "svinēsim"], isHard: true },
+            { prompt: "Select the correct locative form for 'in the kitchen':", target: "Mamma gatavo pusdienas ___.", correct: "virtuvē", options: ["virtuve", "virtuvē", "virtuvi"], isHard: true },
+            { prompt: "Select the correct plural form for 'beautiful flowers':", target: "Dārzā zied ___ puķes.", correct: "skaistas", options: ["skaisti", "skaistas", "skaistus"], isHard: true },
+            { prompt: "Choose the correct form: 'I will go to school'", target: "Es ___ uz skolu.", correct: "iešu", options: ["iešu", "eju", "gāju"], isHard: true },
+            { prompt: "Select the correct accusative form: 'I read a book'", target: "Es lasu ___.", correct: "grāmatu", options: ["grāmata", "grāmatu", "gramata"], isHard: true },
+            { prompt: "Choose the correct verb: 'We are eating'", target: "Mēs ___.", correct: "ēdam", options: ["ēdām", "ēdam", "ēdīsim"], isHard: true },
+            { prompt: "Choose the correct form: 'She is at home'", target: "Viņa ir ___.", correct: "mājās", options: ["māja", "mājās", "mājā"], isHard: true },
+            { prompt: "Select the correct word: 'The weather is cold'", target: "Laiks ir ___.", correct: "auksts", options: ["auksts", "auksta", "auksti"], isHard: true },
+            { prompt: "Choose the correct phrase: 'I am going to the market'", target: "Es eju uz ___ .", correct: "tirgu", options: ["tirgus", "tirgu", "tirgū"], isHard: true },
+            { prompt: "Select the correct form: 'My hands hurt'", target: "Manas ___ sāp.", correct: "rokas", options: ["rokas", "roka", "rokām"], isHard: true }
+        ]
+    };
 
     let questions = [];
+    let currentTier = 1;
+    let pendingTier = null;
     let currentQuestionIndex = 0;
     let selectedAnswer = null;
     let isAnswerChecked = false;
@@ -345,7 +412,9 @@
     let hintMessageTimeout = null;
 
     function initGame() {
-        questions = [...allQuestions].sort(() => Math.random() - 0.5);
+        currentTier = 1;
+        pendingTier = null;
+        questions = [...tieredQuestions[currentTier]].sort(() => Math.random() - 0.5);
         currentQuestionIndex = 0;
         redHearts = 3;
         goldHearts = 0;
@@ -358,6 +427,7 @@
 
         updateHeartProgressDisplay();
         updateStatusDisplay();
+        updateActionLabels();
         showScreen('game-screen');
         loadQuestion();
     }
@@ -391,9 +461,61 @@
         }, 1400);
     }
 
+    function getSkipHeartIcon() {
+        if (redHearts > 0) {
+            return '❤️';
+        }
+        return '💛';
+    }
+
+    function updateActionLabels() {
+        document.getElementById('hint-action').textContent = 'HINT -1 💛';
+        document.getElementById('skip-action').textContent = `SKIP -1 ${getSkipHeartIcon()}`;
+    }
+
+    function showLevelModal(title, message) {
+        const modal = document.getElementById('level-modal');
+        document.getElementById('level-modal-title').textContent = title;
+        document.getElementById('level-modal-text').textContent = message;
+        modal.classList.add('visible');
+    }
+
+    function hideLevelModal() {
+        document.getElementById('level-modal').classList.remove('visible');
+    }
+
+    function continueAfterLevelUp() {
+        if (pendingTier === null) {
+            return;
+        }
+
+        hideLevelModal();
+        currentTier = pendingTier;
+        pendingTier = null;
+        questions = [...tieredQuestions[currentTier]].sort(() => Math.random() - 0.5);
+        currentQuestionIndex = 0;
+        isAnswerChecked = false;
+        selectedAnswer = null;
+        hasUsedHintForCurrentQuestion = false;
+        document.getElementById('feedback').className = 'feedback';
+        document.getElementById('feedback').textContent = '';
+        updateHeartProgressDisplay();
+        updateStatusDisplay();
+        loadQuestion();
+    }
+
     function loadQuestion() {
         if (currentQuestionIndex >= questions.length) {
-            showScreen('victory-screen');
+            if (currentTier >= 3) {
+                showScreen('victory-screen');
+                return;
+            }
+
+            pendingTier = currentTier + 1;
+            showLevelModal(
+                `Difficulty level ${pendingTier} achieved`,
+                `You cleared all of level ${currentTier}. Ready for the next challenge?`
+            );
             return;
         }
 
@@ -405,6 +527,7 @@
         document.getElementById('check-action').textContent = 'CHECK';
         document.getElementById('check-action').disabled = false;
         document.getElementById('skip-action').style.visibility = 'visible';
+        updateActionLabels();
         document.getElementById('hint-action').disabled = !canUseHint();
         document.getElementById('skip-action').disabled = getTotalHearts() <= 1;
 
@@ -517,6 +640,8 @@
         if (selectedAnswer === q.correct) {
             feedbackDiv.className = 'feedback correct';
             heartProgressCount++;
+            currentStreak++;
+            totalCorrectAnswers++;
 
             if (heartProgressCount >= 10) {
                 heartProgressCount = 0;
@@ -531,8 +656,6 @@
                 }
                 feedbackDiv.textContent = '✓ Correct solution! 💛 Gold heart earned!';
             } else {
-                currentStreak++;
-                totalCorrectAnswers++;
                 feedbackDiv.textContent = '✓ Correct solution!';
             }
         } else {
@@ -607,6 +730,7 @@
         const redText = '❤️'.repeat(Math.max(redHearts, 0));
         const goldText = '💛'.repeat(Math.max(goldHearts, 0));
         document.getElementById('hearts-display').textContent = redText + goldText;
+        updateActionLabels();
         document.getElementById('skip-action').disabled = getTotalHearts() <= 1;
         document.getElementById('hint-action').disabled = !canUseHint();
         document.getElementById('shop-btn').disabled = currentStreak < 3 || goldHearts >= 3;
@@ -623,6 +747,7 @@
     }
 
     function resetGame() {
+        hideLevelModal();
         initGame();
     }
 
