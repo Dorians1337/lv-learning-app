@@ -29,15 +29,58 @@
             width: 100%;
             margin-bottom: 20px;
         }
+        .status-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
         .hearts {
             color: #ff4b4b;
             font-size: 24px;
             letter-spacing: 2px;
+            display: flex;
+            gap: 6px;
+            align-items: center;
         }
         .streak-counter {
             color: #ffc800;
             font-weight: bold;
             font-size: 18px;
+        }
+        .streak-shop {
+            background: rgba(31, 53, 64, 0.9);
+            border: 1px solid rgba(132, 216, 255, 0.22);
+            border-radius: 14px;
+            padding: 8px 10px;
+            min-width: 150px;
+            box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+        }
+        .shop-label {
+            font-size: 11px;
+            color: #c9d6dc;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            opacity: 0.8;
+        }
+        .shop-btn {
+            width: 100%;
+            padding: 9px 10px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(180deg, #ffc800, #f4b900);
+            color: #1b1b1b;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: transform 0.15s ease, opacity 0.2s ease;
+        }
+        .shop-btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+        }
+        .shop-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
         }
         .progress-bar {
             width: 100%;
@@ -105,6 +148,23 @@
             background-color: transparent;
             color: #afafaf;
         }
+        .skip-btn:disabled {
+            background-color: rgba(59, 76, 86, 0.4);
+            color: #7f8c8d;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .hint-btn {
+            background-color: #ffc800;
+            color: #1d1d1d;
+            box-shadow: 0 4px 0 #d4a400;
+        }
+        .hint-btn:disabled {
+            background-color: #3b4c56;
+            box-shadow: none;
+            color: #7f8c8d;
+            cursor: not-allowed;
+        }
         .check-btn {
             background-color: #58cc02;
             color: white;
@@ -153,7 +213,13 @@
 <div id="game-screen" class="container screen active">
     <div class="header-status">
         <div class="hearts" id="hearts-display">❤️❤️❤️</div>
-        <div class="streak-counter" id="streak-display">🔥 Streak: 0</div>
+        <div class="status-right">
+            <div class="streak-counter" id="streak-display">🔥 Streak: 0</div>
+            <div class="streak-shop">
+                <div class="shop-label">Streak Shop</div>
+                <button class="shop-btn" id="shop-btn" onclick="buyGoldHeart()">Buy 💛 (Costs 3 🔥)</button>
+            </div>
+        </div>
     </div>
     <div class="progress-bar">
         <div class="progress" id="progress"></div>
@@ -167,6 +233,7 @@
     <div class="feedback" id="feedback"></div>
 
     <div class="footer">
+        <button class="btn hint-btn" id="hint-action" onclick="useHint()">HINT</button>
         <button class="btn skip-btn" id="skip-action" onclick="skipQuestion()">SKIP</button>
         <button class="btn check-btn" id="check-action" onclick="handleButtonClick()">CHECK</button>
     </div>
@@ -196,30 +263,89 @@
         { prompt: "Select the correct spelling for 'How are you?':", target: "How are you?", correct: "Kā tev iet?", options: ["Ka tev iet?", "Kā tev iet?", "Kā tēv iet?"] },
         { prompt: "Select the correct spelling for 'Apple':", target: "Apple", correct: "Ābols", options: ["Abols", "Ābols", "Ābuls"] },
         { prompt: "Select the correct spelling for 'Bread':", target: "Bread", correct: "Maize", options: ["Maize", "Maīze", "Meize"] },
-        { prompt: "Select the correct spelling for 'Water':", target: "Water", correct: "Ūdens", options: ["Udens", "Ūdens", "Ūdins"] }
+        { prompt: "Select the correct spelling for 'Water':", target: "Water", correct: "Ūdens", options: ["Udens", "Ūdens", "Ūdins"] },
+        { prompt: "Select the correct spelling for 'Good morning':", target: "Good morning", correct: "Labrīt", options: ["Labvakar", "Labdien", "Labrīt"] },
+        { prompt: "Select the correct spelling for 'Goodbye':", target: "Goodbye", correct: "Uz redzēšanos", options: ["Uz neredzēšanos", "Uz redzēšanos", "Uz tikšanos"] },
+        { prompt: "Select the correct spelling for 'How much does it cost?':", target: "How much does it cost?", correct: "Cik tas maksā?", options: ["Cik tas maksa?", "Cik tas maksā?", "Tikai man maksā?"] },
+        { prompt: "Select the correct spelling for 'Excuse me / Sorry':", target: "Excuse me / Sorry", correct: "Atvainojiet", options: ["Atsūtiet", "Atvairiet", "Atvainojiet"] },
+        { prompt: "Select the correct spelling for 'Where is the bathroom?':", target: "Where is the bathroom?", correct: "Kur ir tualete?", options: ["Kur ir tualete?", "Kur ir tualēte?", "Kūr īr tualete?"] },
+        { prompt: "Select the correct spelling for 'Yes, please':", target: "Yes, please", correct: "Jā, lūdzu", options: ["Ja, ludzu", "Jā, lūdzu", "Jā, lūdzo"] },
+        { prompt: "Select the correct spelling for 'I don't understand':", target: "I don't understand", correct: "Es nesaprotu", options: ["Es saprotu", "Es zināju", "Es nesaprotu"] },
+        { prompt: "Select the correct spelling for 'Delicious!':", target: "Delicious!", correct: "Garšīgi!", options: ["Garšīgi!", "Negaršīgi!", "Kas var būt labāks par šo!", "Drausmīgi!"] },
+        { prompt: "Select the correct spelling for 'Night':", target: "Night", correct: "Nakts", options: ["Rīts", "Nakts", "Diena"] },
+        { prompt: "Select the correct spelling for 'Milk':", target: "Milk", correct: "Piens", options: ["Piens", "Ūdens", "Krējums"] },
+        { prompt: "Select the correct spelling for 'School':", target: "School", correct: "Skola", options: ["Skola", "Skōla", "Skolaa"] },
+        { prompt: "Select the correct spelling for 'I am tired':", target: "I am tired", correct: "Es esmu noguris", options: ["Es būšu noguris", "Es esmu noguris", "Es biju noguris"] },
+        { prompt: "Select the correct spelling for 'We are friends':", target: "We are friends", correct: "Mēs esam draugi", options: ["Mēs esam draugi", "Mēs bijām draugi", "Mēs būsim draugi"] },
+        { prompt: "Select the correct spelling for 'Family':", target: "Family", correct: "Ģimene", options: ["Gimene", "Ģimene", "Ģimenē"] },
+        { prompt: "Select the correct spelling for 'Book':", target: "Book", correct: "Grāmata", options: ["Gramata", "Grāmata", "Gramāta"] },
+        { prompt: "Fill in the blank with the correct word for 'I drink water':", target: "Es ___ ūdeni.", correct: "dzeru", options: ["dzeru", "dzer", "dzeram"] },
+        { prompt: "Fill in the blank with the correct word for 'My name is...':", target: "Mans ___ ir...", correct: "vārds", options: ["vārds", "vārdi", "vardu"] },
+        { prompt: "Fill in the blank with the correct word for 'I live in Latvia':", target: "Es dzīvoju ___.", correct: "Latvijā", options: ["Latvija", "Latvijā", "Latviju"] },
+        { prompt: "Fill in the blank with the correct word for 'Today is warm':", target: "Šodien ir ___ laiks.", correct: "silts", options: ["silts", "silta", "silti"] },
+        { prompt: "Fill in the blank with the correct word for 'I want coffee':", target: "Es gribu ___.", correct: "kafiju", options: ["kafija", "kafiju", "kafijas"] },
+        { prompt: "Fill in the blank with the correct word for 'Where are you going?':", target: "Uz kurieni tu ___?", correct: "ej", options: ["ej", "eju", "iet"] },
+        { prompt: "Fill in the blank with the correct word for 'This is my wife':", target: "Šī ir mana ___.", correct: "sieva", options: ["sieva", "sievu", "sievas"] },
+        { prompt: "Choose the correct past tense form: 'Yesterday I went to the shop'", target: "Vakar es ___ uz veikalu.", correct: "gāju", options: ["gāju", "gāji", "iesu"], isHard: true },
+        { prompt: "Choose the correct future tense form: 'Tomorrow we will celebrate'", target: "Rīt mēs ___ svētkus.", correct: "svinēsim", options: ["svinējām", "svinam", "svinēsim"], isHard: true },
+        { prompt: "Select the correct locative form for 'in the kitchen':", target: "Mamma gatavo pusdienas ___.", correct: "virtuvē", options: ["virtuve", "virtuvē", "virtuvi"], isHard: true },
+        { prompt: "Select the correct plural form for 'beautiful flowers':", target: "Dārzā zied ___ puķes.", correct: "skaistas", options: ["skaisti", "skaistas", "skaistus"], isHard: true }
     ];
 
     let questions = [];
     let currentQuestionIndex = 0;
     let selectedAnswer = null;
     let isAnswerChecked = false;
-    let hearts = 3;
+    let redHearts = 3;
+    let goldHearts = 0;
     let currentStreak = 0;
     let totalCorrectAnswers = 0;
+    let hasUsedHintForCurrentQuestion = false;
+    let hintMessageTimeout = null;
 
     function initGame() {
-        // Nejauši sakārtojam jautājumus (Roguelite elements)
         questions = [...allQuestions].sort(() => Math.random() - 0.5);
         currentQuestionIndex = 0;
-        hearts = 3;
+        redHearts = 3;
+        goldHearts = 0;
         currentStreak = 0;
         totalCorrectAnswers = 0;
         isAnswerChecked = false;
         selectedAnswer = null;
-        
+        hasUsedHintForCurrentQuestion = false;
+
         updateStatusDisplay();
         showScreen('game-screen');
         loadQuestion();
+    }
+
+    function getTotalHearts() {
+        return redHearts + goldHearts;
+    }
+
+    function canUseHint() {
+        if (isAnswerChecked || hasUsedHintForCurrentQuestion) return false;
+        if (goldHearts <= 0) return false;
+        const totalHearts = getTotalHearts();
+        if (totalHearts === 1 && goldHearts === 1) return false;
+        return true;
+    }
+
+    function showTemporaryFeedback(message, type) {
+        const feedbackDiv = document.getElementById('feedback');
+        feedbackDiv.className = `feedback ${type}`;
+        feedbackDiv.textContent = message;
+
+        if (hintMessageTimeout) {
+            clearTimeout(hintMessageTimeout);
+        }
+
+        hintMessageTimeout = setTimeout(() => {
+            if (!isAnswerChecked) {
+                feedbackDiv.textContent = '';
+                feedbackDiv.className = 'feedback';
+            }
+        }, 1400);
     }
 
     function loadQuestion() {
@@ -230,13 +356,17 @@
 
         isAnswerChecked = false;
         selectedAnswer = null;
-        document.getElementById('feedback').innerText = '';
-        document.getElementById('check-action').innerText = 'CHECK';
+        hasUsedHintForCurrentQuestion = false;
+        document.getElementById('feedback').className = 'feedback';
+        document.getElementById('feedback').textContent = '';
+        document.getElementById('check-action').textContent = 'CHECK';
         document.getElementById('skip-action').style.visibility = 'visible';
+        document.getElementById('hint-action').disabled = !canUseHint();
+        document.getElementById('skip-action').disabled = getTotalHearts() <= 1;
 
         const q = questions[currentQuestionIndex];
-        document.getElementById('game-prompt').innerText = q.prompt;
-        document.getElementById('target-word').innerText = q.target;
+        document.getElementById('game-prompt').textContent = q.prompt;
+        document.getElementById('target-word').textContent = q.target;
 
         const optionsDiv = document.getElementById('options');
         optionsDiv.innerHTML = '';
@@ -245,6 +375,9 @@
             const button = document.createElement('button');
             button.className = 'option-btn';
             button.innerText = `${index + 1}.   ${option}`;
+            button.disabled = false;
+            button.style.opacity = '1';
+            button.style.textDecoration = 'none';
             button.onclick = () => {
                 if (!isAnswerChecked) {
                     selectOption(button, option);
@@ -253,7 +386,6 @@
             optionsDiv.appendChild(button);
         });
 
-        // Progresa josla balstīta uz atbildētajiem jautājumiem
         const progressPercent = (currentQuestionIndex / questions.length) * 100;
         document.getElementById('progress').style.width = `${progressPercent}%`;
     }
@@ -273,6 +405,38 @@
         }
     }
 
+    function useHint() {
+        if (!canUseHint()) {
+            showTemporaryFeedback('Yellow hearts cannot be used at this time', 'wrong');
+            return;
+        }
+
+        const q = questions[currentQuestionIndex];
+        const wrongOptions = q.options.filter(option => option !== q.correct);
+
+        if (wrongOptions.length === 0) {
+            showTemporaryFeedback('No hint available for this question.', 'wrong');
+            return;
+        }
+
+        goldHearts--;
+        hasUsedHintForCurrentQuestion = true;
+        document.getElementById('hint-action').disabled = true;
+
+        const buttons = Array.from(document.querySelectorAll('.option-btn'));
+        const optionToRemove = wrongOptions[Math.floor(Math.random() * wrongOptions.length)];
+        const targetButton = buttons.find((button) => button.textContent.replace(/^\d+\.\s*/, '') === optionToRemove);
+
+        if (targetButton) {
+            targetButton.disabled = true;
+            targetButton.style.opacity = '0.35';
+            targetButton.style.textDecoration = 'line-through';
+        }
+
+        updateStatusDisplay();
+        showTemporaryFeedback('Hint used: one wrong option removed.', 'correct');
+    }
+
     function checkAnswer() {
         const feedbackDiv = document.getElementById('feedback');
         if (!selectedAnswer) {
@@ -284,37 +448,51 @@
         isAnswerChecked = true;
         document.getElementById('skip-action').style.visibility = 'hidden';
         document.getElementById('check-action').textContent = 'CONTINUE';
+        document.getElementById('hint-action').disabled = true;
 
         const q = questions[currentQuestionIndex];
         const answerButtons = document.querySelectorAll('.option-btn');
 
         answerButtons.forEach((button) => {
             button.disabled = true;
-            if (button.textContent === q.correct) {
+            if (button.textContent.replace(/^\d+\.\s*/, '') === q.correct) {
                 button.classList.add('selected');
             }
         });
 
         if (selectedAnswer === q.correct) {
             feedbackDiv.className = 'feedback correct';
-            feedbackDiv.textContent = '✓ Correct solution!';
-            currentStreak++;
-            totalCorrectAnswers++;
 
-            if (totalCorrectAnswers % 10 === 0 && hearts < 5) {
-                hearts++;
-                feedbackDiv.textContent += ' ❤️ Bonus heart earned!';
+            if (q.isHard) {
+                if (goldHearts < 3) {
+                    goldHearts++;
+                }
+                feedbackDiv.textContent = '✓ Correct solution! 💛 Gold heart earned!';
+            } else {
+                currentStreak++;
+                totalCorrectAnswers++;
+                feedbackDiv.textContent = '✓ Correct solution!';
+
+                if (totalCorrectAnswers % 10 === 0 && redHearts < 5) {
+                    redHearts++;
+                    feedbackDiv.textContent += ' ❤️ Bonus heart earned!';
+                }
             }
         } else {
             feedbackDiv.className = 'feedback wrong';
             feedbackDiv.textContent = `✕ Wrong. Correct answer was: ${q.correct}`;
             currentStreak = 0;
-            hearts--;
+
+            if (redHearts > 0) {
+                redHearts--;
+            } else if (goldHearts > 0) {
+                goldHearts--;
+            }
         }
 
         updateStatusDisplay();
 
-        if (hearts <= 0) {
+        if (redHearts + goldHearts <= 0) {
             setTimeout(() => showScreen('game-over-screen'), 700);
         }
     }
@@ -324,11 +502,23 @@
             return;
         }
 
+        if (getTotalHearts() <= 1) {
+            showTemporaryFeedback('You cannot skip when you are down to your last heart!', 'wrong');
+            document.getElementById('skip-action').disabled = true;
+            return;
+        }
+
         currentStreak = 0;
-        hearts--;
+
+        if (redHearts > 0) {
+            redHearts--;
+        } else if (goldHearts > 0) {
+            goldHearts--;
+        }
+
         updateStatusDisplay();
 
-        if (hearts <= 0) {
+        if (redHearts + goldHearts <= 0) {
             showScreen('game-over-screen');
             return;
         }
@@ -337,9 +527,27 @@
         loadQuestion();
     }
 
+    function buyGoldHeart() {
+        if (currentStreak < 3 || goldHearts >= 3) {
+            if (currentStreak < 3) {
+                showTemporaryFeedback('Not enough streak points!', 'wrong');
+            }
+            return;
+        }
+
+        currentStreak -= 3;
+        goldHearts++;
+        updateStatusDisplay();
+        showTemporaryFeedback('💛 Gold heart purchased!', 'correct');
+    }
+
     function updateStatusDisplay() {
-        const heartsText = '❤️'.repeat(Math.max(hearts, 0));
-        document.getElementById('hearts-display').textContent = heartsText;
+        const redText = '❤️'.repeat(Math.max(redHearts, 0));
+        const goldText = '💛'.repeat(Math.max(goldHearts, 0));
+        document.getElementById('hearts-display').textContent = redText + goldText;
+        document.getElementById('skip-action').disabled = getTotalHearts() <= 1;
+        document.getElementById('hint-action').disabled = !canUseHint();
+        document.getElementById('shop-btn').disabled = currentStreak < 3 || goldHearts >= 3;
         document.getElementById('streak-display').textContent = `🔥 Streak: ${currentStreak}`;
     }
 
