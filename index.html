@@ -5,9 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Latvian Roguelite Learning</title>
     <style>
+        :root {
+            --bg-1: #131f24;
+            --bg-2: #1a2a32;
+            --panel: rgba(31, 45, 53, 0.96);
+            --panel-alt: rgba(25, 37, 43, 0.98);
+            --panel-soft: rgba(39, 56, 63, 0.92);
+            --panel-strong: rgba(20, 29, 34, 0.96);
+            --line: rgba(122, 209, 255, 0.32);
+            --gold: #d7bd7c;
+            --gold-soft: #f0d692;
+            --gold-deep: #a78643;
+            --green: #6ca06d;
+            --green-soft: #8fd28a;
+            --red: #ff5b5a;
+            --text: #edf2f5;
+            --text-soft: #dce7ee;
+            --text-muted: #b1bcc4;
+            --shadow: rgba(0,0,0,0.28);
+        }
+
         body {
-            background-color: #131f24;
-            color: white;
+            background:
+                radial-gradient(circle at top, rgba(122, 209, 255, 0.08), transparent 30%),
+                linear-gradient(180deg, #122128, #172b35 36%, #131f24 100%);
+            color: var(--text);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             flex-direction: column;
@@ -15,15 +37,108 @@
             justify-content: center;
             min-height: 100vh;
             margin: 0;
-            padding: 20px 16px 28px;
+            padding: 8px 16px 8px;
+            overflow-x: hidden;
             overflow-y: auto;
             box-sizing: border-box;
+            text-rendering: optimizeLegibility;
         }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.12);
+            pointer-events: none;
+            box-shadow: inset 0 0 120px rgba(0,0,0,0.35);
+        }
+
+        .intro-overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(circle at center, rgba(122, 209, 255, 0.08), rgba(10, 16, 20, 0.88) 38%, rgba(7, 12, 15, 0.96) 100%),
+                linear-gradient(180deg, rgba(12, 18, 22, 0.98), rgba(16, 24, 28, 0.96));
+            z-index: 200;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        .intro-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .intro-overlay::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.25;
+            mask-image: radial-gradient(circle at center, black 20%, transparent 86%);
+        }
+        .intro-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 36px 30px 28px;
+            max-width: 760px;
+            width: min(88vw, 760px);
+            text-shadow: 0 4px 18px rgba(0,0,0,0.4);
+        }
+        .intro-title {
+            margin: 0;
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: clamp(3.2rem, 8vw, 7rem);
+            line-height: 0.9;
+            letter-spacing: 0.12em;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #f1e8d8;
+            text-shadow: 0 0 24px rgba(201, 169, 107, 0.12), 0 8px 30px rgba(0,0,0,0.5);
+        }
+        .intro-subtitle {
+            margin: 18px 0 30px;
+            font-size: clamp(0.8rem, 1.5vw, 1.2rem);
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: rgba(225, 218, 203, 0.82);
+            font-weight: 500;
+        }
+        .intro-button {
+            appearance: none;
+            border: 1px solid rgba(122, 209, 255, 0.42);
+            border-radius: 16px;
+            padding: 18px 36px;
+            font-size: clamp(0.9rem, 1.6vw, 1.05rem);
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #edf4f8;
+            background: linear-gradient(180deg, rgba(117, 144, 129, 0.8), rgba(53, 76, 74, 0.94));
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35), 0 0 24px rgba(122, 209, 255, 0.12), inset 0 1px 0 rgba(255,255,255,0.12);
+            cursor: pointer;
+            transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease, border-color 0.16s ease;
+        }
+        .intro-button:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 16px 30px rgba(0, 0, 0, 0.38), 0 0 28px rgba(122, 209, 255, 0.18), inset 0 1px 0 rgba(255,255,255,0.18);
+            filter: brightness(1.04);
+            border-color: rgba(147, 204, 255, 0.6);
+        }
+        .intro-button:active {
+            transform: translateY(0) scale(0.99);
+        }
+
         .container {
             text-align: center;
-            width: min(92vw, 500px);
-            max-width: 500px;
-            padding: 12px 0 0;
+            width: min(94vw, 820px);
+            max-width: 820px;
+            padding: 4px 0 0;
             box-sizing: border-box;
         }
         .header-status {
@@ -31,7 +146,12 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
+            background: rgba(23, 35, 41, 0.9);
+            border: 1px solid rgba(122, 209, 255, 0.24);
+            border-radius: 16px;
+            padding: 12px 16px;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.04);
         }
         .status-right {
             display: flex;
@@ -39,7 +159,7 @@
             gap: 12px;
         }
         .hearts {
-            color: #ff4b4b;
+            color: var(--red);
             font-size: 24px;
             letter-spacing: 2px;
             display: flex;
@@ -47,22 +167,23 @@
             align-items: center;
         }
         .streak-counter {
-            color: #ffc800;
-            font-weight: bold;
+            color: var(--gold-soft);
+            font-weight: 700;
             font-size: 18px;
+            letter-spacing: 0.04em;
         }
         .streak-shop {
-            background: rgba(31, 53, 64, 0.9);
-            border: 1px solid rgba(132, 216, 255, 0.22);
+            background: rgba(31, 45, 52, 0.9);
+            border: 1px solid rgba(122, 209, 255, 0.18);
             border-radius: 14px;
             padding: 8px 10px;
             min-width: 150px;
-            box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.03);
         }
         .shop-label {
             font-size: 11px;
-            color: #c9d6dc;
-            letter-spacing: 0.08em;
+            color: var(--text-soft);
+            letter-spacing: 0.1em;
             text-transform: uppercase;
             margin-bottom: 6px;
             opacity: 0.8;
@@ -71,16 +192,26 @@
             width: 100%;
             padding: 9px 10px;
             border-radius: 10px;
-            border: none;
-            background: linear-gradient(180deg, #ffc800, #f4b900);
-            color: #1b1b1b;
+            border: 1px solid rgba(201, 169, 107, 0.35);
+            background: linear-gradient(180deg, #d6c289, #b7924e);
+            color: #1b1a16;
             font-weight: 700;
             font-size: 13px;
             cursor: pointer;
-            transition: transform 0.15s ease, opacity 0.2s ease;
+            transition: transform 0.15s ease, opacity 0.2s ease, box-shadow 0.15s ease;
+            box-shadow: 0 6px 10px rgba(0,0,0,0.16);
+        }
+        .shop-btn + .shop-btn {
+            margin-top: 8px;
+        }
+        .shop-btn.black {
+            background: linear-gradient(180deg, #4f4f53, #2a2a2d);
+            color: #f0f4f8;
+            border-color: rgba(255,255,255,0.14);
         }
         .shop-btn:hover:not(:disabled) {
             transform: translateY(-1px);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.2);
         }
         .shop-btn:disabled {
             opacity: 0.45;
@@ -88,39 +219,43 @@
         }
         .progress-bar {
             width: 100%;
-            background-color: #3b4c56;
-            height: 16px;
+            background: rgba(38, 52, 59, 0.9);
+            border: 1px solid rgba(122, 209, 255, 0.22);
+            height: 14px;
             border-radius: 8px;
-            margin-bottom: 40px;
+            margin-bottom: 12px;
             overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.32);
         }
         .progress {
             width: 0%;
-            background-color: #58cc02;
+            background: linear-gradient(90deg, #70b98a, #8ec8a3);
             height: 100%;
             transition: width 0.3s;
         }
         .prompt {
-            font-size: 20px;
-            color: #afafaf;
-            margin-bottom: 10px;
+            font-size: clamp(18px, 2vw, 26px);
+            color: var(--text-soft);
+            margin-bottom: 6px;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.2);
         }
         .word-box {
-            font-size: clamp(28px, 5vw, 36px);
-            font-weight: bold;
-            margin-bottom: 24px;
-            color: #ffffff;
+            font-size: clamp(28px, 4vw, 54px);
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #f4f2ed;
+            text-shadow: 0 6px 16px rgba(0,0,0,0.28);
         }
         .hard-badge {
             display: none;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
-            padding: 8px 12px;
+            margin: 0 auto 10px;
+            padding: 6px 12px;
             border-radius: 999px;
-            background: rgba(255, 200, 0, 0.12);
-            border: 1px solid rgba(255, 200, 0, 0.45);
-            color: #ffd54a;
+            background: rgba(201, 169, 107, 0.08);
+            border: 1px solid rgba(201, 169, 107, 0.38);
+            color: var(--gold-soft);
             font-size: 12px;
             font-weight: 700;
             letter-spacing: 0.02em;
@@ -132,93 +267,107 @@
             border-radius: 999px;
             padding: 6px 12px;
             font-size: 13px;
-            color: #f4d77a;
+            color: var(--gold-soft);
             font-weight: 700;
             letter-spacing: 0.04em;
         }
         .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 40px;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px 10px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        .options-container.hard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px 10px;
         }
         .option-btn {
-            background-color: #1f3540;
-            border: 2px solid #3b4c56;
+            background: linear-gradient(180deg, rgba(35, 50, 58, 0.96), rgba(26, 38, 44, 0.98));
+            border: 1px solid rgba(122, 209, 255, 0.18);
             border-radius: 12px;
-            color: white;
-            padding: clamp(12px, 2vw, 16px);
-            font-size: clamp(15px, 2.6vw, 18px);
+            color: var(--text);
+            padding: 11px 14px;
+            font-size: clamp(18px, 2.1vw, 22px);
+            line-height: 1.2;
             cursor: pointer;
             text-align: left;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
+            min-height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 6px 16px rgba(0,0,0,0.12);
+            font-weight: 600;
         }
         .option-btn:hover:not(:disabled) {
-            background-color: #284250;
+            background: linear-gradient(180deg, rgba(44, 60, 68, 0.98), rgba(31, 44, 50, 0.98));
+            border-color: rgba(122, 209, 255, 0.3);
         }
         .option-btn.selected {
-            background-color: #284250;
-            border-color: #84d8ff;
+            background: linear-gradient(180deg, rgba(76, 103, 117, 0.98), rgba(47, 71, 82, 0.98));
+            border: 2px solid rgba(255, 214, 120, 0.9);
+            box-shadow: 0 0 0 2px rgba(255, 214, 120, 0.28), 0 0 18px rgba(255, 214, 120, 0.22), 0 8px 18px rgba(0,0,0,0.18);
+            color: #fff9ef;
         }
         .footer {
             width: 100%;
             display: flex;
             justify-content: space-between;
+            gap: 10px;
+            margin-top: 4px;
         }
         .footer-status {
             width: 100%;
             display: flex;
             justify-content: center;
-            margin: 6px 0 14px;
+            margin: 2px 0 6px;
         }
         .btn {
-            padding: clamp(12px, 2vw, 14px) clamp(16px, 4vw, 28px);
+            padding: clamp(10px, 1.8vw, 14px) clamp(14px, 3vw, 22px);
             border-radius: 12px;
-            font-size: clamp(14px, 2.6vw, 16px);
-            font-weight: bold;
+            font-size: clamp(13px, 1.8vw, 16px);
+            font-weight: 700;
             cursor: pointer;
             border: none;
+            min-width: 110px;
+            transition: transform 0.15s ease, filter 0.15s ease, opacity 0.15s ease;
         }
-        .skip-btn {
-            background-color: transparent;
-            color: #afafaf;
-        }
-        .skip-btn:disabled {
-            background-color: rgba(59, 76, 86, 0.4);
-            color: #7f8c8d;
-            cursor: not-allowed;
-            opacity: 0.7;
+        .btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+            filter: brightness(1.05);
         }
         .hint-btn {
-            background-color: #ffc800;
-            color: #1d1d1d;
-            box-shadow: 0 4px 0 #d4a400;
+            background: linear-gradient(180deg, #d6b76d, #b68d3f);
+            color: #1b1a16;
+            box-shadow: 0 4px 0 rgba(117, 89, 43, 0.9);
         }
         .hint-btn:disabled {
-            background-color: #3b4c56;
+            background: rgba(60, 67, 69, 0.8);
             box-shadow: none;
             color: #7f8c8d;
             cursor: not-allowed;
         }
         .check-btn {
-            background-color: #58cc02;
-            color: white;
-            box-shadow: 0 4px 0 #46a302;
+            background: linear-gradient(180deg, #7fa383, #5e7a63);
+            color: #f4f8f3;
+            box-shadow: 0 4px 0 rgba(47, 64, 52, 0.9);
         }
         .check-btn:disabled {
-            background-color: #3b4c56;
+            background: rgba(60, 67, 69, 0.8);
             box-shadow: none;
             color: #7f8c8d;
             cursor: not-allowed;
         }
         .feedback {
-            margin-bottom: 20px;
+            margin-bottom: 6px;
             font-size: 18px;
-            font-weight: bold;
-            min-height: 24px;
+            font-weight: 700;
+            min-height: 22px;
         }
-        .correct { color: #58cc02; }
-        .wrong { color: #ff4b4b; }
+        .correct { color: #9cc28b; }
+        .wrong { color: #d46a5d; }
         .screen {
             display: none;
         }
@@ -231,7 +380,7 @@
         .level-modal {
             position: fixed;
             inset: 0;
-            background: rgba(8, 15, 18, 0.78);
+            background: rgba(8, 12, 15, 0.78);
             display: none;
             align-items: center;
             justify-content: center;
@@ -243,50 +392,72 @@
         }
         .level-modal-card {
             width: min(92vw, 420px);
-            background: #1d2f38;
-            border: 1px solid rgba(132, 216, 255, 0.25);
+            background: linear-gradient(180deg, rgba(29, 42, 48, 0.98), rgba(18, 24, 28, 0.98));
+            border: 1px solid rgba(122, 209, 255, 0.24);
             border-radius: 18px;
             padding: 28px 22px 20px;
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24), 0 0 30px rgba(122, 209, 255, 0.08);
             text-align: center;
         }
         .level-modal-card h2 {
             margin: 0 0 12px;
-            color: #ffc800;
+            color: var(--gold-soft);
             font-size: clamp(28px, 4vw, 36px);
         }
         .level-modal-card p {
             margin: 0 0 18px;
-            color: #dfeaf1;
+            color: var(--text-soft);
             font-size: 18px;
             line-height: 1.5;
         }
         .level-modal-card button {
-            background: linear-gradient(180deg, #58cc02, #48a900);
-            color: #fff;
-            border: none;
+            background: linear-gradient(180deg, #85a98e, #5d7b63);
+            color: #edf4f0;
+            border: 1px solid rgba(255,255,255,0.08);
             border-radius: 12px;
             padding: 12px 22px;
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 4px 0 #2d7f00;
+            box-shadow: 0 4px 0 rgba(53, 67, 57, 0.9);
         }
         .restart-btn {
-            background-color: #58cc02;
-            color: white;
+            background: linear-gradient(180deg, #7ea17e, #5d7d60);
+            color: #f6f1ea;
             padding: 16px 32px;
             font-size: 18px;
             border-radius: 16px;
             border: none;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 4px 0 #46a302;
+            box-shadow: 0 4px 0 rgba(46, 55, 38, 0.9);
             margin-top: 20px;
+        }
+        .sound-toggle {
+            border: 1px solid rgba(201, 169, 107, 0.28);
+            background: rgba(25, 30, 33, 0.9);
+            color: var(--gold-soft);
+            border-radius: 10px;
+            width: 38px;
+            height: 38px;
+            font-size: 18px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
         }
     </style>
 </head>
 <body>
+
+<div id="intro-overlay" class="intro-overlay" aria-live="polite">
+    <div class="intro-content">
+        <h1 class="intro-title">Vārdu Ceļš</h1>
+        <p class="intro-subtitle">A Roguelite Journey Through the Latvian Tongue</p>
+        <button id="intro-button" class="intro-button">DESCEND</button>
+    </div>
+</div>
 
 <!-- GAME SCREEN -->
 <div id="game-screen" class="container screen active">
@@ -294,9 +465,11 @@
         <div class="hearts" id="hearts-display">❤️❤️❤️</div>
         <div class="status-right">
             <div class="streak-counter" id="streak-display">🔥 Streak: 0</div>
+            <button class="sound-toggle" id="sound-toggle" aria-label="Toggle sound">🔊</button>
             <div class="streak-shop">
                 <div class="shop-label">Streak Shop</div>
                 <button class="shop-btn" id="shop-btn" onclick="buyGoldHeart()">Buy 💛 (Costs 3 🔥)</button>
+                <button class="shop-btn black" id="black-shop-btn" onclick="buyBlackHeart()">Buy 🖤 (Costs 10 🔥)</button>
             </div>
         </div>
     </div>
@@ -318,7 +491,6 @@
 
     <div class="footer">
         <button class="btn hint-btn" id="hint-action" onclick="useHint()">HINT</button>
-        <button class="btn skip-btn" id="skip-action" onclick="skipQuestion()">SKIP</button>
         <button class="btn check-btn" id="check-action" onclick="handleButtonClick()">CHECK</button>
     </div>
 </div>
@@ -346,7 +518,7 @@
 </div>
 
 <script>
-    // Tiered question pools: early easy, then medium, then hard
+    // Tiered question pools: easy questions first, then progressively harder grammar and phrase work.
     const tieredQuestions = {
         1: [
             { prompt: "Select the correct spelling for 'Hello':", target: "Hello", correct: "Sveiki", options: ["Sveķi", "Sveiki", "Sveikī"] },
@@ -354,48 +526,366 @@
             { prompt: "Select the correct spelling for 'Please':", target: "Please", correct: "Lūdzu", options: ["Lūdzu", "Ludzu", "Lūdzo"] },
             { prompt: "Select the correct spelling for 'I love you':", target: "I love you", correct: "Es tevi mīlu", options: ["Es tevi milu", "Es tavi mīlu", "Es tevi mīlu"] },
             { prompt: "Select the correct spelling for 'How are you?':", target: "How are you?", correct: "Kā tev iet?", options: ["Ka tev iet?", "Kā tev iet?", "Kā tēv iet?"] },
-            { prompt: "Select the correct spelling for 'Apple':", target: "Apple", correct: "Ābols", options: ["Abols", "Ābols", "Ābuls"] },
+            { prompt: "Select the correct spelling for 'Good afternoon / Good day':", target: "Good afternoon", correct: "Labdien", options: ["Labdien", "Labdienā", "Labdienu"] },
+            { prompt: "Select the correct spelling for 'Good evening':", target: "Good evening", correct: "Labvakar", options: ["Labvakar", "Labvakars", "Labvakarā"] },
+            { prompt: "Select the correct spelling for 'Good night':", target: "Good night", correct: "Ar labu nakti", options: ["Ar labu nakti", "Ar labunakti", "Ar labu naktī"] },
+            { prompt: "Select the correct spelling for 'Nice to meet you':", target: "Nice to meet you", correct: "Prieks iepazīties", options: ["Prieks iepazīties", "Prieks iepazities", "Prieks iepazīšanās"] },
+            { prompt: "Select the correct spelling for 'You're welcome':", target: "You're welcome", correct: "Nav par ko", options: ["Nav par ko", "Nav par kā", "Nav par ko?"] },
+            { prompt: "Select the correct spelling for 'Yes':", target: "Yes", correct: "Jā", options: ["Ja", "Jā", "Jāa"] },
+            { prompt: "Select the correct spelling for 'No':", target: "No", correct: "Nē", options: ["Ne", "Nē", "Nēē"] },
+            { prompt: "Select the correct spelling for 'Help!':", target: "Help!", correct: "Palīgā!", options: ["Paliga!", "Palīgā!", "Palīga!"] },
+            { prompt: "Select the correct spelling for 'Cheers! / To your health!':", target: "Cheers!", correct: "Priekā!", options: ["Prieka!", "Priekā!", "Priekāā"] },
+            { prompt: "Select the correct spelling for 'See you later':", target: "See you later", correct: "Tiekamies vēlāk", options: ["Tiekamies velak", "Tiekamies vēlāk", "Tiekamies vēlak"] },
+            { prompt: "Select the correct spelling for 'One':", target: "One", correct: "Viens", options: ["Viens", "Vienš", "Vienss"] },
+            { prompt: "Select the correct spelling for 'Two':", target: "Two", correct: "Divi", options: ["Divi", "Divī", "Divis"] },
+            { prompt: "Select the correct spelling for 'Three':", target: "Three", correct: "Trīs", options: ["Tris", "Trīs", "Trīss"] },
+            { prompt: "Select the correct spelling for 'Four':", target: "Four", correct: "Četri", options: ["Cetri", "Četri", "Četrī"] },
+            { prompt: "Select the correct spelling for 'Five':", target: "Five", correct: "Pieci", options: ["Pieci", "Piecī", "Piecis"] },
+            { prompt: "Select the correct spelling for 'Ten':", target: "Ten", correct: "Desmit", options: ["Desmit", "Desmīt", "Desmitt"] },
+            { prompt: "Select the correct spelling for 'Red':", target: "Red", correct: "Sarkans", options: ["Sarkans", "Sarkāns", "Sarkanss"] },
+            { prompt: "Select the correct spelling for 'Blue':", target: "Blue", correct: "Zils", options: ["Zils", "Zīls", "Zilss"] },
+            { prompt: "Select the correct spelling for 'Green':", target: "Green", correct: "Zaļš", options: ["Zals", "Zaļš", "Zaļšš"] },
+            { prompt: "Select the correct spelling for 'Yellow':", target: "Yellow", correct: "Dzeltens", options: ["Dzeltens", "Dzeltenš", "Dzeltēns"] },
+            { prompt: "Select the correct spelling for 'Black':", target: "Black", correct: "Melns", options: ["Melns", "Melņs", "Melnš"] },
+            { prompt: "Select the correct spelling for 'White':", target: "White", correct: "Balts", options: ["Balts", "Baltš", "Baltts"] },
+            { prompt: "Select the correct spelling for 'Mother':", target: "Mother", correct: "Māte", options: ["Mate", "Māte", "Mātē"] },
+            { prompt: "Select the correct spelling for 'Father':", target: "Father", correct: "Tēvs", options: ["Tevs", "Tēvs", "Tēvš"] },
+            { prompt: "Select the correct spelling for 'Brother':", target: "Brother", correct: "Brālis", options: ["Bralis", "Brālis", "Brālīs"] },
+            { prompt: "Select the correct spelling for 'Sister':", target: "Sister", correct: "Māsa", options: ["Masa", "Māsa", "Māsā"] },
+            { prompt: "Select the correct spelling for 'House':", target: "House", correct: "Māja", options: ["Maja", "Māja", "Mājā"] },
+            { prompt: "Select the correct spelling for 'City':", target: "City", correct: "Pilsēta", options: ["Pilseta", "Pilsēta", "Pilsētā"] },
+            { prompt: "Select the correct spelling for 'Shop / Store':", target: "Shop", correct: "Veikals", options: ["Veikals", "Veikalš", "Veikāls"] },
+            { prompt: "Select the correct spelling for 'Milk':", target: "Milk", correct: "Piens", options: ["Piens", "Ūdens", "Krējums"] },
             { prompt: "Select the correct spelling for 'Bread':", target: "Bread", correct: "Maize", options: ["Maize", "Maīze", "Meize"] },
             { prompt: "Select the correct spelling for 'Water':", target: "Water", correct: "Ūdens", options: ["Udens", "Ūdens", "Ūdins"] },
-            { prompt: "Select the correct spelling for 'Good morning':", target: "Good morning", correct: "Labrīt", options: ["Labvakar", "Labdien", "Labrīt"] },
-            { prompt: "Select the correct spelling for 'Goodbye':", target: "Goodbye", correct: "Uz redzēšanos", options: ["Uz neredzēšanos", "Uz redzēšanos", "Uz tikšanos"] },
-            { prompt: "Select the correct spelling for 'Night':", target: "Night", correct: "Nakts", options: ["Rīts", "Nakts", "Diena"] },
-            { prompt: "Select the correct spelling for 'Milk':", target: "Milk", correct: "Piens", options: ["Piens", "Ūdens", "Krējums"] },
-            { prompt: "Select the correct spelling for 'School':", target: "School", correct: "Skola", options: ["Skola", "Skōla", "Skolaa"] },
-            { prompt: "Select the correct spelling for 'Book':", target: "Book", correct: "Grāmata", options: ["Gramata", "Grāmata", "Gramāta"] },
-            { prompt: "Fill in the blank with the correct word for 'My name is...':", target: "Mans ___ ir...", correct: "vārds", options: ["vārds", "vārdi", "vardu"] }
+            { prompt: "Select the correct spelling for 'Where is the bathroom?':", target: "Where is the bathroom?", correct: "Kur ir vannas istaba?", options: ["Kur ir vannas istaba?", "Kur ir tualete?", "Vai šeit ir tualete?", "Kāds ir tualetes numurs?", "Kur atrodas duša?", "Kur ir vannas istaba?"], isHard: true },
+            { prompt: "Select the correct spelling for 'Where is the toilet?':", target: "Where is the toilet?", correct: "Kur ir tualete?", options: ["Kur ir vannas istaba?", "Kur ir tualete?", "Kur atrodas duša?", "Kāds ir tualetes numurs?", "Kur ir tualets?", "Kur ir tualete?"], isHard: true },
+            { prompt: "Fill in the blank with the correct word for 'I live in Latvia':", target: "Es dzīvoju ___.", correct: "Latvijā", options: ["Latvija", "Latviju", "Latvijai", "Latvijas", "Latvieši", "Latvijā"], isHard: true },
+            { prompt: "Fill in the blank with the correct word for 'Today is warm':", target: "Šodien ir ___ laiks.", correct: "silts", options: ["silta", "silti", "siltas", "siltais", "silt", "silts"], isHard: true },
+            { prompt: "Fill in the blank with the correct word for 'My name is...':", target: "Mans ___ ir...", correct: "vārds", options: ["vārdi", "vardu", "vārdu", "vārda", "mans vārds", "vārds"], isHard: true }
         ],
         2: [
-            { prompt: "Select the correct spelling for 'How much does it cost?':", target: "How much does it cost?", correct: "Cik tas maksā?", options: ["Cik tas maksa?", "Cik tas maksā?", "Tikai man maksā?"], isHard: true },
-            { prompt: "Select the correct spelling for 'Excuse me / Sorry':", target: "Excuse me / Sorry", correct: "Atvainojiet", options: ["Atsūtiet", "Atvairiet", "Atvainojiet"], isHard: true },
-            { prompt: "Select the correct spelling for 'Where is the bathroom?':", target: "Where is the bathroom?", correct: "Kur ir tualete?", options: ["Kur ir tualete?", "Kur ir tualēte?", "Kūr īr tualete?"], isHard: true },
-            { prompt: "Select the correct spelling for 'Yes, please':", target: "Yes, please", correct: "Jā, lūdzu", options: ["Ja, ludzu", "Jā, lūdzu", "Jā, lūdzo"], isHard: true },
-            { prompt: "Select the correct spelling for 'I don't understand':", target: "I don't understand", correct: "Es nesaprotu", options: ["Es saprotu", "Es zināju", "Es nesaprotu"], isHard: true },
-            { prompt: "Select the correct spelling for 'Delicious!':", target: "Delicious!", correct: "Garšīgi!", options: ["Garšīgi!", "Negaršīgi!", "Kas var būt labāks par šo!", "Drausmīgi!"], isHard: true },
-            { prompt: "Fill in the blank with the correct word for 'I drink water':", target: "Es ___ ūdeni.", correct: "dzeru", options: ["dzeru", "dzer", "dzeram"], isHard: true },
-            { prompt: "Fill in the blank with the correct word for 'I live in Latvia':", target: "Es dzīvoju ___.", correct: "Latvijā", options: ["Latvija", "Latvijā", "Latviju"], isHard: true },
-            { prompt: "Fill in the blank with the correct word for 'Today is warm':", target: "Šodien ir ___ laiks.", correct: "silts", options: ["silts", "silta", "silti"], isHard: true },
-            { prompt: "Fill in the blank with the correct word for 'I want coffee':", target: "Es gribu ___.", correct: "kafiju", options: ["kafija", "kafiju", "kafijas"], isHard: true },
-            { prompt: "Fill in the blank with the correct word for 'Where are you going?':", target: "Uz kurieni tu ___?", correct: "ej", options: ["ej", "eju", "iet"], isHard: true },
-            { prompt: "Fill in the blank with the correct word for 'This is my wife':", target: "Šī ir mana ___.", correct: "sieva", options: ["sieva", "sievu", "sievas"], isHard: true },
-            { prompt: "Select the correct spelling for 'I am tired':", target: "I am tired", correct: "Es esmu noguris", options: ["Es būšu noguris", "Es esmu noguris", "Es biju noguris"], isHard: true },
-            { prompt: "Select the correct spelling for 'We are friends':", target: "We are friends", correct: "Mēs esam draugi", options: ["Mēs esam draugi", "Mēs bijām draugi", "Mēs būsim draugi"], isHard: true },
-            { prompt: "Select the correct spelling for 'Family':", target: "Family", correct: "Ģimene", options: ["Gimene", "Ģimene", "Ģimenē"], isHard: true }
+            { prompt: "Select the correct spelling for 'Apple':", target: "Apple", correct: "Ābols", options: ["Abols", "Ābols", "Ābuls"] },
+            { prompt: "Select the correct spelling for 'Good morning':", target: "Good morning", correct: "Labrīt", options: ["Labvakar", "Labdien", "Labrīt"] },
+            { prompt: "Select the correct spelling for 'Goodbye':", target: "Goodbye", correct: "Uz redzēšanos", options: ["Uz neredzēšanos", "Uz redzēšanos", "Uz tikšanos"] },
+            { prompt: "Select the correct spelling for 'School':", target: "School", correct: "Skola", options: ["Skola", "Skōla", "Skolaa"] },
+            { prompt: "Select the correct spelling for 'Book':", target: "Book", correct: "Grāmata", options: ["Gramata", "Grāmata", "Gramāta"] },
+            { prompt: "Select the correct spelling for 'Family':", target: "Family", correct: "Ģimene", options: ["Gimene", "Ģimene", "Ģimenē"] },
+            { prompt: "Select the correct spelling for 'Chair':", target: "Chair", correct: "Krēsls", options: ["Kresls", "Krēsls", "Krēslš"] },
+            { prompt: "Select the correct spelling for 'Table':", target: "Table", correct: "Galds", options: ["Galds", "Galdš", "Galds"] },
+            { prompt: "Select the correct spelling for 'Door':", target: "Door", correct: "Durvis", options: ["Durvis", "Durvīs", "Durvis"] },
+            { prompt: "Select the correct spelling for 'Window':", target: "Window", correct: "Logs", options: ["Logs", "Logš", "Logs"] },
+            { prompt: "Fill in the blank: 'I eat bread'", target: "Es ___ maizi.", correct: "ēdu", options: ["ēdu", "ēd", "ēdam"] },
+            { prompt: "Fill in the blank: 'She drinks tea'", target: "Viņa ___ tēju.", correct: "dzer", options: ["dzeru", "dzer", "dzeram"] },
+            { prompt: "Fill in the blank: 'We go to school'", target: "Mēs ___ uz skolu.", correct: "ejam", options: ["eju", "ej", "ejam"] },
+            { prompt: "Fill in the blank: 'I want water'", target: "Es ___ ūdeni.", correct: "gribu", options: ["gribu", "gribi", "grib"] },
+            { prompt: "Fill in the blank: 'He is a teacher'", target: "Viņš ___ skolotājs.", correct: "ir", options: ["esmu", "esi", "ir"] },
+            { prompt: "Fill in the blank: 'My name is Anna'", target: "Mani ___ Anna.", correct: "sauc", options: ["sauc", "saucu", "saucam"] },
+            { prompt: "Fill in the blank: 'I live in Riga'", target: "Es dzīvoju ___.", correct: "Rīgā", options: ["Rīga", "Rīgā", "Rīgu"] },
+            { prompt: "Fill in the blank: 'The book is on the table'", target: "Grāmata ir uz ___.", correct: "galda", options: ["galds", "galda", "galdu"] },
+            { prompt: "Fill in the blank: 'I am from Latvia'", target: "Es esmu no ___.", correct: "Latvijas", options: ["Latvija", "Latvijas", "Latviju"] },
+            { prompt: "Select the correct locative form: 'in the house'", target: "Es esmu ___.", correct: "mājā", options: ["māja", "mājā", "māju"] },
+            { prompt: "Select the correct locative form: 'at school'", target: "Bērni mācās ___.", correct: "skolā", options: ["skola", "skolā", "skolu"] },
+            { prompt: "Select the correct locative form: 'in the city'", target: "Viņš dzīvo ___.", correct: "pilsētā", options: ["pilsēta", "pilsētā", "pilsētu"] },
+            { prompt: "Select the correct accusative form: 'I am reading a book'", target: "Es lasu ___.", correct: "grāmatu", options: ["grāmata", "grāmatu", "grāmatas"] },
+            { prompt: "Select the correct accusative form: 'She is eating an apple'", target: "Viņa ēd ___.", correct: "ābolu", options: ["ābols", "ābolu", "ābola"] },
+            { prompt: "Select the correct form: 'I am going to the shop'", target: "Es eju uz ___.", correct: "veikalu", options: ["veikals", "veikalu", "veikalā"] },
+            { prompt: "Select the correct spelling for 'How much does it cost?':", target: "How much does it cost?", correct: "Cik tas maksā?", options: ["Cik tas maksāja?", "Kāda ir šīs preces cena?", "Tikai man maksā?", "Kāpēc tas maksā?", "Vai tas ir dārgs?", "Cik tas maksā?"], isHard: true },
+            { prompt: "Select the correct spelling for 'Excuse me / Sorry':", target: "Excuse me / Sorry", correct: "Atvainojiet", options: ["Atsūtiet", "Aizvainojiet", "Atvairiet", "Atvainot", "Atvainoiet", "Atvainojiet"], isHard: true },
+            { prompt: "Fill in the blank with the correct word for 'I drink water':", target: "Es ___ ūdeni.", correct: "dzeru", options: ["dzer", "dzeram", "dzeriet", "dzēru", "es dzeru", "dzeru"], isHard: true },
+            { prompt: "Fill in the blank with the correct word for 'I want coffee':", target: "Es gribu ___.", correct: "kafiju", options: ["kafija", "kafijai", "kafijas", "kafeinu", "Es gribu kafiju", "kafiju"], isHard: true },
+            { prompt: "Fill in the blank with the correct word for 'Where are you going?':", target: "Uz kurieni tu ___?", correct: "ej", options: ["eju", "iet", "esmu", "ejam", "ies", "ej"], isHard: true },
+            { prompt: "Select the correct spelling for 'Dog':", target: "Dog", correct: "Suns", options: ["Suns", "Sunš", "Sūns"] },
+            { prompt: "Select the correct spelling for 'Cat':", target: "Cat", correct: "Kaķis", options: ["Kakis", "Kaķis", "Kaķīs"] },
+            { prompt: "Select the correct spelling for 'Bird':", target: "Bird", correct: "Putns", options: ["Putns", "Putņs", "Pūtns"] },
+            { prompt: "Select the correct spelling for 'Horse':", target: "Horse", correct: "Zirgs", options: ["Zirgs", "Zirgš", "Zīrgs"] },
+            { prompt: "Select the correct spelling for 'Cow':", target: "Cow", correct: "Govs", options: ["Govs", "Govš", "Gōvs"] },
+            { prompt: "Select the correct spelling for 'Mouse':", target: "Mouse", correct: "Pele", options: ["Pele", "Pelē", "Pelee"] },
+            { prompt: "Select the correct spelling for 'Rabbit':", target: "Rabbit", correct: "Trusis", options: ["Trusis", "Trusīs", "Trūsis"] },
+            { prompt: "Select the correct spelling for 'Head':", target: "Head", correct: "Galva", options: ["Galva", "Galvā", "Galvu"] },
+            { prompt: "Select the correct spelling for 'Eye':", target: "Eye", correct: "Acs", options: ["Acs", "Acš", "Ācs"] },
+            { prompt: "Select the correct spelling for 'Hand':", target: "Hand", correct: "Roka", options: ["Roka", "Rokā", "Roku"] },
+            { prompt: "Select the correct spelling for 'Foot / Leg':", target: "Foot", correct: "Kāja", options: ["Kaja", "Kāja", "Kājā"] },
+            { prompt: "Select the correct spelling for 'Sun':", target: "Sun", correct: "Saule", options: ["Saule", "Saulē", "Sauli"] },
+            { prompt: "Select the correct spelling for 'Rain':", target: "Rain", correct: "Lietus", options: ["Lietus", "Lietūs", "Lietuss"] },
+            { prompt: "Select the correct spelling for 'Snow':", target: "Snow", correct: "Sniegs", options: ["Sniegs", "Sniegš", "Sniēgs"] },
+            { prompt: "Select the correct spelling for 'Wind':", target: "Wind", correct: "Vējš", options: ["Vejs", "Vējš", "Vējšš"] },
+            { prompt: "Select the correct spelling for 'Cloud':", target: "Cloud", correct: "Mākonis", options: ["Makonis", "Mākonis", "Mākonīs"] },
+            { prompt: "Select the correct spelling for 'It is raining':", target: "It is raining", correct: "Līst", options: ["List", "Līst", "Līstēs"] },
+            { prompt: "Select the correct spelling for 'Cold':", target: "Cold", correct: "Auksts", options: ["Auksts", "Aukstš", "Aūksts"] },
+            { prompt: "Select the correct spelling for 'Warm':", target: "Warm", correct: "Silts", options: ["Silts", "Siltš", "Sīlts"] },
+            { prompt: "Select the correct spelling for 'Hot':", target: "Hot", correct: "Karsts", options: ["Karsts", "Karstš", "Kārsts"] },
+            { prompt: "Select the correct spelling for 'Shirt':", target: "Shirt", correct: "Krekls", options: ["Krekls", "Kreklš", "Krēkls"] },
+            { prompt: "Select the correct spelling for 'Shoes':", target: "Shoes", correct: "Kurpes", options: ["Kurpes", "Kurpēs", "Kurpis"] },
+            { prompt: "Select the correct spelling for 'Hat':", target: "Hat", correct: "Cepure", options: ["Cepure", "Cepurē", "Cepuri"] },
+            { prompt: "Select the correct spelling for 'Car':", target: "Car", correct: "Automašīna", options: ["Automasina", "Automašīna", "Automašīnā"] },
+            { prompt: "Select the correct spelling for 'Bus':", target: "Bus", correct: "Autobuss", options: ["Autobuss", "Autobusš", "Autobūss"] },
+            { prompt: "Select the correct spelling for 'Train':", target: "Train", correct: "Vilciens", options: ["Vilciens", "Vilcienš", "Vilciēns"] },
+            { prompt: "Select the correct spelling for 'Airport':", target: "Airport", correct: "Lidosta", options: ["Lidosta", "Lidostā", "Lidostu"] },
+            { prompt: "Select the correct spelling for 'Ticket':", target: "Ticket", correct: "Biļete", options: ["Bilete", "Biļete", "Biļetē"] },
+            { prompt: "Select the correct spelling for 'Station':", target: "Station", correct: "Stacija", options: ["Stacija", "Stacijā", "Staciju"] },
+            { prompt: "Select the correct spelling for 'Teacher':", target: "Teacher", correct: "Skolotājs", options: ["Skolotajs", "Skolotājs", "Skolotājš"] },
+            { prompt: "Select the correct spelling for 'Doctor':", target: "Doctor", correct: "Ārsts", options: ["Arsts", "Ārsts", "Ārstš"] },
+            { prompt: "Select the correct spelling for 'Student':", target: "Student", correct: "Students", options: ["Students", "Studentš", "Stūdents"] },
+            { prompt: "Select the correct spelling for 'Tree':", target: "Tree", correct: "Koks", options: ["Koks", "Kokš", "Kōks"] },
+            { prompt: "Select the correct spelling for 'Flower':", target: "Flower", correct: "Zieds", options: ["Zieds", "Ziedš", "Ziēds"] },
+            { prompt: "Select the correct spelling for 'Forest':", target: "Forest", correct: "Mežs", options: ["Mezs", "Mežs", "Mežš"] },
+            { prompt: "Select the correct spelling for 'Sea':", target: "Sea", correct: "Jūra", options: ["Jura", "Jūra", "Jūrā"] },
+            { prompt: "Select the correct spelling for 'Mountain':", target: "Mountain", correct: "Kalns", options: ["Kalns", "Kalņs", "Kālns"] },
+            { prompt: "Select the correct spelling for 'Sky':", target: "Sky", correct: "Debesis", options: ["Debesis", "Debesīs", "Debess"] },
+            { prompt: "Fill in the blank: 'The dog is big'", target: "Suns ir ___.", correct: "liels", options: ["liels", "liela", "lieli"] },
+            { prompt: "Fill in the blank: 'I see a cat'", target: "Es redzu ___.", correct: "kaķi", options: ["kaķis", "kaķi", "kaķa"] },
+            { prompt: "Fill in the blank: 'We are in the forest'", target: "Mēs esam ___.", correct: "mežā", options: ["mežs", "mežā", "mežu"] },
+            { prompt: "Fill in the blank: 'It is cold today'", target: "Šodien ir ___.", correct: "auksts", options: ["auksts", "auksta", "auksti"] },
+            { prompt: "Fill in the blank: 'I am going by bus'", target: "Es braucu ar ___.", correct: "autobusu", options: ["autobuss", "autobusu", "autobusā"] },
+            { prompt: "Fill in the blank: 'The bird is flying'", target: "Putns ___.", correct: "lido", options: ["lido", "lidoju", "lidot"] },
+            { prompt: "Fill in the blank: 'My head hurts'", target: "Man sāp ___.", correct: "galva", options: ["galva", "galvu", "galvas"] },
+            { prompt: "Fill in the blank: 'The sun is shining'", target: "Saule ___.", correct: "spīd", options: ["spīd", "spīdēs", "spīdēja"] }
         ],
         3: [
-            { prompt: "Choose the correct past tense form: 'Yesterday I went to the shop'", target: "Vakar es ___ uz veikalu.", correct: "gāju", options: ["gāju", "gāji", "iesu"], isHard: true },
-            { prompt: "Choose the correct future tense form: 'Tomorrow we will celebrate'", target: "Rīt mēs ___ svētkus.", correct: "svinēsim", options: ["svinējām", "svinam", "svinēsim"], isHard: true },
-            { prompt: "Select the correct locative form for 'in the kitchen':", target: "Mamma gatavo pusdienas ___.", correct: "virtuvē", options: ["virtuve", "virtuvē", "virtuvi"], isHard: true },
-            { prompt: "Select the correct plural form for 'beautiful flowers':", target: "Dārzā zied ___ puķes.", correct: "skaistas", options: ["skaisti", "skaistas", "skaistus"], isHard: true },
-            { prompt: "Choose the correct form: 'I will go to school'", target: "Es ___ uz skolu.", correct: "iešu", options: ["iešu", "eju", "gāju"], isHard: true },
-            { prompt: "Select the correct accusative form: 'I read a book'", target: "Es lasu ___.", correct: "grāmatu", options: ["grāmata", "grāmatu", "gramata"], isHard: true },
-            { prompt: "Choose the correct verb: 'We are eating'", target: "Mēs ___.", correct: "ēdam", options: ["ēdām", "ēdam", "ēdīsim"], isHard: true },
-            { prompt: "Choose the correct form: 'She is at home'", target: "Viņa ir ___.", correct: "mājās", options: ["māja", "mājās", "mājā"], isHard: true },
-            { prompt: "Select the correct word: 'The weather is cold'", target: "Laiks ir ___.", correct: "auksts", options: ["auksts", "auksta", "auksti"], isHard: true },
-            { prompt: "Choose the correct phrase: 'I am going to the market'", target: "Es eju uz ___ .", correct: "tirgu", options: ["tirgus", "tirgu", "tirgū"], isHard: true },
-            { prompt: "Select the correct form: 'My hands hurt'", target: "Manas ___ sāp.", correct: "rokas", options: ["rokas", "roka", "rokām"], isHard: true }
+            { prompt: "Select the correct spelling for 'Night':", target: "Night", correct: "Nakts", options: ["Rīts", "Nakts", "Diena"] },
+            { prompt: "Select the correct spelling for 'Monday':", target: "Monday", correct: "Pirmdiena", options: ["Pirmdiena", "Pirmdienā", "Pirmdienu"] },
+            { prompt: "Select the correct spelling for 'Sunday':", target: "Sunday", correct: "Svētdiena", options: ["Svetdiena", "Svētdiena", "Svētdienā"] },
+            { prompt: "Select the correct spelling for 'Today':", target: "Today", correct: "Šodien", options: ["Sodien", "Šodien", "Šodienā"] },
+            { prompt: "Select the correct spelling for 'Tomorrow':", target: "Tomorrow", correct: "Rīt", options: ["Rit", "Rīt", "Rīts"] },
+            { prompt: "Select the correct spelling for 'Yesterday':", target: "Yesterday", correct: "Vakar", options: ["Vakar", "Vakars", "Vakarā"] },
+            { prompt: "Select the correct spelling for 'Now':", target: "Now", correct: "Tagad", options: ["Tagad", "Tagād", "Tagads"] },
+            { prompt: "Select the correct spelling for 'Beer':", target: "Beer", correct: "Alus", options: ["Alus", "Alūs", "Aluss"] },
+            { prompt: "Select the correct spelling for 'Wine':", target: "Wine", correct: "Vīns", options: ["Vins", "Vīns", "Vīnš"] },
+            { prompt: "Select the correct spelling for 'Tea':", target: "Tea", correct: "Tēja", options: ["Teja", "Tēja", "Tējā"] },
+            { prompt: "Select the correct spelling for 'Soup':", target: "Soup", correct: "Zupa", options: ["Zupa", "Zūpa", "Zupā"] },
+            { prompt: "Select the correct spelling for 'Potato':", target: "Potato", correct: "Kartupelis", options: ["Kartupelis", "Kartupēlis", "Kartupelīs"] },
+            { prompt: "Select the correct spelling for 'Banana':", target: "Banana", correct: "Banāns", options: ["Banans", "Banāns", "Banānš"] },
+            { prompt: "Select the correct form: 'beautiful house' (feminine)", target: "___ māja.", correct: "Skaista", options: ["Skaists", "Skaista", "Skaisti"] },
+            { prompt: "Select the correct form: 'big city'", target: "___ pilsēta.", correct: "Liela", options: ["Liels", "Liela", "Lieli"] },
+            { prompt: "Select the correct plural: 'good friends'", target: "Labi ___.", correct: "draugi", options: ["draugs", "draugi", "draugu"] },
+            { prompt: "Select the correct form: 'cold water'", target: "___ ūdens.", correct: "Auksts", options: ["Auksts", "Auksta", "Auksti"] },
+            { prompt: "Select the correct form: 'hot tea'", target: "___ tēja.", correct: "Karsta", options: ["Karsts", "Karsta", "Karsti"] },
+            { prompt: "Fill in the blank: 'Open the door, please'", target: "Atver ___, lūdzu.", correct: "durvis", options: ["durvis", "durvīm", "durvju"] },
+            { prompt: "Fill in the blank: 'The cat is under the table'", target: "Kaķis ir zem ___.", correct: "galda", options: ["galds", "galda", "galdu"] },
+            { prompt: "Fill in the blank: 'I like Latvian food'", target: "Man patīk latviešu ___.", correct: "ēdiens", options: ["ēdiens", "ēdienu", "ēdiena"] },
+            { prompt: "Fill in the blank: 'We are learning Latvian'", target: "Mēs mācāmies ___.", correct: "latviešu valodu", options: ["latviešu valoda", "latviešu valodu", "latviešu valodā"] },
+            { prompt: "Fill in the blank: 'It is raining today'", target: "Šodien ___.", correct: "līst", options: ["līst", "līstēs", "līstēja"] },
+            { prompt: "Choose the correct past tense form: 'Yesterday I went to the shop'", target: "Vakar es ___ uz veikalu.", correct: "gāju", options: ["gājām", "gāji", "gājuši", "iešu", "gāja", "gāju"], isHard: true },
+            { prompt: "Choose the correct future tense form: 'Tomorrow we will celebrate'", target: "Rīt mēs ___ svētkus.", correct: "svinēsim", options: ["svinējām", "svinam", "svinēsim", "svinēja", "svinēsi", "svinām"], isHard: true },
+            { prompt: "Select the correct locative form for 'in the kitchen':", target: "Mamma gatavo pusdienas ___.", correct: "virtuvē", options: ["virtuve", "virtuvē", "virtuvi", "virtuvēi", "virtuvā", "virtuvēs"], isHard: true },
+            { prompt: "Select the correct plural form for 'beautiful flowers':", target: "Dārzā zied ___ puķes.", correct: "skaistas", options: ["skaisti", "skaistas", "skaistus", "skaista", "skaistās", "skaistu"], isHard: true },
+            { prompt: "Choose the correct phrase: 'I am going to the market'", target: "Es eju uz ___ .", correct: "tirgu", options: ["tirgus", "tirgū", "tirgā", "tirga", "tirgu vārti", "tirgu"], isHard: true },
+            { prompt: "Choose the correct past tense: 'Yesterday I ate bread'", target: "Vakar es ___ maizi.", correct: "ēdu", options: ["ēdīšu", "ēdīju", "ēdīsi", "ēdām", "ēda", "ēdu"], isHard: true },
+            { prompt: "Choose the correct past tense: 'We went home'", target: "Mēs ___ mājās.", correct: "gājām", options: ["gāju", "gājām", "iešot", "ejam", "gājāt", "gāja"], isHard: true },
+            { prompt: "Choose the correct future tense: 'Tomorrow I will go'", target: "Rīt es ___.", correct: "iešu", options: ["eju", "gāju", "iešu", "gāji", "iesim", "gājis"], isHard: true },
+            { prompt: "Choose the correct future tense: 'They will celebrate'", target: "Viņi ___ svētkus.", correct: "svinēs", options: ["svin", "svinēja", "svinēs", "sviniet", "svinēsim", "svinām"], isHard: true },
+            { prompt: "Choose the correct present form: 'You (singular) want coffee'", target: "Tu ___ kafiju.", correct: "gribi", options: ["gribu", "gribi", "grib", "gribēju", "gribēs", "gribam"], isHard: true },
+            { prompt: "Select the correct spelling for 'I am tired' (male form)", target: "I am tired (male form)", correct: "Es esmu noguris", options: ["Es būšu noguris", "Es esmu noguris", "Es biju noguris", "Es esmu nogurusi", "Man ir noguris", "Es būtu noguris"], isHard: true },
+            { prompt: "Choose the correct form: 'I was tired'", target: "Es ___ noguris.", correct: "biju", options: ["esmu", "būšu", "biju", "būtu", "bija", "būsim"], isHard: true },
+            { prompt: "Select the correct spelling for 'Do you speak English?':", target: "Do you speak English?", correct: "Vai jūs runājat angliski?", options: ["Vai jūs runājat angļu?", "Vai tu runā angliski?", "Vai jūs runājat angļu valodā?", "Vai jūs runājāt angliski?", "Vai jūs runājat angliski?", "Vai jūs runājat angļu valodā"], isHard: true },
+            { prompt: "Select the correct spelling for 'I don't know':", target: "I don't know", correct: "Es nezinu", options: ["Es zinu", "Es nezināju", "Es zināju", "Es nezini", "Es nezinātu", "Es nezinu"], isHard: true },
+            { prompt: "Select the correct spelling for 'Where are you from?':", target: "Where are you from?", correct: "No kurienes tu esi?", options: ["No kurienes jūs esat?", "No kurienes viņš ir?", "Kur tu esi?", "No kura tu esi?", "No kurienes tu esi", "No kurienes tu esi?"], isHard: true },
+            { prompt: "Select the correct spelling for 'I am from...':", target: "I am from...", correct: "Es esmu no...", options: ["Es esmu ar...", "Es esmu pie...", "Es esmu uz...", "Es nāku no...", "Es esmu no", "Es esmu no..."], isHard: true },
+            { prompt: "Select the correct spelling for 'Happy':", target: "Happy", correct: "Laimes", options: ["Laimes", "Laīmēs", "Laime"] },
+            { prompt: "Select the correct spelling for 'I am happy':", target: "I am happy", correct: "Es esmu laimīgs", options: ["Es esmu laimigs", "Es esmu laimīgs", "Es esmu laimīgš"] },
+            { prompt: "Select the correct spelling for 'Sad':", target: "Sad", correct: "Skumjš", options: ["Skumjs", "Skumjš", "Skūmjš"] },
+            { prompt: "Select the correct spelling for 'Angry':", target: "Angry", correct: "Dusmīgs", options: ["Dusmigs", "Dusmīgs", "Dusmīgš"] },
+            { prompt: "Select the correct spelling for 'Tired':", target: "Tired", correct: "Noguris", options: ["Noguris", "Nogurīs", "Noguriš"] },
+            { prompt: "Select the correct spelling for 'I am scared':", target: "I am scared", correct: "Es baidos", options: ["Es baidos", "Es baidōs", "Es baidos"] },
+            { prompt: "Select the correct spelling for 'Dress':", target: "Dress", correct: "Kleita", options: ["Kleita", "Kleitā", "Kleitu"] },
+            { prompt: "Select the correct spelling for 'Socks':", target: "Socks", correct: "Zeķes", options: ["Zekes", "Zeķes", "Zeķēs"] },
+            { prompt: "Select the correct spelling for 'Bicycle':", target: "Bicycle", correct: "Velosipēds", options: ["Velosipeds", "Velosipēds", "Velosipēdš"] },
+            { prompt: "Select the correct spelling for 'Road':", target: "Road", correct: "Ceļš", options: ["Cels", "Ceļš", "Ceļšš"] },
+            { prompt: "Select the correct spelling for 'How much is this?':", target: "How much is this?", correct: "Cik tas maksā?", options: ["Cik tas maksa?", "Cik tas maksā?", "Cik tas maksās?"] },
+            { prompt: "Select the correct spelling for 'I would like...':", target: "I would like...", correct: "Es gribētu...", options: ["Es gribētu...", "Es gribu...", "Es gribēšu..."] },
+            { prompt: "Select the correct spelling for 'Where is the station?':", target: "Where is the station?", correct: "Kur ir stacija?", options: ["Kur ir stacija?", "Kur ir stacijā?", "Kur ir staciju?"] },
+            { prompt: "Select the correct spelling for 'I need help':", target: "I need help", correct: "Man vajag palīdzību", options: ["Man vajag palidzibu", "Man vajag palīdzību", "Man vajag palīdzību"] },
+            { prompt: "Select the correct spelling for 'Open / Closed':", target: "Open", correct: "Atvērts", options: ["Atverts", "Atvērts", "Atvērtš"] },
+            { prompt: "Select the correct spelling for 'Closed':", target: "Closed", correct: "Slēgts", options: ["Slegts", "Slēgts", "Slēgtš"] },
+            { prompt: "Select the correct spelling for 'Left':", target: "Left", correct: "Pa kreisi", options: ["Pa kreisi", "Pa kreisī", "Pa kreiso"] },
+            { prompt: "Select the correct spelling for 'Right':", target: "Right", correct: "Pa labi", options: ["Pa labi", "Pa labī", "Pa labo"] },
+            { prompt: "Select the correct spelling for 'Straight ahead':", target: "Straight ahead", correct: "Taisni uz priekšu", options: ["Taisni uz priekšu", "Taisni uz priekšu", "Taisni uz priekšu"] },
+            { prompt: "Select the correct spelling for 'I am lost':", target: "I am lost", correct: "Es esmu apmaldījies", options: ["Es esmu apmaldijies", "Es esmu apmaldījies", "Es esmu apmaldījies"] },
+            { prompt: "Fill in the blank: 'The cat is sleeping'", target: "Kaķis ___.", correct: "guļ", options: ["guļ", "guļu", "gulēt"] },
+            { prompt: "Fill in the blank: 'I like dogs'", target: "Man patīk ___.", correct: "suņi", options: ["suns", "suņi", "suņu"] },
+            { prompt: "Fill in the blank: 'She is a doctor'", target: "Viņa ir ___.", correct: "ārste", options: ["ārsts", "ārste", "ārsti"] },
+            { prompt: "Fill in the blank: 'We are going to the sea'", target: "Mēs ejam uz ___.", correct: "jūru", options: ["jūra", "jūru", "jūrā"] },
+            { prompt: "Fill in the blank: 'The tree is tall'", target: "Koks ir ___.", correct: "augsts", options: ["augsts", "augsta", "augsti"] },
+            { prompt: "Fill in the blank: 'I am buying shoes'", target: "Es pērku ___.", correct: "kurpes", options: ["kurpe", "kurpes", "kurpēm"] },
+            { prompt: "Fill in the blank: 'It is windy today'", target: "Šodien ir ___.", correct: "vējains", options: ["vējains", "vēja", "vējš"] },
+            { prompt: "Select the correct locative: 'in the forest'", target: "Dzīvnieki dzīvo ___.", correct: "mežā", options: ["mežs", "mežā", "mežu"], isHard: true },
+            { prompt: "Select the correct locative: 'at the airport'", target: "Es esmu ___.", correct: "lidostā", options: ["lidosta", "lidostā", "lidostu"], isHard: true },
+            { prompt: "Select the correct accusative: 'I am buying a ticket'", target: "Es pērku ___.", correct: "biļeti", options: ["biļete", "biļeti", "biļetes"], isHard: true },
+            { prompt: "Select the correct form: 'I am afraid of the dog'", target: "Es baidos no ___.", correct: "suņa", options: ["suns", "suņa", "suni"], isHard: true },
+            { prompt: "Choose the correct past tense: 'Yesterday it rained'", target: "Vakar ___.", correct: "lija", options: ["līst", "lija", "līs"], isHard: true },
+            { prompt: "Choose the correct future: 'Tomorrow it will snow'", target: "Rīt ___.", correct: "snigs", options: ["snieg", "sniga", "snigs"], isHard: true },
+            { prompt: "Choose the correct form: 'He drove the car'", target: "Viņš ___ automašīnu.", correct: "brauca", options: ["brauc", "brauca", "brauks"], isHard: true },
+            { prompt: "Select the correct plural: 'beautiful flowers'", target: "Skaistas ___.", correct: "puķes", options: ["puķe", "puķes", "puķu"], isHard: true },
+            { prompt: "Select the correct form: 'I am wearing black shoes'", target: "Es valkāju ___ kurpes.", correct: "melnas", options: ["melns", "melnas", "melnu"], isHard: true },
+            { prompt: "Choose the correct present: 'You (pl.) are learning Latvian'", target: "Jūs ___ latviešu valodu.", correct: "mācāties", options: ["mācos", "mācies", "mācāties"], isHard: true }
         ]
     };
+
+    const extraDistractorMap = {
+        'Es esmu noguris': 'Man ir noguris',
+        'Latvijā': 'Latvijai',
+        'silts': 'silta',
+        'vārds': 'vārdi',
+        'dzeru': 'dzēru',
+        'kafiju': 'kafija',
+        'ej': 'eju',
+        'Atvainojiet': 'Atsūtiet',
+        'Cik tas maksā?': 'Kāda ir šīs preces cena?',
+        'gribi': 'grib',
+        'gāju': 'gājām',
+        'svinēsim': 'svinam',
+        'iešu': 'eju',
+        'biju': 'esmu'
+    };
+
+    function isLazyDistractor(correctAnswer, option) {
+        const correct = String(correctAnswer || '').trim();
+        const candidate = String(option || '').trim();
+        if (!correct || !candidate) return false;
+
+        const lazySuffixes = [
+            `${correct}s`, `${correct}S`, `${correct}š`, `${correct}z`, `${correct}ž`,
+            `${correct}ss`, `${correct}es`, `${correct}is`, `${correct}us`, `${correct}as`
+        ];
+
+        return candidate === correct || lazySuffixes.includes(candidate);
+    }
+
+    function ensureCorrectAnswerPresent(question) {
+        if (!question || !Array.isArray(question.options)) {
+            question.options = [];
+        }
+
+        const correct = String(question.correct || '').trim();
+        const unique = [...new Set(question.options.map((option) => String(option || '').trim()).filter(Boolean))];
+
+        if (correct && !unique.includes(correct)) {
+            unique.unshift(correct);
+        }
+
+        question.options = unique;
+        return question.options;
+    }
+
+    function generateFallbackDistractor(correctAnswer) {
+        const text = String(correctAnswer || '');
+        if (!text) return 'Kā tev iet?';
+
+        const accentSwapMap = {
+            'ā': 'a', 'ē': 'e', 'ī': 'i', 'ū': 'u', 'č': 'c', 'ķ': 'k', 'ģ': 'g', 'ļ': 'l', 'ņ': 'n', 'š': 's', 'ž': 'z',
+            'Ā': 'A', 'Ē': 'E', 'Ī': 'I', 'Ū': 'U', 'Č': 'C', 'Ķ': 'K', 'Ģ': 'G', 'Ļ': 'L', 'Ņ': 'N', 'Š': 'S', 'Ž': 'Z'
+        };
+
+        const replacements = [
+            text.replace(/[āēīū]/g, (char) => ({ 'ā': 'a', 'ē': 'e', 'ī': 'i', 'ū': 'u' }[char] || char)),
+            text.replace(/[aeiu]$/, (char) => ({ a: 'ā', e: 'ē', i: 'ī', u: 'ū' }[char] || char)),
+            text.replace(/[s]$/, 'š'),
+            text.replace(/[z]$/, 'ž'),
+            text.replace(/[l]$/, 'ļ'),
+            text.replace(/[n]$/, 'ņ'),
+            text.replace(/[g]$/, 'ģ'),
+            text.replace(/[k]$/, 'ķ'),
+            text.replace(/[c]$/, 'č')
+        ].filter((value, index, arr) => value && value !== text && arr.indexOf(value) === index);
+
+        const contextual = [
+            text.includes('vannas') ? 'Kur ir tualete?' : '',
+            text.includes('tualete') ? 'Kur ir vannas istaba?' : '',
+            text.includes('palīg') ? 'Lūdzu!' : '',
+            text.includes('grib') ? 'Es gribu...' : '',
+            text.includes('sauc') ? 'Es saucu...' : '',
+            text.includes('mīlu') ? 'Es tevi mīlētu' : '',
+            text.includes('jūru') ? 'jūra' : ''
+        ].filter(Boolean);
+
+        const candidates = [...contextual, ...replacements];
+        const cleaned = candidates.filter((value) => !isLazyDistractor(text, value));
+        return cleaned[0] || text.replace(/[āēīūčķģļņšž]/g, (char) => accentSwapMap[char] || char);
+    }
+
+    function addMissingOption(question) {
+        if (!question || !Array.isArray(question.options)) {
+            question.options = [];
+        }
+
+        const questionOptions = ensureCorrectAnswerPresent(question);
+        const correct = String(question.correct || '').trim();
+        const options = [...new Set(questionOptions.map((option) => String(option || '').trim()).filter(Boolean))];
+
+        const validWrongOptions = options.filter((option) => option !== correct && !isLazyDistractor(correct, option));
+        const finalOptions = [correct];
+
+        for (const option of validWrongOptions) {
+            if (!finalOptions.includes(option)) {
+                finalOptions.push(option);
+            }
+            if (finalOptions.length >= 4) break;
+        }
+
+        const seedCandidates = [
+            extraDistractorMap[correct],
+            questionOptions.find((option) => option !== correct && !isLazyDistractor(correct, option)),
+            generateFallbackDistractor(correct),
+            correct.includes('vannas') ? 'Kur ir tualete?' : '',
+            correct.includes('tualete') ? 'Kur ir vannas istaba?' : '',
+            correct.includes('kur') ? 'Kāds ir šīs vietas numurs?' : '',
+            correct.includes('gribi') ? 'Es gribu...' : ''
+        ].filter((value) => value && value !== correct && !isLazyDistractor(correct, value));
+
+        for (const candidate of seedCandidates) {
+            if (!finalOptions.includes(candidate)) {
+                finalOptions.push(candidate);
+            }
+            if (finalOptions.length >= 4) break;
+        }
+
+        while (finalOptions.length < 4) {
+            const fallbackPool = [
+                'Lūdzu!',
+                'Nav par ko',
+                'Kā tev iet?',
+                'Mans vārds ir ...',
+                'Es gribu...',
+                'Tā ir laba ideja',
+                'Man ir laiks doties',
+                'Es nezinu',
+                'Es gaidu tevi',
+                'Tas ir interesanti',
+                'Mēs gaidām',
+                'Es domāju, ka jā'
+            ];
+
+            const candidate = fallbackPool.find((value) => {
+                const normalized = String(value || '').trim();
+                return normalized && normalized !== correct && !finalOptions.includes(normalized) && !isLazyDistractor(correct, normalized);
+            }) || generateFallbackDistractor(correct);
+
+            if (!finalOptions.includes(candidate) && candidate !== correct && !isLazyDistractor(correct, candidate)) {
+                finalOptions.push(candidate);
+            } else {
+                const extra = fallbackPool.find((value) => !finalOptions.includes(value) && value !== correct);
+                if (extra && !isLazyDistractor(correct, extra)) {
+                    finalOptions.push(extra);
+                } else {
+                    break;
+                }
+            }
+        }
+
+        question.options = finalOptions.slice(0, 4);
+    }
+
+    function normalizeQuestionBank() {
+        Object.values(tieredQuestions).forEach((tier) => {
+            tier.forEach((question) => {
+                ensureCorrectAnswerPresent(question);
+                addMissingOption(question);
+            });
+        });
+    }
+
+    normalizeQuestionBank();
 
     let questions = [];
     let currentTier = 1;
@@ -405,11 +895,98 @@
     let isAnswerChecked = false;
     let redHearts = 3;
     let goldHearts = 0;
+    let blackHearts = 0;
+    let whiteHearts = 0;
     let currentStreak = 0;
     let totalCorrectAnswers = 0;
     let heartProgressCount = 0;
     let hasUsedHintForCurrentQuestion = false;
     let hintMessageTimeout = null;
+
+    const INTRO_STORAGE_KEY = 'hasSeenIntro';
+
+    const soundManager = {
+        enabled: true,
+        audioContext: null,
+        initialize() {
+            if (!this.enabled) return;
+            const AudioCtor = window.AudioContext || window.webkitAudioContext;
+            if (!AudioCtor) return;
+            if (!this.audioContext) {
+                this.audioContext = new AudioCtor();
+            }
+        },
+        playTone(frequency, duration, type = 'sine', volume = 0.04) {
+            if (!this.enabled || !this.audioContext) return;
+
+            const oscillator = this.audioContext.createOscillator();
+            const gain = this.audioContext.createGain();
+
+            oscillator.type = type;
+            oscillator.frequency.value = frequency;
+            gain.gain.value = volume;
+
+            oscillator.connect(gain);
+            gain.connect(this.audioContext.destination);
+
+            oscillator.start();
+            oscillator.stop(this.audioContext.currentTime + duration);
+        },
+        play(eventName) {
+            const presets = {
+                correct: { frequency: 520, duration: 0.12, type: 'triangle', volume: 0.05 },
+                wrong: { frequency: 180, duration: 0.18, type: 'sawtooth', volume: 0.05 },
+                button: { frequency: 360, duration: 0.08, type: 'square', volume: 0.03 },
+                menu: { frequency: 220, duration: 0.22, type: 'sine', volume: 0.025 }
+            };
+
+            if (!presets[eventName]) return;
+            this.initialize();
+            const { frequency, duration, type, volume } = presets[eventName];
+            this.playTone(frequency, duration, type, volume);
+        },
+        toggleMute() {
+            this.enabled = !this.enabled;
+            const toggle = document.getElementById('sound-toggle');
+            if (toggle) {
+                toggle.textContent = this.enabled ? '🔊' : '🔇';
+            }
+        }
+    };
+
+    function showMainMenu() {
+        const introOverlay = document.getElementById('intro-overlay');
+        const gameScreen = document.getElementById('game-screen');
+        const gameOverScreen = document.getElementById('game-over-screen');
+        const victoryScreen = document.getElementById('victory-screen');
+
+        introOverlay.classList.remove('hidden');
+        gameScreen.classList.remove('active');
+        gameOverScreen.classList.remove('active');
+        victoryScreen.classList.remove('active');
+        localStorage.removeItem(INTRO_STORAGE_KEY);
+    }
+
+    function initIntroFlow() {
+        const introOverlay = document.getElementById('intro-overlay');
+        const introButton = document.getElementById('intro-button');
+        const soundToggle = document.getElementById('sound-toggle');
+
+        if (soundToggle) {
+            soundToggle.addEventListener('click', () => {
+                soundManager.toggleMute();
+            });
+        }
+
+        introOverlay.classList.remove('hidden');
+        soundManager.play('menu');
+        introButton.addEventListener('click', () => {
+            soundManager.play('button');
+            localStorage.setItem(INTRO_STORAGE_KEY, 'true');
+            introOverlay.classList.add('hidden');
+            initGame();
+        });
+    }
 
     function initGame() {
         currentTier = 1;
@@ -418,6 +995,8 @@
         currentQuestionIndex = 0;
         redHearts = 3;
         goldHearts = 0;
+        blackHearts = 0;
+        whiteHearts = 0;
         currentStreak = 0;
         totalCorrectAnswers = 0;
         heartProgressCount = 0;
@@ -427,13 +1006,12 @@
 
         updateHeartProgressDisplay();
         updateStatusDisplay();
-        updateActionLabels();
         showScreen('game-screen');
         loadQuestion();
     }
 
     function getTotalHearts() {
-        return redHearts + goldHearts;
+        return redHearts + goldHearts + blackHearts + whiteHearts;
     }
 
     function canUseHint() {
@@ -461,16 +1039,8 @@
         }, 1400);
     }
 
-    function getSkipHeartIcon() {
-        if (redHearts > 0) {
-            return '❤️';
-        }
-        return '💛';
-    }
-
     function updateActionLabels() {
         document.getElementById('hint-action').textContent = 'HINT -1 💛';
-        document.getElementById('skip-action').textContent = `SKIP -1 ${getSkipHeartIcon()}`;
     }
 
     function showLevelModal(title, message) {
@@ -489,6 +1059,7 @@
             return;
         }
 
+        blackHearts = Math.min(blackHearts + 1, 3);
         hideLevelModal();
         currentTier = pendingTier;
         pendingTier = null;
@@ -502,6 +1073,15 @@
         updateHeartProgressDisplay();
         updateStatusDisplay();
         loadQuestion();
+    }
+
+    function shuffleArray(items) {
+        const clone = [...items];
+        for (let i = clone.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [clone[i], clone[j]] = [clone[j], clone[i]];
+        }
+        return clone;
     }
 
     function loadQuestion() {
@@ -526,10 +1106,8 @@
         document.getElementById('feedback').textContent = '';
         document.getElementById('check-action').textContent = 'CHECK';
         document.getElementById('check-action').disabled = false;
-        document.getElementById('skip-action').style.visibility = 'visible';
         updateActionLabels();
         document.getElementById('hint-action').disabled = !canUseHint();
-        document.getElementById('skip-action').disabled = getTotalHearts() <= 1;
 
         const q = questions[currentQuestionIndex];
         document.getElementById('game-prompt').textContent = q.prompt;
@@ -538,10 +1116,12 @@
         const hardBadge = document.getElementById('hard-badge');
         hardBadge.style.display = q.isHard ? 'inline-flex' : 'none';
 
+        const displayOptions = shuffleArray(q.options);
         const optionsDiv = document.getElementById('options');
         optionsDiv.innerHTML = '';
+        optionsDiv.classList.toggle('hard-grid', Array.isArray(displayOptions) && displayOptions.length >= 6);
 
-        q.options.forEach((option, index) => {
+        displayOptions.forEach((option, index) => {
             const button = document.createElement('button');
             button.className = 'option-btn';
             button.innerText = `${index + 1}.   ${option}`;
@@ -556,6 +1136,12 @@
             optionsDiv.appendChild(button);
         });
 
+        if (displayOptions.length <= 4) {
+            optionsDiv.classList.remove('hard-grid');
+        } else {
+            optionsDiv.classList.add('hard-grid');
+        }
+
         const progressPercent = (currentQuestionIndex / questions.length) * 100;
         document.getElementById('progress').style.width = `${progressPercent}%`;
     }
@@ -567,13 +1153,15 @@
     }
 
     function handleButtonClick() {
+        soundManager.play('button');
+
         if (!isAnswerChecked) {
             checkAnswer();
             return;
         }
 
         if (getTotalHearts() <= 0) {
-            showScreen('game-over-screen');
+            showMainMenu();
             return;
         }
 
@@ -582,6 +1170,8 @@
     }
 
     function useHint() {
+        soundManager.play('button');
+
         if (!canUseHint()) {
             showTemporaryFeedback('Yellow hearts cannot be used at this time', 'wrong');
             return;
@@ -618,12 +1208,12 @@
         if (!selectedAnswer) {
             feedbackDiv.className = 'feedback wrong';
             feedbackDiv.textContent = 'Please select an option first!';
+            soundManager.play('wrong');
             return;
         }
 
         isAnswerChecked = true;
-        document.getElementById('skip-action').style.visibility = 'hidden';
-        document.getElementById('check-action').textContent = 'CONTINUE';
+document.getElementById('check-action').textContent = 'CONTINUE';
         document.getElementById('check-action').disabled = false;
         document.getElementById('hint-action').disabled = true;
 
@@ -639,6 +1229,7 @@
 
         if (selectedAnswer === q.correct) {
             feedbackDiv.className = 'feedback correct';
+            soundManager.play('correct');
             heartProgressCount++;
             currentStreak++;
             totalCorrectAnswers++;
@@ -661,9 +1252,17 @@
         } else {
             feedbackDiv.className = 'feedback wrong';
             feedbackDiv.textContent = `✕ Wrong. Correct answer was: ${q.correct}`;
+            soundManager.play('wrong');
             currentStreak = 0;
 
-            if (redHearts > 0) {
+            if (blackHearts > 0) {
+                blackHearts--;
+                whiteHearts++;
+                feedbackDiv.textContent = `✕ Wrong. Correct answer was: ${q.correct} — Black Heart cracked into a White Heart.`;
+            } else if (whiteHearts > 0) {
+                whiteHearts--;
+                feedbackDiv.textContent = `✕ Wrong. Correct answer was: ${q.correct} — White Heart destroyed.`;
+            } else if (redHearts > 0) {
                 redHearts--;
             } else if (goldHearts > 0) {
                 goldHearts--;
@@ -673,43 +1272,18 @@
                 button.disabled = true;
             });
 
-            document.getElementById('skip-action').disabled = true;
             document.getElementById('hint-action').disabled = true;
             document.getElementById('check-action').disabled = false;
+
+            if (getTotalHearts() <= 0) {
+                setTimeout(() => {
+                    showMainMenu();
+                }, 900);
+            }
         }
 
         updateHeartProgressDisplay();
         updateStatusDisplay();
-    }
-
-    function skipQuestion() {
-        if (isAnswerChecked) {
-            return;
-        }
-
-        if (getTotalHearts() <= 1) {
-            showTemporaryFeedback('You cannot skip when you are down to your last heart!', 'wrong');
-            document.getElementById('skip-action').disabled = true;
-            return;
-        }
-
-        currentStreak = 0;
-
-        if (redHearts > 0) {
-            redHearts--;
-        } else if (goldHearts > 0) {
-            goldHearts--;
-        }
-
-        updateStatusDisplay();
-
-        if (redHearts + goldHearts <= 0) {
-            showScreen('game-over-screen');
-            return;
-        }
-
-        currentQuestionIndex++;
-        loadQuestion();
     }
 
     function buyGoldHeart() {
@@ -726,14 +1300,30 @@
         showTemporaryFeedback('💛 Gold heart purchased!', 'correct');
     }
 
+    function buyBlackHeart() {
+        if (currentStreak < 10 || blackHearts >= 3) {
+            if (currentStreak < 10) {
+                showTemporaryFeedback('Not enough streak points!', 'wrong');
+            }
+            return;
+        }
+
+        currentStreak -= 10;
+        blackHearts++;
+        updateStatusDisplay();
+        showTemporaryFeedback('🖤 Black heart purchased!', 'correct');
+    }
+
     function updateStatusDisplay() {
         const redText = '❤️'.repeat(Math.max(redHearts, 0));
         const goldText = '💛'.repeat(Math.max(goldHearts, 0));
-        document.getElementById('hearts-display').textContent = redText + goldText;
+        const blackText = '🖤'.repeat(Math.max(blackHearts, 0));
+        const whiteText = '🤍'.repeat(Math.max(whiteHearts, 0));
+        document.getElementById('hearts-display').textContent = redText + goldText + blackText + whiteText;
         updateActionLabels();
-        document.getElementById('skip-action').disabled = getTotalHearts() <= 1;
         document.getElementById('hint-action').disabled = !canUseHint();
         document.getElementById('shop-btn').disabled = currentStreak < 3 || goldHearts >= 3;
+        document.getElementById('black-shop-btn').disabled = currentStreak < 10 || blackHearts >= 3;
         document.getElementById('streak-display').textContent = `🔥 Streak: ${currentStreak}`;
     }
 
@@ -748,10 +1338,10 @@
 
     function resetGame() {
         hideLevelModal();
-        initGame();
+        showMainMenu();
     }
 
-    initGame();
+    initIntroFlow();
 </script>
 </body>
 </html>
