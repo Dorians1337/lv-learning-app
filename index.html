@@ -1068,9 +1068,45 @@
     }
 
     function selectOption(button, option) {
+        if (isAnswerChecked) return;
+
         document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
         button.classList.add('selected');
         selectedAnswer = option;
+        checkAnswer();
+    }
+
+    function handleKeyboardAdvance(event) {
+        if (event.key !== 'Enter') return;
+
+        const introOverlay = document.getElementById('intro-overlay');
+        const isIntroVisible = introOverlay && !introOverlay.classList.contains('hidden');
+
+        if (isIntroVisible) {
+            event.preventDefault();
+            document.getElementById('intro-button')?.click();
+            return;
+        }
+
+        const activeScreen = document.querySelector('.screen.active')?.id;
+        if (activeScreen !== 'game-screen') return;
+
+        event.preventDefault();
+
+        if (!isAnswerChecked) {
+            if (selectedAnswer) {
+                checkAnswer();
+            }
+            return;
+        }
+
+        if (getTotalHearts() <= 0) {
+            showDefeatScreen();
+            return;
+        }
+
+        currentQuestionIndex++;
+        loadQuestion();
     }
 
     function showDefeatScreen() {
@@ -1332,6 +1368,7 @@
         showMainMenu();
     }
 
+    document.addEventListener('keydown', handleKeyboardAdvance);
     initIntroFlow();
 </script>
 </body>
