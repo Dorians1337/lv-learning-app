@@ -1073,6 +1073,15 @@
         selectedAnswer = option;
     }
 
+    function showDefeatScreen() {
+        const summaryText = `You missed ${mistakeLog.length} question${mistakeLog.length === 1 ? '' : 's'} this run.`;
+        const gameOverSummary = document.getElementById('game-over-summary');
+        if (gameOverSummary) {
+            gameOverSummary.textContent = summaryText;
+        }
+        showScreen('game-over-screen');
+    }
+
     function handleButtonClick() {
         soundManager.play('button');
 
@@ -1082,7 +1091,7 @@
         }
 
         if (getTotalHearts() <= 0) {
-            showMainMenu();
+            showDefeatScreen();
             return;
         }
 
@@ -1215,13 +1224,8 @@
             document.getElementById('check-action').disabled = false;
 
             if (getTotalHearts() <= 0) {
-                const summaryText = `You missed ${mistakeLog.length} question${mistakeLog.length === 1 ? '' : 's'} this run.`;
-                const gameOverSummary = document.getElementById('game-over-summary');
-                if (gameOverSummary) {
-                    gameOverSummary.textContent = summaryText;
-                }
                 setTimeout(() => {
-                    showScreen('game-over-screen');
+                    showDefeatScreen();
                 }, 900);
             }
         }
