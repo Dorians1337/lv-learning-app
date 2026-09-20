@@ -433,6 +433,90 @@
             box-shadow: 0 4px 0 rgba(46, 55, 38, 0.9);
             margin-top: 20px;
         }
+        .secondary-btn {
+            background: linear-gradient(180deg, rgba(63, 81, 90, 0.96), rgba(42, 54, 61, 0.98));
+            color: var(--text-soft);
+            border: 1px solid rgba(122, 209, 255, 0.18);
+            box-shadow: 0 4px 0 rgba(22, 28, 34, 0.9);
+        }
+        .review-screen {
+            width: min(92vw, 900px);
+            max-height: 82vh;
+            overflow-y: auto;
+            padding: 24px 18px 10px;
+            box-sizing: border-box;
+        }
+        .review-title {
+            font-size: clamp(32px, 4vw, 52px);
+            margin: 0 0 10px;
+            color: var(--gold-soft);
+        }
+        .review-subtitle {
+            font-size: 18px;
+            color: var(--text-soft);
+            margin: 0 0 20px;
+        }
+        .review-list {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            text-align: left;
+            margin-bottom: 18px;
+        }
+        .review-item {
+            background: rgba(22, 31, 36, 0.9);
+            border: 1px solid rgba(122, 209, 255, 0.18);
+            border-radius: 14px;
+            padding: 16px 18px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+        }
+        .review-meta {
+            color: var(--gold-soft);
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        .review-prompt {
+            font-size: 18px;
+            color: var(--text);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .review-target {
+            color: var(--text-soft);
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+        .review-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: center;
+            margin-top: 6px;
+            font-size: 15px;
+        }
+        .review-label {
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        .review-answer {
+            font-weight: 700;
+            text-align: right;
+            flex: 1;
+            word-break: break-word;
+        }
+        .review-empty {
+            background: rgba(22, 31, 36, 0.72);
+            border: 1px solid rgba(122, 209, 255, 0.18);
+            border-radius: 14px;
+            padding: 18px;
+            color: var(--text-soft);
+            font-size: 18px;
+            text-align: center;
+        }
         .sound-toggle {
             border: 1px solid rgba(201, 169, 107, 0.28);
             background: rgba(25, 30, 33, 0.9);
@@ -506,15 +590,29 @@
 <!-- GAME OVER SCREEN -->
 <div id="game-over-screen" class="container screen">
     <h1 style="font-size: 48px; color: #ff4b4b;">Game Over</h1>
-    <p style="font-size: 20px; color: #afafaf; margin-bottom: 30px;">Better luck next time &lt;3!</p>
+    <p id="game-over-summary" style="font-size: 20px; color: #afafaf; margin-bottom: 10px;">Better luck next time &lt;3!</p>
     <button class="restart-btn" onclick="resetGame()">Try Again</button>
+    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:10px;">
+        <button class="restart-btn secondary-btn" onclick="showReviewScreen('Run ended', 'Here are the questions you missed this run.')">Review Mistakes</button>
+    </div>
+</div>
+
+<!-- REVIEW SCREEN -->
+<div id="review-screen" class="container screen review-screen">
+    <h1 id="review-title" class="review-title">Mistake Log</h1>
+    <p id="review-subtitle" class="review-subtitle">Here are the questions you missed this run.</p>
+    <div id="review-list" class="review-list"></div>
+    <button id="review-button" class="restart-btn" onclick="resetGame()">Play Again</button>
 </div>
 
 <!-- VICTORY SCREEN -->
 <div id="victory-screen" class="container screen">
     <h1 style="font-size: 48px; color: #58cc02;">Lieliski!</h1>
-    <p style="font-size: 20px; color: #afafaf; margin-bottom: 30px;">You completed the run successfully!</p>
+    <p style="font-size: 20px; color: #afafaf; margin-bottom: 10px;">You completed the run successfully!</p>
     <button class="restart-btn" onclick="resetGame()">Play Again</button>
+    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:10px;">
+        <button class="restart-btn secondary-btn" onclick="showReviewScreen('Run complete', 'You completed the full run. Review the mistakes you made below.')">Review Mistakes</button>
+    </div>
 </div>
 
 <script>
@@ -528,7 +626,7 @@
             { prompt: "Select the correct spelling for 'How are you?':", target: "How are you?", correct: "Kā tev iet?", options: ["Ka tev iet?", "Kā tev iet?", "Kā tēv iet?", "Kā jums iet?"] },
             { prompt: "Select the correct spelling for 'Good afternoon / Good day':", target: "Good afternoon", correct: "Labdien", options: ["Labdien", "Labdienā", "Labdienu", "Labdienī"] },
             { prompt: "Select the correct spelling for 'Good evening':", target: "Good evening", correct: "Labvakar", options: ["Labvakar", "Labvakars", "Labvakarā", "Labvakaru"] },
-            { prompt: "Select the correct spelling for 'Good night':", target: "Good night", correct: "Ar labu nakti", options: ["Ar labu nakti", "Ar labunakti", "Ar labu naktī", "Labu nakti"] },
+            { prompt: "Select the correct spelling for 'Good night':", target: "Good night", correct: "Arlabunakti", options: ["Arlabnakt", "Jauku blusu nakti", "Arlabunakti", "Labu nakti"] },
             { prompt: "Select the correct spelling for 'Nice to meet you':", target: "Nice to meet you", correct: "Prieks iepazīties", options: ["Prieks iepazīties", "Prieks iepazities", "Prieks iepazīšanās", "Priecīga iepazīties"] },
             { prompt: "Select the correct spelling for 'Yes':", target: "Yes", correct: "Jā", options: ["Ja", "Jā", "Ne", "Nē"] },
             { prompt: "Select the correct spelling for 'No':", target: "No", correct: "Nē", options: ["Ne", "Nē", "Ja", "Jā"] },
@@ -713,6 +811,7 @@
     let pendingTier = null;
     let currentQuestionIndex = 0;
     let selectedAnswer = null;
+    let mistakeLog = [];
     let isAnswerChecked = false;
     let redHearts = 3;
     let goldHearts = 0;
@@ -814,6 +913,7 @@
         pendingTier = null;
         questions = [...tieredQuestions[currentTier]].sort(() => Math.random() - 0.5);
         currentQuestionIndex = 0;
+        mistakeLog = [];
         redHearts = 3;
         goldHearts = 0;
         blackHearts = 0;
@@ -908,7 +1008,7 @@
     function loadQuestion() {
         if (currentQuestionIndex >= questions.length) {
             if (currentTier >= 3) {
-                showScreen('victory-screen');
+                showReviewScreen('Run complete', `You completed the full run. Review the mistakes you made below.`);
                 return;
             }
 
@@ -1034,7 +1134,7 @@
         }
 
         isAnswerChecked = true;
-document.getElementById('check-action').textContent = 'CONTINUE';
+        document.getElementById('check-action').textContent = 'CONTINUE';
         document.getElementById('check-action').disabled = false;
         document.getElementById('hint-action').disabled = true;
 
@@ -1071,6 +1171,24 @@ document.getElementById('check-action').textContent = 'CONTINUE';
                 feedbackDiv.textContent = '✓ Correct solution!';
             }
         } else {
+            const mistakeEntry = {
+                tier: currentTier,
+                prompt: q.prompt,
+                target: q.target,
+                selectedAnswer,
+                correct: q.correct
+            };
+
+            const isAlreadyRecorded = mistakeLog.some((entry) =>
+                entry.tier === mistakeEntry.tier &&
+                entry.prompt === mistakeEntry.prompt &&
+                entry.target === mistakeEntry.target
+            );
+
+            if (!isAlreadyRecorded) {
+                mistakeLog.push(mistakeEntry);
+            }
+
             feedbackDiv.className = 'feedback wrong';
             feedbackDiv.textContent = `✕ Wrong. Correct answer was: ${q.correct}`;
             soundManager.play('wrong');
@@ -1097,8 +1215,13 @@ document.getElementById('check-action').textContent = 'CONTINUE';
             document.getElementById('check-action').disabled = false;
 
             if (getTotalHearts() <= 0) {
+                const summaryText = `You missed ${mistakeLog.length} question${mistakeLog.length === 1 ? '' : 's'} this run.`;
+                const gameOverSummary = document.getElementById('game-over-summary');
+                if (gameOverSummary) {
+                    gameOverSummary.textContent = summaryText;
+                }
                 setTimeout(() => {
-                    showMainMenu();
+                    showScreen('game-over-screen');
                 }, 900);
             }
         }
@@ -1152,6 +1275,48 @@ document.getElementById('check-action').textContent = 'CONTINUE';
         document.getElementById('heart-progress').textContent = `${heartProgressCount}/10 ❤️`;
     }
 
+    function renderMistakeLog() {
+        const list = document.getElementById('review-list');
+        list.innerHTML = '';
+
+        if (!mistakeLog.length) {
+            const empty = document.createElement('div');
+            empty.className = 'review-empty';
+            empty.textContent = 'No mistakes this run — perfect round!';
+            list.appendChild(empty);
+            return;
+        }
+
+        mistakeLog.forEach((entry, index) => {
+            const card = document.createElement('div');
+            card.className = 'review-item';
+            card.innerHTML = `
+                <div class="review-meta">Tier ${entry.tier} • Question ${index + 1}</div>
+                <div class="review-prompt">${entry.prompt}</div>
+                <div class="review-target">Target: ${entry.target}</div>
+                <div class="review-row">
+                    <span class="review-label">Your answer:</span>
+                    <span class="review-answer wrong">${entry.selectedAnswer}</span>
+                </div>
+                <div class="review-row">
+                    <span class="review-label">Correct answer:</span>
+                    <span class="review-answer correct">${entry.correct}</span>
+                </div>
+            `;
+            list.appendChild(card);
+        });
+    }
+
+    function showReviewScreen(title, subtitle) {
+        const reviewTitle = document.getElementById('review-title');
+        const reviewSubtitle = document.getElementById('review-subtitle');
+
+        reviewTitle.textContent = title;
+        reviewSubtitle.textContent = subtitle;
+        renderMistakeLog();
+        showScreen('review-screen');
+    }
+
     function showScreen(screenId) {
         document.querySelectorAll('.screen').forEach((screen) => screen.classList.remove('active'));
         document.getElementById(screenId).classList.add('active');
@@ -1159,6 +1324,7 @@ document.getElementById('check-action').textContent = 'CONTINUE';
 
     function resetGame() {
         hideLevelModal();
+        mistakeLog = [];
         showMainMenu();
     }
 
