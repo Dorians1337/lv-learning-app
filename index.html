@@ -521,371 +521,193 @@
     // Tiered question pools: easy questions first, then progressively harder grammar and phrase work.
     const tieredQuestions = {
         1: [
-            { prompt: "Select the correct spelling for 'Hello':", target: "Hello", correct: "Sveiki", options: ["Sveķi", "Sveiki", "Sveikī"] },
-            { prompt: "Select the correct spelling for 'Thank you':", target: "Thank you", correct: "Paldies", options: ["Paldis", "Paldies", "Paldīs"] },
-            { prompt: "Select the correct spelling for 'Please':", target: "Please", correct: "Lūdzu", options: ["Lūdzu", "Ludzu", "Lūdzo"] },
-            { prompt: "Select the correct spelling for 'I love you':", target: "I love you", correct: "Es tevi mīlu", options: ["Es tevi milu", "Es tavi mīlu", "Es tevi mīlu"] },
-            { prompt: "Select the correct spelling for 'How are you?':", target: "How are you?", correct: "Kā tev iet?", options: ["Ka tev iet?", "Kā tev iet?", "Kā tēv iet?"] },
-            { prompt: "Select the correct spelling for 'Good afternoon / Good day':", target: "Good afternoon", correct: "Labdien", options: ["Labdien", "Labdienā", "Labdienu"] },
-            { prompt: "Select the correct spelling for 'Good evening':", target: "Good evening", correct: "Labvakar", options: ["Labvakar", "Labvakars", "Labvakarā"] },
-            { prompt: "Select the correct spelling for 'Good night':", target: "Good night", correct: "Ar labu nakti", options: ["Ar labu nakti", "Ar labunakti", "Ar labu naktī"] },
-            { prompt: "Select the correct spelling for 'Nice to meet you':", target: "Nice to meet you", correct: "Prieks iepazīties", options: ["Prieks iepazīties", "Prieks iepazities", "Prieks iepazīšanās"] },
-            { prompt: "Select the correct spelling for 'You're welcome':", target: "You're welcome", correct: "Nav par ko", options: ["Nav par ko", "Nav par kā", "Nav par ko?"] },
-            { prompt: "Select the correct spelling for 'Yes':", target: "Yes", correct: "Jā", options: ["Ja", "Jā", "Jāa"] },
-            { prompt: "Select the correct spelling for 'No':", target: "No", correct: "Nē", options: ["Ne", "Nē", "Nēē"] },
-            { prompt: "Select the correct spelling for 'Help!':", target: "Help!", correct: "Palīgā!", options: ["Paliga!", "Palīgā!", "Palīga!"] },
-            { prompt: "Select the correct spelling for 'Cheers! / To your health!':", target: "Cheers!", correct: "Priekā!", options: ["Prieka!", "Priekā!", "Priekāā"] },
-            { prompt: "Select the correct spelling for 'See you later':", target: "See you later", correct: "Tiekamies vēlāk", options: ["Tiekamies velak", "Tiekamies vēlāk", "Tiekamies vēlak"] },
-            { prompt: "Select the correct spelling for 'One':", target: "One", correct: "Viens", options: ["Viens", "Vienš", "Vienss"] },
-            { prompt: "Select the correct spelling for 'Two':", target: "Two", correct: "Divi", options: ["Divi", "Divī", "Divis"] },
-            { prompt: "Select the correct spelling for 'Three':", target: "Three", correct: "Trīs", options: ["Tris", "Trīs", "Trīss"] },
-            { prompt: "Select the correct spelling for 'Four':", target: "Four", correct: "Četri", options: ["Cetri", "Četri", "Četrī"] },
-            { prompt: "Select the correct spelling for 'Five':", target: "Five", correct: "Pieci", options: ["Pieci", "Piecī", "Piecis"] },
-            { prompt: "Select the correct spelling for 'Ten':", target: "Ten", correct: "Desmit", options: ["Desmit", "Desmīt", "Desmitt"] },
-            { prompt: "Select the correct spelling for 'Red':", target: "Red", correct: "Sarkans", options: ["Sarkans", "Sarkāns", "Sarkanss"] },
-            { prompt: "Select the correct spelling for 'Blue':", target: "Blue", correct: "Zils", options: ["Zils", "Zīls", "Zilss"] },
-            { prompt: "Select the correct spelling for 'Green':", target: "Green", correct: "Zaļš", options: ["Zals", "Zaļš", "Zaļšš"] },
-            { prompt: "Select the correct spelling for 'Yellow':", target: "Yellow", correct: "Dzeltens", options: ["Dzeltens", "Dzeltenš", "Dzeltēns"] },
-            { prompt: "Select the correct spelling for 'Black':", target: "Black", correct: "Melns", options: ["Melns", "Melņs", "Melnš"] },
-            { prompt: "Select the correct spelling for 'White':", target: "White", correct: "Balts", options: ["Balts", "Baltš", "Baltts"] },
-            { prompt: "Select the correct spelling for 'Mother':", target: "Mother", correct: "Māte", options: ["Mate", "Māte", "Mātē"] },
-            { prompt: "Select the correct spelling for 'Father':", target: "Father", correct: "Tēvs", options: ["Tevs", "Tēvs", "Tēvš"] },
-            { prompt: "Select the correct spelling for 'Brother':", target: "Brother", correct: "Brālis", options: ["Bralis", "Brālis", "Brālīs"] },
-            { prompt: "Select the correct spelling for 'Sister':", target: "Sister", correct: "Māsa", options: ["Masa", "Māsa", "Māsā"] },
-            { prompt: "Select the correct spelling for 'House':", target: "House", correct: "Māja", options: ["Maja", "Māja", "Mājā"] },
-            { prompt: "Select the correct spelling for 'City':", target: "City", correct: "Pilsēta", options: ["Pilseta", "Pilsēta", "Pilsētā"] },
-            { prompt: "Select the correct spelling for 'Shop / Store':", target: "Shop", correct: "Veikals", options: ["Veikals", "Veikalš", "Veikāls"] },
-            { prompt: "Select the correct spelling for 'Milk':", target: "Milk", correct: "Piens", options: ["Piens", "Ūdens", "Krējums"] },
-            { prompt: "Select the correct spelling for 'Bread':", target: "Bread", correct: "Maize", options: ["Maize", "Maīze", "Meize"] },
-            { prompt: "Select the correct spelling for 'Water':", target: "Water", correct: "Ūdens", options: ["Udens", "Ūdens", "Ūdins"] },
-            { prompt: "Select the correct spelling for 'Where is the bathroom?':", target: "Where is the bathroom?", correct: "Kur ir vannas istaba?", options: ["Kur ir vannas istaba?", "Kur ir tualete?", "Vai šeit ir tualete?", "Kāds ir tualetes numurs?", "Kur atrodas duša?", "Kur ir vannas istaba?"], isHard: true },
-            { prompt: "Select the correct spelling for 'Where is the toilet?':", target: "Where is the toilet?", correct: "Kur ir tualete?", options: ["Kur ir vannas istaba?", "Kur ir tualete?", "Kur atrodas duša?", "Kāds ir tualetes numurs?", "Kur ir tualets?", "Kur ir tualete?"], isHard: true },
-            { prompt: "Fill in the blank with the correct word for 'I live in Latvia':", target: "Es dzīvoju ___.", correct: "Latvijā", options: ["Latvija", "Latviju", "Latvijai", "Latvijas", "Latvieši", "Latvijā"], isHard: true },
-            { prompt: "Fill in the blank with the correct word for 'Today is warm':", target: "Šodien ir ___ laiks.", correct: "silts", options: ["silta", "silti", "siltas", "siltais", "silt", "silts"], isHard: true },
-            { prompt: "Fill in the blank with the correct word for 'My name is...':", target: "Mans ___ ir...", correct: "vārds", options: ["vārdi", "vardu", "vārdu", "vārda", "mans vārds", "vārds"], isHard: true }
+            { prompt: "Select the correct spelling for 'Hello':", target: "Hello", correct: "Sveiki", options: ["Sveķi", "Sveiki", "Sveikī", "Sveika"] },
+            { prompt: "Select the correct spelling for 'Thank you':", target: "Thank you", correct: "Paldies", options: ["Paldis", "Paldies", "Paldīs", "Paldie"] },
+            { prompt: "Select the correct spelling for 'Please':", target: "Please", correct: "Lūdzu", options: ["Lūdzu", "Ludzu", "Lūdzo", "Lūdz"] },
+            { prompt: "Select the correct spelling for 'I love you':", target: "I love you", correct: "Es tevi mīlu", options: ["Es tevi milu", "Es tavi mīlu", "Es tevi mīlu", "Es tevi mīlēju"] },
+            { prompt: "Select the correct spelling for 'How are you?':", target: "How are you?", correct: "Kā tev iet?", options: ["Ka tev iet?", "Kā tev iet?", "Kā tēv iet?", "Kā jums iet?"] },
+            { prompt: "Select the correct spelling for 'Good afternoon / Good day':", target: "Good afternoon", correct: "Labdien", options: ["Labdien", "Labdienā", "Labdienu", "Labdienī"] },
+            { prompt: "Select the correct spelling for 'Good evening':", target: "Good evening", correct: "Labvakar", options: ["Labvakar", "Labvakars", "Labvakarā", "Labvakaru"] },
+            { prompt: "Select the correct spelling for 'Good night':", target: "Good night", correct: "Ar labu nakti", options: ["Ar labu nakti", "Ar labunakti", "Ar labu naktī", "Labu nakti"] },
+            { prompt: "Select the correct spelling for 'Nice to meet you':", target: "Nice to meet you", correct: "Prieks iepazīties", options: ["Prieks iepazīties", "Prieks iepazities", "Prieks iepazīšanās", "Prieks satikties"] },
+            { prompt: "Select the correct spelling for 'You're welcome':", target: "You're welcome", correct: "Nav par ko", options: ["Nav par ko", "Nav par kā", "Nav par ko?", "Nav par ko!"] },
+            { prompt: "Select the correct spelling for 'Yes':", target: "Yes", correct: "Jā", options: ["Ja", "Jā", "Jāa", "Nē"] },
+            { prompt: "Select the correct spelling for 'No':", target: "No", correct: "Nē", options: ["Ne", "Nē", "Nēē", "Jā"] },
+            { prompt: "Select the correct spelling for 'Help!':", target: "Help!", correct: "Palīgā!", options: ["Paliga!", "Palīgā!", "Palīga!", "Palīdziet!"] },
+            { prompt: "Select the correct spelling for 'Cheers! / To your health!':", target: "Cheers!", correct: "Priekā!", options: ["Prieka!", "Priekā!", "Priekāā", "Uz veselību!"] },
+            { prompt: "Select the correct spelling for 'See you later':", target: "See you later", correct: "Tiekamies vēlāk", options: ["Tiekamies velak", "Tiekamies vēlāk", "Tiekamies vēlak", "Uz redzēšanos"] },
+            { prompt: "Select the correct spelling for 'One':", target: "One", correct: "Viens", options: ["Viens", "Vienš", "Vienss", "Viena"] },
+            { prompt: "Select the correct spelling for 'Two':", target: "Two", correct: "Divi", options: ["Divi", "Divī", "Divis", "Divas"] },
+            { prompt: "Select the correct spelling for 'Three':", target: "Three", correct: "Trīs", options: ["Tris", "Trīs", "Trīss", "Trīs!"] },
+            { prompt: "Select the correct spelling for 'Four':", target: "Four", correct: "Četri", options: ["Cetri", "Četri", "Četrī", "Četras"] },
+            { prompt: "Select the correct spelling for 'Five':", target: "Five", correct: "Pieci", options: ["Pieci", "Piecī", "Piecis", "Piecas"] },
+            { prompt: "Select the correct spelling for 'Ten':", target: "Ten", correct: "Desmit", options: ["Desmit", "Desmīt", "Desmitt", "Desmiti"] },
+            { prompt: "Select the correct spelling for 'Red':", target: "Red", correct: "Sarkans", options: ["Sarkans", "Sarkāns", "Sarkanss", "Sarkana"] },
+            { prompt: "Select the correct spelling for 'Blue':", target: "Blue", correct: "Zils", options: ["Zils", "Zīls", "Zilss", "Zila"] },
+            { prompt: "Select the correct spelling for 'Green':", target: "Green", correct: "Zaļš", options: ["Zals", "Zaļš", "Zaļšš", "Zaļa"] },
+            { prompt: "Select the correct spelling for 'Yellow':", target: "Yellow", correct: "Dzeltens", options: ["Dzeltens", "Dzeltenš", "Dzeltēns", "Dzeltena"] },
+            { prompt: "Select the correct spelling for 'Black':", target: "Black", correct: "Melns", options: ["Melns", "Melņs", "Melnš", "Melna"] },
+            { prompt: "Select the correct spelling for 'White':", target: "White", correct: "Balts", options: ["Balts", "Baltš", "Baltts", "Balta"] },
+            { prompt: "Select the correct spelling for 'Mother':", target: "Mother", correct: "Māte", options: ["Mate", "Māte", "Mātē", "Mātes"] },
+            { prompt: "Select the correct spelling for 'Father':", target: "Father", correct: "Tēvs", options: ["Tevs", "Tēvs", "Tēvš", "Tēva"] },
+            { prompt: "Select the correct spelling for 'Brother':", target: "Brother", correct: "Brālis", options: ["Bralis", "Brālis", "Brālīs", "Brāļa"] },
+            { prompt: "Select the correct spelling for 'Sister':", target: "Sister", correct: "Māsa", options: ["Masa", "Māsa", "Māsā", "Māsas"] },
+            { prompt: "Select the correct spelling for 'House':", target: "House", correct: "Māja", options: ["Maja", "Māja", "Mājā", "Māju"] },
+            { prompt: "Select the correct spelling for 'City':", target: "City", correct: "Pilsēta", options: ["Pilseta", "Pilsēta", "Pilsētā", "Pilsētu"] },
+            { prompt: "Select the correct spelling for 'Shop / Store':", target: "Shop", correct: "Veikals", options: ["Veikals", "Veikalš", "Veikāls", "Veikalu"] },
+            { prompt: "Select the correct spelling for 'Milk':", target: "Milk", correct: "Piens", options: ["Piens", "Ūdens", "Krējums", "Piena"] },
+            { prompt: "Select the correct spelling for 'Bread':", target: "Bread", correct: "Maize", options: ["Maize", "Maīze", "Meize", "Maizes"] },
+            { prompt: "Select the correct spelling for 'Water':", target: "Water", correct: "Ūdens", options: ["Udens", "Ūdens", "Ūdins", "Ūdeni"] }
         ],
         2: [
-            { prompt: "Select the correct spelling for 'Apple':", target: "Apple", correct: "Ābols", options: ["Abols", "Ābols", "Ābuls"] },
-            { prompt: "Select the correct spelling for 'Good morning':", target: "Good morning", correct: "Labrīt", options: ["Labvakar", "Labdien", "Labrīt"] },
-            { prompt: "Select the correct spelling for 'Goodbye':", target: "Goodbye", correct: "Uz redzēšanos", options: ["Uz neredzēšanos", "Uz redzēšanos", "Uz tikšanos"] },
-            { prompt: "Select the correct spelling for 'School':", target: "School", correct: "Skola", options: ["Skola", "Skōla", "Skolaa"] },
-            { prompt: "Select the correct spelling for 'Book':", target: "Book", correct: "Grāmata", options: ["Gramata", "Grāmata", "Gramāta"] },
-            { prompt: "Select the correct spelling for 'Family':", target: "Family", correct: "Ģimene", options: ["Gimene", "Ģimene", "Ģimenē"] },
-            { prompt: "Select the correct spelling for 'Chair':", target: "Chair", correct: "Krēsls", options: ["Kresls", "Krēsls", "Krēslš"] },
-            { prompt: "Select the correct spelling for 'Table':", target: "Table", correct: "Galds", options: ["Galds", "Galdš", "Galds"] },
-            { prompt: "Select the correct spelling for 'Door':", target: "Door", correct: "Durvis", options: ["Durvis", "Durvīs", "Durvis"] },
-            { prompt: "Select the correct spelling for 'Window':", target: "Window", correct: "Logs", options: ["Logs", "Logš", "Logs"] },
-            { prompt: "Fill in the blank: 'I eat bread'", target: "Es ___ maizi.", correct: "ēdu", options: ["ēdu", "ēd", "ēdam"] },
-            { prompt: "Fill in the blank: 'She drinks tea'", target: "Viņa ___ tēju.", correct: "dzer", options: ["dzeru", "dzer", "dzeram"] },
-            { prompt: "Fill in the blank: 'We go to school'", target: "Mēs ___ uz skolu.", correct: "ejam", options: ["eju", "ej", "ejam"] },
-            { prompt: "Fill in the blank: 'I want water'", target: "Es ___ ūdeni.", correct: "gribu", options: ["gribu", "gribi", "grib"] },
-            { prompt: "Fill in the blank: 'He is a teacher'", target: "Viņš ___ skolotājs.", correct: "ir", options: ["esmu", "esi", "ir"] },
-            { prompt: "Fill in the blank: 'My name is Anna'", target: "Mani ___ Anna.", correct: "sauc", options: ["sauc", "saucu", "saucam"] },
-            { prompt: "Fill in the blank: 'I live in Riga'", target: "Es dzīvoju ___.", correct: "Rīgā", options: ["Rīga", "Rīgā", "Rīgu"] },
-            { prompt: "Fill in the blank: 'The book is on the table'", target: "Grāmata ir uz ___.", correct: "galda", options: ["galds", "galda", "galdu"] },
-            { prompt: "Fill in the blank: 'I am from Latvia'", target: "Es esmu no ___.", correct: "Latvijas", options: ["Latvija", "Latvijas", "Latviju"] },
-            { prompt: "Select the correct locative form: 'in the house'", target: "Es esmu ___.", correct: "mājā", options: ["māja", "mājā", "māju"] },
-            { prompt: "Select the correct locative form: 'at school'", target: "Bērni mācās ___.", correct: "skolā", options: ["skola", "skolā", "skolu"] },
-            { prompt: "Select the correct locative form: 'in the city'", target: "Viņš dzīvo ___.", correct: "pilsētā", options: ["pilsēta", "pilsētā", "pilsētu"] },
-            { prompt: "Select the correct accusative form: 'I am reading a book'", target: "Es lasu ___.", correct: "grāmatu", options: ["grāmata", "grāmatu", "grāmatas"] },
-            { prompt: "Select the correct accusative form: 'She is eating an apple'", target: "Viņa ēd ___.", correct: "ābolu", options: ["ābols", "ābolu", "ābola"] },
-            { prompt: "Select the correct form: 'I am going to the shop'", target: "Es eju uz ___.", correct: "veikalu", options: ["veikals", "veikalu", "veikalā"] },
-            { prompt: "Select the correct spelling for 'How much does it cost?':", target: "How much does it cost?", correct: "Cik tas maksā?", options: ["Cik tas maksāja?", "Kāda ir šīs preces cena?", "Tikai man maksā?", "Kāpēc tas maksā?", "Vai tas ir dārgs?", "Cik tas maksā?"], isHard: true },
-            { prompt: "Select the correct spelling for 'Excuse me / Sorry':", target: "Excuse me / Sorry", correct: "Atvainojiet", options: ["Atsūtiet", "Aizvainojiet", "Atvairiet", "Atvainot", "Atvainoiet", "Atvainojiet"], isHard: true },
-            { prompt: "Fill in the blank with the correct word for 'I drink water':", target: "Es ___ ūdeni.", correct: "dzeru", options: ["dzer", "dzeram", "dzeriet", "dzēru", "es dzeru", "dzeru"], isHard: true },
-            { prompt: "Fill in the blank with the correct word for 'I want coffee':", target: "Es gribu ___.", correct: "kafiju", options: ["kafija", "kafijai", "kafijas", "kafeinu", "Es gribu kafiju", "kafiju"], isHard: true },
-            { prompt: "Fill in the blank with the correct word for 'Where are you going?':", target: "Uz kurieni tu ___?", correct: "ej", options: ["eju", "iet", "esmu", "ejam", "ies", "ej"], isHard: true },
-            { prompt: "Select the correct spelling for 'Dog':", target: "Dog", correct: "Suns", options: ["Suns", "Sunš", "Sūns"] },
-            { prompt: "Select the correct spelling for 'Cat':", target: "Cat", correct: "Kaķis", options: ["Kakis", "Kaķis", "Kaķīs"] },
-            { prompt: "Select the correct spelling for 'Bird':", target: "Bird", correct: "Putns", options: ["Putns", "Putņs", "Pūtns"] },
-            { prompt: "Select the correct spelling for 'Horse':", target: "Horse", correct: "Zirgs", options: ["Zirgs", "Zirgš", "Zīrgs"] },
-            { prompt: "Select the correct spelling for 'Cow':", target: "Cow", correct: "Govs", options: ["Govs", "Govš", "Gōvs"] },
-            { prompt: "Select the correct spelling for 'Mouse':", target: "Mouse", correct: "Pele", options: ["Pele", "Pelē", "Pelee"] },
-            { prompt: "Select the correct spelling for 'Rabbit':", target: "Rabbit", correct: "Trusis", options: ["Trusis", "Trusīs", "Trūsis"] },
-            { prompt: "Select the correct spelling for 'Head':", target: "Head", correct: "Galva", options: ["Galva", "Galvā", "Galvu"] },
-            { prompt: "Select the correct spelling for 'Eye':", target: "Eye", correct: "Acs", options: ["Acs", "Acš", "Ācs"] },
-            { prompt: "Select the correct spelling for 'Hand':", target: "Hand", correct: "Roka", options: ["Roka", "Rokā", "Roku"] },
-            { prompt: "Select the correct spelling for 'Foot / Leg':", target: "Foot", correct: "Kāja", options: ["Kaja", "Kāja", "Kājā"] },
-            { prompt: "Select the correct spelling for 'Sun':", target: "Sun", correct: "Saule", options: ["Saule", "Saulē", "Sauli"] },
-            { prompt: "Select the correct spelling for 'Rain':", target: "Rain", correct: "Lietus", options: ["Lietus", "Lietūs", "Lietuss"] },
-            { prompt: "Select the correct spelling for 'Snow':", target: "Snow", correct: "Sniegs", options: ["Sniegs", "Sniegš", "Sniēgs"] },
-            { prompt: "Select the correct spelling for 'Wind':", target: "Wind", correct: "Vējš", options: ["Vejs", "Vējš", "Vējšš"] },
-            { prompt: "Select the correct spelling for 'Cloud':", target: "Cloud", correct: "Mākonis", options: ["Makonis", "Mākonis", "Mākonīs"] },
-            { prompt: "Select the correct spelling for 'It is raining':", target: "It is raining", correct: "Līst", options: ["List", "Līst", "Līstēs"] },
-            { prompt: "Select the correct spelling for 'Cold':", target: "Cold", correct: "Auksts", options: ["Auksts", "Aukstš", "Aūksts"] },
-            { prompt: "Select the correct spelling for 'Warm':", target: "Warm", correct: "Silts", options: ["Silts", "Siltš", "Sīlts"] },
-            { prompt: "Select the correct spelling for 'Hot':", target: "Hot", correct: "Karsts", options: ["Karsts", "Karstš", "Kārsts"] },
-            { prompt: "Select the correct spelling for 'Shirt':", target: "Shirt", correct: "Krekls", options: ["Krekls", "Kreklš", "Krēkls"] },
-            { prompt: "Select the correct spelling for 'Shoes':", target: "Shoes", correct: "Kurpes", options: ["Kurpes", "Kurpēs", "Kurpis"] },
-            { prompt: "Select the correct spelling for 'Hat':", target: "Hat", correct: "Cepure", options: ["Cepure", "Cepurē", "Cepuri"] },
-            { prompt: "Select the correct spelling for 'Car':", target: "Car", correct: "Automašīna", options: ["Automasina", "Automašīna", "Automašīnā"] },
-            { prompt: "Select the correct spelling for 'Bus':", target: "Bus", correct: "Autobuss", options: ["Autobuss", "Autobusš", "Autobūss"] },
-            { prompt: "Select the correct spelling for 'Train':", target: "Train", correct: "Vilciens", options: ["Vilciens", "Vilcienš", "Vilciēns"] },
-            { prompt: "Select the correct spelling for 'Airport':", target: "Airport", correct: "Lidosta", options: ["Lidosta", "Lidostā", "Lidostu"] },
-            { prompt: "Select the correct spelling for 'Ticket':", target: "Ticket", correct: "Biļete", options: ["Bilete", "Biļete", "Biļetē"] },
-            { prompt: "Select the correct spelling for 'Station':", target: "Station", correct: "Stacija", options: ["Stacija", "Stacijā", "Staciju"] },
-            { prompt: "Select the correct spelling for 'Teacher':", target: "Teacher", correct: "Skolotājs", options: ["Skolotajs", "Skolotājs", "Skolotājš"] },
-            { prompt: "Select the correct spelling for 'Doctor':", target: "Doctor", correct: "Ārsts", options: ["Arsts", "Ārsts", "Ārstš"] },
-            { prompt: "Select the correct spelling for 'Student':", target: "Student", correct: "Students", options: ["Students", "Studentš", "Stūdents"] },
-            { prompt: "Select the correct spelling for 'Tree':", target: "Tree", correct: "Koks", options: ["Koks", "Kokš", "Kōks"] },
-            { prompt: "Select the correct spelling for 'Flower':", target: "Flower", correct: "Zieds", options: ["Zieds", "Ziedš", "Ziēds"] },
-            { prompt: "Select the correct spelling for 'Forest':", target: "Forest", correct: "Mežs", options: ["Mezs", "Mežs", "Mežš"] },
-            { prompt: "Select the correct spelling for 'Sea':", target: "Sea", correct: "Jūra", options: ["Jura", "Jūra", "Jūrā"] },
-            { prompt: "Select the correct spelling for 'Mountain':", target: "Mountain", correct: "Kalns", options: ["Kalns", "Kalņs", "Kālns"] },
-            { prompt: "Select the correct spelling for 'Sky':", target: "Sky", correct: "Debesis", options: ["Debesis", "Debesīs", "Debess"] },
-            { prompt: "Fill in the blank: 'The dog is big'", target: "Suns ir ___.", correct: "liels", options: ["liels", "liela", "lieli"] },
-            { prompt: "Fill in the blank: 'I see a cat'", target: "Es redzu ___.", correct: "kaķi", options: ["kaķis", "kaķi", "kaķa"] },
-            { prompt: "Fill in the blank: 'We are in the forest'", target: "Mēs esam ___.", correct: "mežā", options: ["mežs", "mežā", "mežu"] },
-            { prompt: "Fill in the blank: 'It is cold today'", target: "Šodien ir ___.", correct: "auksts", options: ["auksts", "auksta", "auksti"] },
-            { prompt: "Fill in the blank: 'I am going by bus'", target: "Es braucu ar ___.", correct: "autobusu", options: ["autobuss", "autobusu", "autobusā"] },
-            { prompt: "Fill in the blank: 'The bird is flying'", target: "Putns ___.", correct: "lido", options: ["lido", "lidoju", "lidot"] },
-            { prompt: "Fill in the blank: 'My head hurts'", target: "Man sāp ___.", correct: "galva", options: ["galva", "galvu", "galvas"] },
-            { prompt: "Fill in the blank: 'The sun is shining'", target: "Saule ___.", correct: "spīd", options: ["spīd", "spīdēs", "spīdēja"] }
+            { prompt: "Select the correct spelling for 'Apple':", target: "Apple", correct: "Ābols", options: ["Abols", "Ābols", "Ābuls", "Ābola"] },
+            { prompt: "Select the correct spelling for 'Good morning':", target: "Good morning", correct: "Labrīt", options: ["Labvakar", "Labdien", "Labrīt", "Labrīts"] },
+            { prompt: "Select the correct spelling for 'Goodbye':", target: "Goodbye", correct: "Uz redzēšanos", options: ["Uz neredzēšanos", "Uz redzēšanos", "Uz tikšanos", "Uz redzēšanu"] },
+            { prompt: "Select the correct spelling for 'School':", target: "School", correct: "Skola", options: ["Skola", "Skōla", "Skolaa", "Skolu"] },
+            { prompt: "Select the correct spelling for 'Book':", target: "Book", correct: "Grāmata", options: ["Gramata", "Grāmata", "Gramāta", "Grāmatu"] },
+            { prompt: "Select the correct spelling for 'Family':", target: "Family", correct: "Ģimene", options: ["Gimene", "Ģimene", "Ģimenē", "Ģimenes"] },
+            { prompt: "Select the correct spelling for 'Chair':", target: "Chair", correct: "Krēsls", options: ["Kresls", "Krēsls", "Krēslš", "Krēslu"] },
+            { prompt: "Select the correct spelling for 'Table':", target: "Table", correct: "Galds", options: ["Galds", "Galdš", "Galda", "Galdu"] },
+            { prompt: "Select the correct spelling for 'Door':", target: "Door", correct: "Durvis", options: ["Durvis", "Durvīs", "Durvīm", "Durvju"] },
+            { prompt: "Select the correct spelling for 'Window':", target: "Window", correct: "Logs", options: ["Logs", "Logš", "Logu", "Loga"] },
+            { prompt: "Fill in the blank: 'I eat bread'", target: "Es ___ maizi.", correct: "ēdu", options: ["ēdu", "ēd", "ēdam", "ēdīšu"] },
+            { prompt: "Fill in the blank: 'She drinks tea'", target: "Viņa ___ tēju.", correct: "dzer", options: ["dzeru", "dzer", "dzeram", "dzēra"] },
+            { prompt: "Fill in the blank: 'We go to school'", target: "Mēs ___ uz skolu.", correct: "ejam", options: ["eju", "ej", "ejam", "iesim"] },
+            { prompt: "Fill in the blank: 'I want water'", target: "Es ___ ūdeni.", correct: "gribu", options: ["gribu", "gribi", "grib", "gribēju"] },
+            { prompt: "Fill in the blank: 'He is a teacher'", target: "Viņš ___ skolotājs.", correct: "ir", options: ["esmu", "esi", "ir", "bija"] },
+            { prompt: "Fill in the blank: 'My name is Anna'", target: "Mani ___ Anna.", correct: "sauc", options: ["sauc", "saucu", "saucam", "sauca"] },
+            { prompt: "Fill in the blank: 'I live in Riga'", target: "Es dzīvoju ___.", correct: "Rīgā", options: ["Rīga", "Rīgā", "Rīgu", "Rīgas"] },
+            { prompt: "Fill in the blank: 'The book is on the table'", target: "Grāmata ir uz ___.", correct: "galda", options: ["galds", "galda", "galdu", "galdam"] },
+            { prompt: "Fill in the blank: 'I am from Latvia'", target: "Es esmu no ___.", correct: "Latvijas", options: ["Latvija", "Latvijas", "Latviju", "Latvijā"] },
+            { prompt: "Select the correct locative form: 'in the house'", target: "Es esmu ___.", correct: "mājā", options: ["māja", "mājā", "māju", "mājas"] },
+            { prompt: "Select the correct locative form: 'at school'", target: "Bērni mācās ___.", correct: "skolā", options: ["skola", "skolā", "skolu", "skolas"] },
+            { prompt: "Select the correct locative form: 'in the city'", target: "Viņš dzīvo ___.", correct: "pilsētā", options: ["pilsēta", "pilsētā", "pilsētu", "pilsētas"] },
+            { prompt: "Select the correct accusative form: 'I am reading a book'", target: "Es lasu ___.", correct: "grāmatu", options: ["grāmata", "grāmatu", "grāmatas", "grāmatai"] },
+            { prompt: "Select the correct accusative form: 'She is eating an apple'", target: "Viņa ēd ___.", correct: "ābolu", options: ["ābols", "ābolu", "ābola", "ābolam"] },
+            { prompt: "Select the correct form: 'I am going to the shop'", target: "Es eju uz ___.", correct: "veikalu", options: ["veikals", "veikalu", "veikalā", "veikala"] },
+            { prompt: "Select the correct spelling for 'Dog':", target: "Dog", correct: "Suns", options: ["Suns", "Sunš", "Sūns", "Suņa"] },
+            { prompt: "Select the correct spelling for 'Cat':", target: "Cat", correct: "Kaķis", options: ["Kakis", "Kaķis", "Kaķīs", "Kaķa"] },
+            { prompt: "Select the correct spelling for 'Bird':", target: "Bird", correct: "Putns", options: ["Putns", "Putņs", "Pūtns", "Putna"] },
+            { prompt: "Select the correct spelling for 'Horse':", target: "Horse", correct: "Zirgs", options: ["Zirgs", "Zirgš", "Zīrgs", "Zirga"] },
+            { prompt: "Select the correct spelling for 'Cow':", target: "Cow", correct: "Govs", options: ["Govs", "Govš", "Gōvs", "Govs"] },
+            { prompt: "Select the correct spelling for 'Mouse':", target: "Mouse", correct: "Pele", options: ["Pele", "Pelē", "Pelee", "Peles"] },
+            { prompt: "Select the correct spelling for 'Rabbit':", target: "Rabbit", correct: "Trusis", options: ["Trusis", "Trusīs", "Trūsis", "Truša"] },
+            { prompt: "Select the correct spelling for 'Head':", target: "Head", correct: "Galva", options: ["Galva", "Galvā", "Galvu", "Galvas"] },
+            { prompt: "Select the correct spelling for 'Eye':", target: "Eye", correct: "Acs", options: ["Acs", "Acš", "Ācs", "Acis"] },
+            { prompt: "Select the correct spelling for 'Hand':", target: "Hand", correct: "Roka", options: ["Roka", "Rokā", "Roku", "Rokas"] },
+            { prompt: "Select the correct spelling for 'Foot / Leg':", target: "Foot", correct: "Kāja", options: ["Kaja", "Kāja", "Kājā", "Kājas"] },
+            { prompt: "Select the correct spelling for 'Sun':", target: "Sun", correct: "Saule", options: ["Saule", "Saulē", "Sauli", "Saules"] },
+            { prompt: "Select the correct spelling for 'Rain':", target: "Rain", correct: "Lietus", options: ["Lietus", "Lietūs", "Lietuss", "Lietu"] },
+            { prompt: "Select the correct spelling for 'Snow':", target: "Snow", correct: "Sniegs", options: ["Sniegs", "Sniegš", "Sniēgs", "Sniega"] },
+            { prompt: "Select the correct spelling for 'Wind':", target: "Wind", correct: "Vējš", options: ["Vejs", "Vējš", "Vējšš", "Vēja"] },
+            { prompt: "Select the correct spelling for 'Cloud':", target: "Cloud", correct: "Mākonis", options: ["Makonis", "Mākonis", "Mākonīs", "Mākoņa"] },
+            { prompt: "Select the correct spelling for 'It is raining':", target: "It is raining", correct: "Līst", options: ["List", "Līst", "Līstēs", "Lija"] },
+            { prompt: "Select the correct spelling for 'Cold':", target: "Cold", correct: "Auksts", options: ["Auksts", "Aukstš", "Aūksts", "Auksta"] },
+            { prompt: "Select the correct spelling for 'Warm':", target: "Warm", correct: "Silts", options: ["Silts", "Siltš", "Sīlts", "Silta"] },
+            { prompt: "Select the correct spelling for 'Hot':", target: "Hot", correct: "Karsts", options: ["Karsts", "Karstš", "Kārsts", "Karsta"] },
+            { prompt: "Select the correct spelling for 'Shirt':", target: "Shirt", correct: "Krekls", options: ["Krekls", "Kreklš", "Krēkls", "Kreklu"] },
+            { prompt: "Select the correct spelling for 'Shoes':", target: "Shoes", correct: "Kurpes", options: ["Kurpes", "Kurpēs", "Kurpis", "Kurpju"] },
+            { prompt: "Select the correct spelling for 'Hat':", target: "Hat", correct: "Cepure", options: ["Cepure", "Cepurē", "Cepuri", "Cepures"] },
+            { prompt: "Select the correct spelling for 'Car':", target: "Car", correct: "Automašīna", options: ["Automasina", "Automašīna", "Automašīnā", "Automašīnu"] },
+            { prompt: "Select the correct spelling for 'Bus':", target: "Bus", correct: "Autobuss", options: ["Autobuss", "Autobusš", "Autobūss", "Autobusa"] },
+            { prompt: "Select the correct spelling for 'Train':", target: "Train", correct: "Vilciens", options: ["Vilciens", "Vilcienš", "Vilciēns", "Vilciena"] },
+            { prompt: "Select the correct spelling for 'Airport':", target: "Airport", correct: "Lidosta", options: ["Lidosta", "Lidostā", "Lidostu", "Lidostas"] },
+            { prompt: "Select the correct spelling for 'Ticket':", target: "Ticket", correct: "Biļete", options: ["Bilete", "Biļete", "Biļetē", "Biļeti"] },
+            { prompt: "Select the correct spelling for 'Station':", target: "Station", correct: "Stacija", options: ["Stacija", "Stacijā", "Staciju", "Stacijas"] },
+            { prompt: "Select the correct spelling for 'Teacher':", target: "Teacher", correct: "Skolotājs", options: ["Skolotajs", "Skolotājs", "Skolotājš", "Skolotāja"] },
+            { prompt: "Select the correct spelling for 'Doctor':", target: "Doctor", correct: "Ārsts", options: ["Arsts", "Ārsts", "Ārstš", "Ārsta"] },
+            { prompt: "Select the correct spelling for 'Student':", target: "Student", correct: "Students", options: ["Students", "Studentš", "Stūdents", "Studenta"] },
+            { prompt: "Select the correct spelling for 'Tree':", target: "Tree", correct: "Koks", options: ["Koks", "Kokš", "Kōks", "Koka"] },
+            { prompt: "Select the correct spelling for 'Flower':", target: "Flower", correct: "Zieds", options: ["Zieds", "Ziedš", "Ziēds", "Zieda"] },
+            { prompt: "Select the correct spelling for 'Forest':", target: "Forest", correct: "Mežs", options: ["Mezs", "Mežs", "Mežš", "Meža"] },
+            { prompt: "Select the correct spelling for 'Sea':", target: "Sea", correct: "Jūra", options: ["Jura", "Jūra", "Jūrā", "Jūru"] },
+            { prompt: "Select the correct spelling for 'Mountain':", target: "Mountain", correct: "Kalns", options: ["Kalns", "Kalņs", "Kālns", "Kalna"] },
+            { prompt: "Select the correct spelling for 'Sky':", target: "Sky", correct: "Debesis", options: ["Debesis", "Debesīs", "Debess", "Debesīm"] },
+            { prompt: "Fill in the blank: 'The dog is big'", target: "Suns ir ___.", correct: "liels", options: ["liels", "liela", "lieli", "lielais"] },
+            { prompt: "Fill in the blank: 'I see a cat'", target: "Es redzu ___.", correct: "kaķi", options: ["kaķis", "kaķi", "kaķa", "kaķim"] },
+            { prompt: "Fill in the blank: 'We are in the forest'", target: "Mēs esam ___.", correct: "mežā", options: ["mežs", "mežā", "mežu", "mežam"] },
+            { prompt: "Fill in the blank: 'It is cold today'", target: "Šodien ir ___.", correct: "auksts", options: ["auksts", "auksta", "auksti", "aukstais"] },
+            { prompt: "Fill in the blank: 'I am going by bus'", target: "Es braucu ar ___.", correct: "autobusu", options: ["autobuss", "autobusu", "autobusā", "autobusa"] },
+            { prompt: "Fill in the blank: 'The bird is flying'", target: "Putns ___.", correct: "lido", options: ["lido", "lidoju", "lidot", "lidoja"] },
+            { prompt: "Fill in the blank: 'My head hurts'", target: "Man sāp ___.", correct: "galva", options: ["galva", "galvu", "galvas", "galvai"] },
+            { prompt: "Fill in the blank: 'The sun is shining'", target: "Saule ___.", correct: "spīd", options: ["spīd", "spīdēs", "spīdēja", "spīdēt"] }
         ],
         3: [
-            { prompt: "Select the correct spelling for 'Night':", target: "Night", correct: "Nakts", options: ["Rīts", "Nakts", "Diena"] },
-            { prompt: "Select the correct spelling for 'Monday':", target: "Monday", correct: "Pirmdiena", options: ["Pirmdiena", "Pirmdienā", "Pirmdienu"] },
-            { prompt: "Select the correct spelling for 'Sunday':", target: "Sunday", correct: "Svētdiena", options: ["Svetdiena", "Svētdiena", "Svētdienā"] },
-            { prompt: "Select the correct spelling for 'Today':", target: "Today", correct: "Šodien", options: ["Sodien", "Šodien", "Šodienā"] },
-            { prompt: "Select the correct spelling for 'Tomorrow':", target: "Tomorrow", correct: "Rīt", options: ["Rit", "Rīt", "Rīts"] },
-            { prompt: "Select the correct spelling for 'Yesterday':", target: "Yesterday", correct: "Vakar", options: ["Vakar", "Vakars", "Vakarā"] },
-            { prompt: "Select the correct spelling for 'Now':", target: "Now", correct: "Tagad", options: ["Tagad", "Tagād", "Tagads"] },
-            { prompt: "Select the correct spelling for 'Beer':", target: "Beer", correct: "Alus", options: ["Alus", "Alūs", "Aluss"] },
-            { prompt: "Select the correct spelling for 'Wine':", target: "Wine", correct: "Vīns", options: ["Vins", "Vīns", "Vīnš"] },
-            { prompt: "Select the correct spelling for 'Tea':", target: "Tea", correct: "Tēja", options: ["Teja", "Tēja", "Tējā"] },
-            { prompt: "Select the correct spelling for 'Soup':", target: "Soup", correct: "Zupa", options: ["Zupa", "Zūpa", "Zupā"] },
-            { prompt: "Select the correct spelling for 'Potato':", target: "Potato", correct: "Kartupelis", options: ["Kartupelis", "Kartupēlis", "Kartupelīs"] },
-            { prompt: "Select the correct spelling for 'Banana':", target: "Banana", correct: "Banāns", options: ["Banans", "Banāns", "Banānš"] },
-            { prompt: "Select the correct form: 'beautiful house' (feminine)", target: "___ māja.", correct: "Skaista", options: ["Skaists", "Skaista", "Skaisti"] },
-            { prompt: "Select the correct form: 'big city'", target: "___ pilsēta.", correct: "Liela", options: ["Liels", "Liela", "Lieli"] },
-            { prompt: "Select the correct plural: 'good friends'", target: "Labi ___.", correct: "draugi", options: ["draugs", "draugi", "draugu"] },
-            { prompt: "Select the correct form: 'cold water'", target: "___ ūdens.", correct: "Auksts", options: ["Auksts", "Auksta", "Auksti"] },
-            { prompt: "Select the correct form: 'hot tea'", target: "___ tēja.", correct: "Karsta", options: ["Karsts", "Karsta", "Karsti"] },
-            { prompt: "Fill in the blank: 'Open the door, please'", target: "Atver ___, lūdzu.", correct: "durvis", options: ["durvis", "durvīm", "durvju"] },
-            { prompt: "Fill in the blank: 'The cat is under the table'", target: "Kaķis ir zem ___.", correct: "galda", options: ["galds", "galda", "galdu"] },
-            { prompt: "Fill in the blank: 'I like Latvian food'", target: "Man patīk latviešu ___.", correct: "ēdiens", options: ["ēdiens", "ēdienu", "ēdiena"] },
-            { prompt: "Fill in the blank: 'We are learning Latvian'", target: "Mēs mācāmies ___.", correct: "latviešu valodu", options: ["latviešu valoda", "latviešu valodu", "latviešu valodā"] },
-            { prompt: "Fill in the blank: 'It is raining today'", target: "Šodien ___.", correct: "līst", options: ["līst", "līstēs", "līstēja"] },
-            { prompt: "Choose the correct past tense form: 'Yesterday I went to the shop'", target: "Vakar es ___ uz veikalu.", correct: "gāju", options: ["gājām", "gāji", "gājuši", "iešu", "gāja", "gāju"], isHard: true },
-            { prompt: "Choose the correct future tense form: 'Tomorrow we will celebrate'", target: "Rīt mēs ___ svētkus.", correct: "svinēsim", options: ["svinējām", "svinam", "svinēsim", "svinēja", "svinēsi", "svinām"], isHard: true },
-            { prompt: "Select the correct locative form for 'in the kitchen':", target: "Mamma gatavo pusdienas ___.", correct: "virtuvē", options: ["virtuve", "virtuvē", "virtuvi", "virtuvēi", "virtuvā", "virtuvēs"], isHard: true },
-            { prompt: "Select the correct plural form for 'beautiful flowers':", target: "Dārzā zied ___ puķes.", correct: "skaistas", options: ["skaisti", "skaistas", "skaistus", "skaista", "skaistās", "skaistu"], isHard: true },
-            { prompt: "Choose the correct phrase: 'I am going to the market'", target: "Es eju uz ___ .", correct: "tirgu", options: ["tirgus", "tirgū", "tirgā", "tirga", "tirgu vārti", "tirgu"], isHard: true },
-            { prompt: "Choose the correct past tense: 'Yesterday I ate bread'", target: "Vakar es ___ maizi.", correct: "ēdu", options: ["ēdīšu", "ēdīju", "ēdīsi", "ēdām", "ēda", "ēdu"], isHard: true },
-            { prompt: "Choose the correct past tense: 'We went home'", target: "Mēs ___ mājās.", correct: "gājām", options: ["gāju", "gājām", "iešot", "ejam", "gājāt", "gāja"], isHard: true },
-            { prompt: "Choose the correct future tense: 'Tomorrow I will go'", target: "Rīt es ___.", correct: "iešu", options: ["eju", "gāju", "iešu", "gāji", "iesim", "gājis"], isHard: true },
-            { prompt: "Choose the correct future tense: 'They will celebrate'", target: "Viņi ___ svētkus.", correct: "svinēs", options: ["svin", "svinēja", "svinēs", "sviniet", "svinēsim", "svinām"], isHard: true },
-            { prompt: "Choose the correct present form: 'You (singular) want coffee'", target: "Tu ___ kafiju.", correct: "gribi", options: ["gribu", "gribi", "grib", "gribēju", "gribēs", "gribam"], isHard: true },
-            { prompt: "Select the correct spelling for 'I am tired' (male form)", target: "I am tired (male form)", correct: "Es esmu noguris", options: ["Es būšu noguris", "Es esmu noguris", "Es biju noguris", "Es esmu nogurusi", "Man ir noguris", "Es būtu noguris"], isHard: true },
-            { prompt: "Choose the correct form: 'I was tired'", target: "Es ___ noguris.", correct: "biju", options: ["esmu", "būšu", "biju", "būtu", "bija", "būsim"], isHard: true },
-            { prompt: "Select the correct spelling for 'Do you speak English?':", target: "Do you speak English?", correct: "Vai jūs runājat angliski?", options: ["Vai jūs runājat angļu?", "Vai tu runā angliski?", "Vai jūs runājat angļu valodā?", "Vai jūs runājāt angliski?", "Vai jūs runājat angliski?", "Vai jūs runājat angļu valodā"], isHard: true },
-            { prompt: "Select the correct spelling for 'I don't know':", target: "I don't know", correct: "Es nezinu", options: ["Es zinu", "Es nezināju", "Es zināju", "Es nezini", "Es nezinātu", "Es nezinu"], isHard: true },
-            { prompt: "Select the correct spelling for 'Where are you from?':", target: "Where are you from?", correct: "No kurienes tu esi?", options: ["No kurienes jūs esat?", "No kurienes viņš ir?", "Kur tu esi?", "No kura tu esi?", "No kurienes tu esi", "No kurienes tu esi?"], isHard: true },
-            { prompt: "Select the correct spelling for 'I am from...':", target: "I am from...", correct: "Es esmu no...", options: ["Es esmu ar...", "Es esmu pie...", "Es esmu uz...", "Es nāku no...", "Es esmu no", "Es esmu no..."], isHard: true },
-            { prompt: "Select the correct spelling for 'Happy':", target: "Happy", correct: "Laimes", options: ["Laimes", "Laīmēs", "Laime"] },
-            { prompt: "Select the correct spelling for 'I am happy':", target: "I am happy", correct: "Es esmu laimīgs", options: ["Es esmu laimigs", "Es esmu laimīgs", "Es esmu laimīgš"] },
-            { prompt: "Select the correct spelling for 'Sad':", target: "Sad", correct: "Skumjš", options: ["Skumjs", "Skumjš", "Skūmjš"] },
-            { prompt: "Select the correct spelling for 'Angry':", target: "Angry", correct: "Dusmīgs", options: ["Dusmigs", "Dusmīgs", "Dusmīgš"] },
-            { prompt: "Select the correct spelling for 'Tired':", target: "Tired", correct: "Noguris", options: ["Noguris", "Nogurīs", "Noguriš"] },
-            { prompt: "Select the correct spelling for 'I am scared':", target: "I am scared", correct: "Es baidos", options: ["Es baidos", "Es baidōs", "Es baidos"] },
-            { prompt: "Select the correct spelling for 'Dress':", target: "Dress", correct: "Kleita", options: ["Kleita", "Kleitā", "Kleitu"] },
-            { prompt: "Select the correct spelling for 'Socks':", target: "Socks", correct: "Zeķes", options: ["Zekes", "Zeķes", "Zeķēs"] },
-            { prompt: "Select the correct spelling for 'Bicycle':", target: "Bicycle", correct: "Velosipēds", options: ["Velosipeds", "Velosipēds", "Velosipēdš"] },
-            { prompt: "Select the correct spelling for 'Road':", target: "Road", correct: "Ceļš", options: ["Cels", "Ceļš", "Ceļšš"] },
-            { prompt: "Select the correct spelling for 'How much is this?':", target: "How much is this?", correct: "Cik tas maksā?", options: ["Cik tas maksa?", "Cik tas maksā?", "Cik tas maksās?"] },
-            { prompt: "Select the correct spelling for 'I would like...':", target: "I would like...", correct: "Es gribētu...", options: ["Es gribētu...", "Es gribu...", "Es gribēšu..."] },
-            { prompt: "Select the correct spelling for 'Where is the station?':", target: "Where is the station?", correct: "Kur ir stacija?", options: ["Kur ir stacija?", "Kur ir stacijā?", "Kur ir staciju?"] },
-            { prompt: "Select the correct spelling for 'I need help':", target: "I need help", correct: "Man vajag palīdzību", options: ["Man vajag palidzibu", "Man vajag palīdzību", "Man vajag palīdzību"] },
-            { prompt: "Select the correct spelling for 'Open / Closed':", target: "Open", correct: "Atvērts", options: ["Atverts", "Atvērts", "Atvērtš"] },
-            { prompt: "Select the correct spelling for 'Closed':", target: "Closed", correct: "Slēgts", options: ["Slegts", "Slēgts", "Slēgtš"] },
-            { prompt: "Select the correct spelling for 'Left':", target: "Left", correct: "Pa kreisi", options: ["Pa kreisi", "Pa kreisī", "Pa kreiso"] },
-            { prompt: "Select the correct spelling for 'Right':", target: "Right", correct: "Pa labi", options: ["Pa labi", "Pa labī", "Pa labo"] },
-            { prompt: "Select the correct spelling for 'Straight ahead':", target: "Straight ahead", correct: "Taisni uz priekšu", options: ["Taisni uz priekšu", "Taisni uz priekšu", "Taisni uz priekšu"] },
-            { prompt: "Select the correct spelling for 'I am lost':", target: "I am lost", correct: "Es esmu apmaldījies", options: ["Es esmu apmaldijies", "Es esmu apmaldījies", "Es esmu apmaldījies"] },
-            { prompt: "Fill in the blank: 'The cat is sleeping'", target: "Kaķis ___.", correct: "guļ", options: ["guļ", "guļu", "gulēt"] },
-            { prompt: "Fill in the blank: 'I like dogs'", target: "Man patīk ___.", correct: "suņi", options: ["suns", "suņi", "suņu"] },
-            { prompt: "Fill in the blank: 'She is a doctor'", target: "Viņa ir ___.", correct: "ārste", options: ["ārsts", "ārste", "ārsti"] },
-            { prompt: "Fill in the blank: 'We are going to the sea'", target: "Mēs ejam uz ___.", correct: "jūru", options: ["jūra", "jūru", "jūrā"] },
-            { prompt: "Fill in the blank: 'The tree is tall'", target: "Koks ir ___.", correct: "augsts", options: ["augsts", "augsta", "augsti"] },
-            { prompt: "Fill in the blank: 'I am buying shoes'", target: "Es pērku ___.", correct: "kurpes", options: ["kurpe", "kurpes", "kurpēm"] },
-            { prompt: "Fill in the blank: 'It is windy today'", target: "Šodien ir ___.", correct: "vējains", options: ["vējains", "vēja", "vējš"] },
-            { prompt: "Select the correct locative: 'in the forest'", target: "Dzīvnieki dzīvo ___.", correct: "mežā", options: ["mežs", "mežā", "mežu"], isHard: true },
-            { prompt: "Select the correct locative: 'at the airport'", target: "Es esmu ___.", correct: "lidostā", options: ["lidosta", "lidostā", "lidostu"], isHard: true },
-            { prompt: "Select the correct accusative: 'I am buying a ticket'", target: "Es pērku ___.", correct: "biļeti", options: ["biļete", "biļeti", "biļetes"], isHard: true },
-            { prompt: "Select the correct form: 'I am afraid of the dog'", target: "Es baidos no ___.", correct: "suņa", options: ["suns", "suņa", "suni"], isHard: true },
-            { prompt: "Choose the correct past tense: 'Yesterday it rained'", target: "Vakar ___.", correct: "lija", options: ["līst", "lija", "līs"], isHard: true },
-            { prompt: "Choose the correct future: 'Tomorrow it will snow'", target: "Rīt ___.", correct: "snigs", options: ["snieg", "sniga", "snigs"], isHard: true },
-            { prompt: "Choose the correct form: 'He drove the car'", target: "Viņš ___ automašīnu.", correct: "brauca", options: ["brauc", "brauca", "brauks"], isHard: true },
-            { prompt: "Select the correct plural: 'beautiful flowers'", target: "Skaistas ___.", correct: "puķes", options: ["puķe", "puķes", "puķu"], isHard: true },
-            { prompt: "Select the correct form: 'I am wearing black shoes'", target: "Es valkāju ___ kurpes.", correct: "melnas", options: ["melns", "melnas", "melnu"], isHard: true },
-            { prompt: "Choose the correct present: 'You (pl.) are learning Latvian'", target: "Jūs ___ latviešu valodu.", correct: "mācāties", options: ["mācos", "mācies", "mācāties"], isHard: true }
+            { prompt: "Select the correct spelling for 'Night':", target: "Night", correct: "Nakts", options: ["Rīts", "Nakts", "Diena", "Vakars"] },
+            { prompt: "Select the correct spelling for 'Monday':", target: "Monday", correct: "Pirmdiena", options: ["Pirmdiena", "Pirmdienā", "Pirmdienu", "Pirmdienas"] },
+            { prompt: "Select the correct spelling for 'Sunday':", target: "Sunday", correct: "Svētdiena", options: ["Svetdiena", "Svētdiena", "Svētdienā", "Svētdienu"] },
+            { prompt: "Select the correct spelling for 'Today':", target: "Today", correct: "Šodien", options: ["Sodien", "Šodien", "Šodienā", "Šodienu"] },
+            { prompt: "Select the correct spelling for 'Tomorrow':", target: "Tomorrow", correct: "Rīt", options: ["Rit", "Rīt", "Rīts", "Rītu"] },
+            { prompt: "Select the correct spelling for 'Yesterday':", target: "Yesterday", correct: "Vakar", options: ["Vakar", "Vakars", "Vakarā", "Vakaru"] },
+            { prompt: "Select the correct spelling for 'Now':", target: "Now", correct: "Tagad", options: ["Tagad", "Tagād", "Tagads", "Tagadu"] },
+            { prompt: "Select the correct spelling for 'Beer':", target: "Beer", correct: "Alus", options: ["Alus", "Alūs", "Aluss", "Alu"] },
+            { prompt: "Select the correct spelling for 'Wine':", target: "Wine", correct: "Vīns", options: ["Vins", "Vīns", "Vīnš", "Vīna"] },
+            { prompt: "Select the correct spelling for 'Tea':", target: "Tea", correct: "Tēja", options: ["Teja", "Tēja", "Tējā", "Tēju"] },
+            { prompt: "Select the correct spelling for 'Soup':", target: "Soup", correct: "Zupa", options: ["Zupa", "Zūpa", "Zupā", "Zupu"] },
+            { prompt: "Select the correct spelling for 'Potato':", target: "Potato", correct: "Kartupelis", options: ["Kartupelis", "Kartupēlis", "Kartupelīs", "Kartupeļa"] },
+            { prompt: "Select the correct spelling for 'Banana':", target: "Banana", correct: "Banāns", options: ["Banans", "Banāns", "Banānš", "Banāna"] },
+            { prompt: "Select the correct form: 'beautiful house' (feminine)", target: "___ māja.", correct: "Skaista", options: ["Skaists", "Skaista", "Skaisti", "Skaisto"] },
+            { prompt: "Select the correct form: 'big city'", target: "___ pilsēta.", correct: "Liela", options: ["Liels", "Liela", "Lieli", "Lielo"] },
+            { prompt: "Select the correct plural: 'good friends'", target: "Labi ___.", correct: "draugi", options: ["draugs", "draugi", "draugu", "draugiem"] },
+            { prompt: "Select the correct form: 'cold water'", target: "___ ūdens.", correct: "Auksts", options: ["Auksts", "Auksta", "Auksti", "Aukstais"] },
+            { prompt: "Select the correct form: 'hot tea'", target: "___ tēja.", correct: "Karsta", options: ["Karsts", "Karsta", "Auksta", "Karstā"] },
+            { prompt: "Fill in the blank: 'Open the door, please'", target: "Atver ___, lūdzu.", correct: "durvis", options: ["durvis", "dūrvīs", "durvēm", "durvju"] },
+            { prompt: "Fill in the blank: 'The cat is under the table'", target: "Kaķis ir zem ___.", correct: "galda", options: ["galds", "galda", "galdu", "galdam"] },
+            { prompt: "Fill in the blank: 'I like Latvian food'", target: "Man patīk latviešu ___.", correct: "ēdiens", options: ["ēdiens", "ēdienu", "ēdiena", "ēdienam"] },
+            { prompt: "Fill in the blank: 'We are learning Latvian'", target: "Mēs mācāmies ___.", correct: "latviešu valodu", options: ["latviešu valoda", "latviešu valodu", "latviešu valodā", "latviešu valodas"] },
+            { prompt: "Fill in the blank: 'It is raining today'", target: "Šodien ___.", correct: "līst", options: ["līst", "līstēs", "līstēja", "lija"] },
+            { prompt: "Select the correct spelling for 'Happy':", target: "Happy", correct: "Laimes", options: ["Laimes", "Laīmēs", "Laime", "Laimīgs"] },
+            { prompt: "Select the correct spelling for 'I am happy':", target: "I am happy", correct: "Es esmu laimīgs", options: ["Es esmu laimigs", "Es esmu laimīgs", "Es esmu laimīgš", "Es esmu laimīga"] },
+            { prompt: "Select the correct spelling for 'Sad':", target: "Sad", correct: "Skumjš", options: ["Skumjs", "Skumjš", "Skūmjš", "Skumja"] },
+            { prompt: "Select the correct spelling for 'Angry':", target: "Angry", correct: "Dusmīgs", options: ["Dusmigs", "Dusmīgs", "Dusmīgš", "Dusmīga"] },
+            { prompt: "Select the correct spelling for 'Tired':", target: "Tired", correct: "Noguris", options: ["Noguris", "Nogurīs", "Noguriš", "Nogurusi"] },
+            { prompt: "Select the correct spelling for 'I am scared':", target: "I am scared", correct: "Es baidos", options: ["Es baidos", "Es baidōs", "Es baidos!", "Es baidījos"] },
+            { prompt: "Select the correct spelling for 'Dress':", target: "Dress", correct: "Kleita", options: ["Kleita", "Kleitā", "Kleitu", "Kleitas"] },
+            { prompt: "Select the correct spelling for 'Socks':", target: "Socks", correct: "Zeķes", options: ["Zekes", "Zeķes", "Zeķēs", "Zeķēm"] },
+            { prompt: "Select the correct spelling for 'Bicycle':", target: "Bicycle", correct: "Velosipēds", options: ["Velosipeds", "Velosipēds", "Velosipēdš", "Velosipēda"] },
+            { prompt: "Select the correct spelling for 'Road':", target: "Road", correct: "Ceļš", options: ["Cels", "Ceļš", "Ceļšš", "Ceļa"] },
+            { prompt: "Select the correct spelling for 'How much is this?':", target: "How much is this?", correct: "Cik tas maksā?", options: ["Cik tas maksa?", "Cik tas maksā?", "Cik tas maksās?", "Cik tas maksāja?"] },
+            { prompt: "Select the correct spelling for 'I would like...':", target: "I would like...", correct: "Es gribētu...", options: ["Es gribētu...", "Es gribu...", "Es gribēšu...", "Es gribēju..."] },
+            { prompt: "Select the correct spelling for 'Where is the station?':", target: "Where is the station?", correct: "Kur ir stacija?", options: ["Kur ir stacija?", "Kur ir stacijā?", "Kur ir staciju?", "Kur atrodas stacija?"] },
+            { prompt: "Select the correct spelling for 'I need help':", target: "I need help", correct: "Man vajag palīdzību", options: ["Man vajag palidzibu", "Man vajag palīdzību", "Man vajag palīdzēt", "Man vajadzētu palīdzību"] },
+            { prompt: "Select the correct spelling for 'Open / Closed':", target: "Open", correct: "Atvērts", options: ["Atverts", "Atvērts", "Atvērtš", "Atvērta"] },
+            { prompt: "Select the correct spelling for 'Closed':", target: "Closed", correct: "Slēgts", options: ["Slegts", "Slēgts", "Slēgtš", "Slēgta"] },
+            { prompt: "Select the correct spelling for 'Left':", target: "Left", correct: "Pa kreisi", options: ["Pa kreisi", "Pa kreisī", "Pa kreiso", "Pa kreisajai"] },
+            { prompt: "Select the correct spelling for 'Right':", target: "Right", correct: "Pa labi", options: ["Pa labi", "Pa labī", "Pa labo", "Pa labajai"] },
+            { prompt: "Select the correct spelling for 'Straight ahead':", target: "Straight ahead", correct: "Taisni uz priekšu", options: ["Taisni uz priekšu", "Taisni uz priekšu!", "Taisni uz priekšu?", "Taisni uz priekšu..."] },
+            { prompt: "Select the correct spelling for 'I am lost':", target: "I am lost", correct: "Es esmu apmaldījies", options: ["Es esmu apmaldijies", "Es esmu apmaldījies", "Es esmu apmaldījusies", "Es apmaldījos"] },
+            { prompt: "Fill in the blank: 'The cat is sleeping'", target: "Kaķis ___.", correct: "guļ", options: ["guļ", "guļu", "gulēt", "gulēja"] },
+            { prompt: "Fill in the blank: 'I like dogs'", target: "Man patīk ___.", correct: "suņi", options: ["suns", "suņi", "suņu", "suņiem"] },
+            { prompt: "Fill in the blank: 'She is a doctor'", target: "Viņa ir ___.", correct: "ārste", options: ["ārsts", "ārste", "ārsti", "ārsta"] },
+            { prompt: "Fill in the blank: 'We are going to the sea'", target: "Mēs ejam uz ___.", correct: "jūru", options: ["jūra", "jūru", "jūrā", "jūras"] },
+            { prompt: "Fill in the blank: 'The tree is tall'", target: "Koks ir ___.", correct: "augsts", options: ["augsts", "augsta", "augsti", "augstais"] },
+            { prompt: "Fill in the blank: 'I am buying shoes'", target: "Es pērku ___.", correct: "kurpes", options: ["kurpe", "kurpes", "kurpēm", "kurpju"] },
+            { prompt: "Fill in the blank: 'It is windy today'", target: "Šodien ir ___.", correct: "vējains", options: ["vējains", "vēja", "vējš", "vējaina"] },
+            { prompt: "Select the correct spelling for 'Twelve':", target: "Twelve", correct: "Divpadsmit", options: ["Divpadsmit", "Divdesmit", "Divsimt", "Divipadesmit", "Divi padsmiti", "Divi simti"], isHard: true },
+            { prompt: "Select the correct spelling for 'Twenty':", target: "Twenty", correct: "Divdesmit", options: ["Divdesmit", "Divpadsmit", "Divsimt", "Divi desmiti", "Divdesmits", "Divi simti"], isHard: true },
+            { prompt: "Select the correct spelling for 'Thirty':", target: "Thirty", correct: "Trīsdesmit", options: ["Trīsdesmit", "Trīspadsmit", "Trīssimt", "Trīs desmiti", "Trīsdesmits", "Trīs simti"], isHard: true },
+            { prompt: "Select the correct spelling for 'Fifty':", target: "Fifty", correct: "Piecdesmit", options: ["Piecdesmit", "Piecpadsmit", "Piecsimt", "Pieci desmiti", "Piecdesmits", "Pieci simti"], isHard: true },
+            { prompt: "Select the correct spelling for 'Seventy':", target: "Seventy", correct: "Septiņdesmit", options: ["Septiņdesmit", "Septiņpadsmit", "Septiņsimt", "Septiņi desmiti", "Septiņdesmits", "Septiņi simti"], isHard: true },
+            { prompt: "Select the correct spelling for 'Ninety':", target: "Ninety", correct: "Deviņdesmit", options: ["Deviņdesmit", "Deviņpadsmit", "Deviņsimt", "Deviņi desmiti", "Deviņdesmits", "Deviņi simti"], isHard: true },
+            { prompt: "Select the correct spelling for 'One hundred':", target: "One hundred", correct: "Simts", options: ["Simts", "Simt", "Simti", "Simtu", "Simtā", "Simtam"], isHard: true },
+            { prompt: "Select the correct spelling for 'Two hundred':", target: "Two hundred", correct: "Divsimt", options: ["Divsimt", "Divi simti", "Divdesmit", "Divpadsmit", "Divsimti", "Divi simts"], isHard: true },
+            { prompt: "Select the correct spelling for 'Five hundred':", target: "Five hundred", correct: "Piecsimt", options: ["Piecsimt", "Pieci simti", "Piecdesmit", "Piecpadsmit", "Piecsimti", "Pieci simts"], isHard: true },
+            { prompt: "Select the correct spelling for 'One thousand':", target: "One thousand", correct: "Tūkstotis", options: ["Tūkstotis", "Tūkstoši", "Tūkstoša", "Tūkstošu", "Tūkstoš", "Tūkstotis"], isHard: true },
+            { prompt: "Select the correct spelling for 'First':", target: "First", correct: "Pirmais", options: ["Pirmais", "Pirmais", "Pirmā", "Pirmie", "Pirmam", "Pirmā"], isHard: true },
+            { prompt: "Select the correct spelling for 'Second':", target: "Second", correct: "Otrais", options: ["Otrais", "Otrais", "Otrā", "Otrie", "Otram", "Otrā"], isHard: true },
+            { prompt: "Select the correct spelling for 'Third':", target: "Third", correct: "Trešais", options: ["Trešais", "Trešais", "Trešā", "Trešie", "Trešam", "Trešā"], isHard: true },
+            { prompt: "Select the correct spelling for 'Fourth':", target: "Fourth", correct: "Ceturtais", options: ["Ceturtais", "Ceturtais", "Ceturtā", "Ceturtie", "Ceturtam", "Ceturtā"], isHard: true },
+            { prompt: "Select the correct spelling for 'Fifth':", target: "Fifth", correct: "Piektais", options: ["Piektais", "Piektais", "Piektā", "Piektie", "Piektam", "Piektā"], isHard: true },
+            { prompt: "Select the correct spelling for 'Tenth':", target: "Tenth", correct: "Desmitais", options: ["Desmitais", "Desmitais", "Desmitā", "Desmitie", "Desmitam", "Desmitā"], isHard: true },
+            { prompt: "Select the correct spelling for 'Twelfth':", target: "Twelfth", correct: "Divpadsmitais", options: ["Divpadsmitais", "Divdesmitais", "Divsimtais", "Divpadsmitā", "Divpadsmitie", "Divpadsmitam"], isHard: true },
+            { prompt: "Select the correct spelling for 'Twentieth':", target: "Twentieth", correct: "Divdesmitais", options: ["Divdesmitais", "Divpadsmitais", "Divsimtais", "Divdesmitā", "Divdesmitie", "Divdesmitam"], isHard: true },
+            { prompt: "Select the correct spelling for 'Thirtieth':", target: "Thirtieth", correct: "Trīsdesmitais", options: ["Trīsdesmitais", "Trīspadsmitais", "Trīssimtais", "Trīsdesmitā", "Trīsdesmitie", "Trīsdesmitam"], isHard: true },
+            { prompt: "Select the correct spelling for 'Fiftieth':", target: "Fiftieth", correct: "Piecdesmitais", options: ["Piecdesmitais", "Piecpadsmitais", "Piecsimtais", "Piecdesmitā", "Piecdesmitie", "Piecdesmitam"], isHard: true },
+            { prompt: "Select the correct form: 'I live on the twenty-third floor'", target: "Es dzīvoju ___ stāvā.", correct: "divdesmit trešajā", options: ["divdesmit trešajā", "divpadsmit trešajā", "divdesmit trešais", "divdesmit trešā", "divdesmit trešajā stāvā", "divdesmit trešajā"], isHard: true },
+            { prompt: "Select the correct form: 'This is the fifteenth question'", target: "Šis ir ___ jautājums.", correct: "piecpadsmitais", options: ["piecpadsmitais", "piecdesmitais", "piecpadsmitā", "piecpadsmitie", "piecpadsmitam", "piecpadsmitais"], isHard: true },
+            { prompt: "Select the correct form: 'She finished in second place'", target: "Viņa ierindojās ___ vietā.", correct: "otrajā", options: ["otrajā", "otrais", "otrā", "otrajā vietā", "otrā vietā", "otrajā"], isHard: true }
         ]
     };
-
-    const extraDistractorMap = {
-        'Es esmu noguris': 'Man ir noguris',
-        'Latvijā': 'Latvijai',
-        'silts': 'silta',
-        'vārds': 'vārdi',
-        'dzeru': 'dzēru',
-        'kafiju': 'kafija',
-        'ej': 'eju',
-        'Atvainojiet': 'Atsūtiet',
-        'Cik tas maksā?': 'Kāda ir šīs preces cena?',
-        'gribi': 'grib',
-        'gāju': 'gājām',
-        'svinēsim': 'svinam',
-        'iešu': 'eju',
-        'biju': 'esmu'
-    };
-
-    function isLazyDistractor(correctAnswer, option) {
-        const correct = String(correctAnswer || '').trim();
-        const candidate = String(option || '').trim();
-        if (!correct || !candidate) return false;
-
-        const lazySuffixes = [
-            `${correct}s`, `${correct}S`, `${correct}š`, `${correct}z`, `${correct}ž`,
-            `${correct}ss`, `${correct}es`, `${correct}is`, `${correct}us`, `${correct}as`
-        ];
-
-        return candidate === correct || lazySuffixes.includes(candidate);
-    }
-
-    function ensureCorrectAnswerPresent(question) {
-        if (!question || !Array.isArray(question.options)) {
-            question.options = [];
-        }
-
-        const correct = String(question.correct || '').trim();
-        const unique = [...new Set(question.options.map((option) => String(option || '').trim()).filter(Boolean))];
-
-        if (correct && !unique.includes(correct)) {
-            unique.unshift(correct);
-        }
-
-        question.options = unique;
-        return question.options;
-    }
-
-    function generateFallbackDistractor(correctAnswer) {
-        const text = String(correctAnswer || '');
-        if (!text) return 'Kā tev iet?';
-
-        const accentSwapMap = {
-            'ā': 'a', 'ē': 'e', 'ī': 'i', 'ū': 'u', 'č': 'c', 'ķ': 'k', 'ģ': 'g', 'ļ': 'l', 'ņ': 'n', 'š': 's', 'ž': 'z',
-            'Ā': 'A', 'Ē': 'E', 'Ī': 'I', 'Ū': 'U', 'Č': 'C', 'Ķ': 'K', 'Ģ': 'G', 'Ļ': 'L', 'Ņ': 'N', 'Š': 'S', 'Ž': 'Z'
-        };
-
-        const replacements = [
-            text.replace(/[āēīū]/g, (char) => ({ 'ā': 'a', 'ē': 'e', 'ī': 'i', 'ū': 'u' }[char] || char)),
-            text.replace(/[aeiu]$/, (char) => ({ a: 'ā', e: 'ē', i: 'ī', u: 'ū' }[char] || char)),
-            text.replace(/[s]$/, 'š'),
-            text.replace(/[z]$/, 'ž'),
-            text.replace(/[l]$/, 'ļ'),
-            text.replace(/[n]$/, 'ņ'),
-            text.replace(/[g]$/, 'ģ'),
-            text.replace(/[k]$/, 'ķ'),
-            text.replace(/[c]$/, 'č')
-        ].filter((value, index, arr) => value && value !== text && arr.indexOf(value) === index);
-
-        const contextual = [
-            text.includes('vannas') ? 'Kur ir tualete?' : '',
-            text.includes('tualete') ? 'Kur ir vannas istaba?' : '',
-            text.includes('palīg') ? 'Lūdzu!' : '',
-            text.includes('grib') ? 'Es gribu...' : '',
-            text.includes('sauc') ? 'Es saucu...' : '',
-            text.includes('mīlu') ? 'Es tevi mīlētu' : '',
-            text.includes('jūru') ? 'jūra' : ''
-        ].filter(Boolean);
-
-        const candidates = [...contextual, ...replacements];
-        const cleaned = candidates.filter((value) => !isLazyDistractor(text, value));
-        return cleaned[0] || text.replace(/[āēīūčķģļņšž]/g, (char) => accentSwapMap[char] || char);
-    }
-
-    function addMissingOption(question) {
-        if (!question || !Array.isArray(question.options)) {
-            question.options = [];
-        }
-
-        const questionOptions = ensureCorrectAnswerPresent(question);
-        const correct = String(question.correct || '').trim();
-        const options = [...new Set(questionOptions.map((option) => String(option || '').trim()).filter(Boolean))];
-
-        const validWrongOptions = options.filter((option) => option !== correct && !isLazyDistractor(correct, option));
-        const finalOptions = [correct];
-
-        for (const option of validWrongOptions) {
-            if (!finalOptions.includes(option)) {
-                finalOptions.push(option);
-            }
-            if (finalOptions.length >= 4) break;
-        }
-
-        const seedCandidates = [
-            extraDistractorMap[correct],
-            questionOptions.find((option) => option !== correct && !isLazyDistractor(correct, option)),
-            generateFallbackDistractor(correct),
-            correct.includes('vannas') ? 'Kur ir tualete?' : '',
-            correct.includes('tualete') ? 'Kur ir vannas istaba?' : '',
-            correct.includes('kur') ? 'Kāds ir šīs vietas numurs?' : '',
-            correct.includes('gribi') ? 'Es gribu...' : ''
-        ].filter((value) => value && value !== correct && !isLazyDistractor(correct, value));
-
-        for (const candidate of seedCandidates) {
-            if (!finalOptions.includes(candidate)) {
-                finalOptions.push(candidate);
-            }
-            if (finalOptions.length >= 4) break;
-        }
-
-        while (finalOptions.length < 4) {
-            const fallbackPool = [
-                'Lūdzu!',
-                'Nav par ko',
-                'Kā tev iet?',
-                'Mans vārds ir ...',
-                'Es gribu...',
-                'Tā ir laba ideja',
-                'Man ir laiks doties',
-                'Es nezinu',
-                'Es gaidu tevi',
-                'Tas ir interesanti',
-                'Mēs gaidām',
-                'Es domāju, ka jā'
-            ];
-
-            const candidate = fallbackPool.find((value) => {
-                const normalized = String(value || '').trim();
-                return normalized && normalized !== correct && !finalOptions.includes(normalized) && !isLazyDistractor(correct, normalized);
-            }) || generateFallbackDistractor(correct);
-
-            if (!finalOptions.includes(candidate) && candidate !== correct && !isLazyDistractor(correct, candidate)) {
-                finalOptions.push(candidate);
-            } else {
-                const extra = fallbackPool.find((value) => !finalOptions.includes(value) && value !== correct);
-                if (extra && !isLazyDistractor(correct, extra)) {
-                    finalOptions.push(extra);
-                } else {
-                    break;
-                }
-            }
-        }
-
-        question.options = finalOptions.slice(0, 4);
-    }
-
-    function normalizeQuestionBank() {
-        Object.values(tieredQuestions).forEach((tier) => {
-            tier.forEach((question) => {
-                ensureCorrectAnswerPresent(question);
-                addMissingOption(question);
-            });
-        });
-    }
-
-    normalizeQuestionBank();
 
     let questions = [];
     let currentTier = 1;
